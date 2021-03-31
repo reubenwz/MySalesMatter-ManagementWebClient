@@ -17,10 +17,6 @@
                     <h:outputText value="#{listingEntity.name}" />
                 </p:column>
                 
-                <p:column headerText="Picture">
-                    <p:graphicImage width="100%" value="/uploadedFiles/#{listingEntity.picturePath}" />
-                </p:column>
-                
                 <p:column headerText="Action" style="text-align: center">
                     <p:commandLink value="View" actionListener="#{viewListingManagedBean.viewReviewDetails}">
                         <f:attribute name="listingId" value="#{listingEntity.listingId}" />
