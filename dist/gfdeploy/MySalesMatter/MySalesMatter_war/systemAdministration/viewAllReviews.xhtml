@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/template/defaultTemplate.xhtml"
+                xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="content">
+
+        <div>
+            <h2>All Reviews</h2>
+            
+            <p:commandButton value="Back" icon="pi pi-angle-left" actionListener="#{viewListingManagedBean.viewListingDetails}">
+                <f:attribute name="listingId" value="#{listingEntity.listingId}" />
+            </p:commandButton>
+            
+            
+            
+            <h:form id="formAllReviews">
+            <p:dataTable id="dataTableAllReviews" value="#{viewAllReviewsManagedBean.reviewEntities}" var="reviewEntity" style="width: 100%;">
+                <p:column headerText="Reviewed By" style="text-align: center">
+                    <h:outputText value="#{reviewEntity.reviewer.name}" />
+                </p:column>
+
+                <p:column headerText="Star Rating" style="text-align: center">
+                    <h:outputText value="#{reviewEntity.starRating}" />
+                </p:column>
+                
+                <p:column headerText="Description" style="text-align: center">
+                    <h:outputText value="#{reviewEntity.description}" />
+                </p:column>
+                
+            </p:dataTable>
+        </h:form>
+
+        </div>
+
+    </ui:define>
+
+</ui:composition>

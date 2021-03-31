@@ -1,0 +1,132 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/template/defaultTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="content">
+        <h:form>
+            <h4>Pending Offers </h4>
+        </h:form>
+        <h:form id="formPendingOffer">
+            <p:dataTable id="dataTablePendingOffer" value="#{viewPendingOfferManagedBean.retrieveOffers()}" var="pendingOffer" style="width: 100%;">
+                <p:column headerText="Offer Date" style="text-align: center">
+                    <h:outputText value="#{pendingOffer.offerDate}" />
+                </p:column>
+
+                <p:column headerText="Offer Type" style="text-align: center">
+                    <h:outputText value="#{pendingOffer.offerType}" />
+                </p:column>
+
+                <p:column headerText="Offer Price" style="text-align: center">
+                    <h:outputText value="#{pendingOffer.totalPrice}" />
+                </p:column>
+
+                <p:column headerText="Action" style="text-align: center">
+                    <p:commandLink value="View" actionListener="#{viewListingManagedBean.viewReviewDetails}">
+                        <f:attribute name="listingId" value="#{pendingOffer.listing.listingId}" />
+                    </p:commandLink>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+        <h:form>
+            <h4>Accepted Offers </h4>
+        </h:form>
+        <h:form id="formAcceptedOffer">
+            <p:dataTable id="dataTableAcceptedOffer" value="#{viewAcceptedOfferManagedBean.retrieveOffers()}" var="acceptedOffer" style="width: 100%;">
+                <p:column headerText="Offer Date" style="text-align: center">
+                    <h:outputText value="#{acceptedOffer.offerDate}" />
+                </p:column>
+
+                <p:column headerText="Offer Type" style="text-align: center">
+                    <h:outputText value="#{acceptedOffer.offerType}" />
+                </p:column>
+
+                <p:column headerText="Offer Price" style="text-align: center">
+                    <h:outputText value="#{acceptedOffer.totalPrice}" />
+                </p:column>
+
+                <p:column headerText="Action" style="text-align: center">
+                    <p:commandLink value="View" actionListener="#{viewListingManagedBean.viewReviewDetails}">
+                        <f:attribute name="listingId" value="#{acceptedOffer.listing.listingId}" />
+                    </p:commandLink><br></br>
+                    <p:commandLink value="Make Payment" oncomplete="PF('dialogMakePayment').show()" actionListener="#{transactionManagedBean.doMakePayment}" update="formMakePayment">
+                        <f:attribute name="acceptedOfferToPay" value="#{acceptedOffer}" />
+                    </p:commandLink>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+
+        <h:form id="formMakePayment">
+
+            <p:dialog id="dialogMakePayment" widgetVar="dialogMakePayment" header="Make Payment" closable="true">
+
+                <p:messages id="messages" redisplay="false" />
+
+                <p:panelGrid>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="totalPrice" value="Total Price " style="font-weight: bold;" />
+                        </p:column>
+                        <p:column>
+                            <h:outputText id="totalPrice" value="#{transactionManagedBean.acceptedOfferToMakePayment.totalPrice}" />   
+                        </p:column>
+                        <p:column>
+                            <p:message for="totalPrice" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="offerType" value="Offer Type: " style="font-weight: bold;" />
+                        </p:column>
+                        <p:column>
+                            <h:outputText id="offerType" value="#{transactionManagedBean.acceptedOfferToMakePayment.offerType}" />   
+                        </p:column>
+                        <p:column>
+                            <p:message for="offerType" />
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row rendered="#{transactionManagedBean.isRentalOffer(transactionManagedBean.acceptedOfferToMakePayment.offerType)}">
+                        <p:column>
+                            <p:outputLabel for="startDate" value="Start Date: " style="font-weight: bold;" />
+                        </p:column>
+                        <p:column>
+                            <h:outputText id="startDate" value="#{transactionManagedBean.acceptedRentalOffer.startDate}" />   
+                        </p:column>
+                        <p:column>
+                            <p:message for="startDate" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row rendered="#{transactionManagedBean.isRentalOffer(transactionManagedBean.acceptedOfferToMakePayment.offerType)}">
+                        <p:column>
+                            <p:outputLabel for="endDate" value="End Date: " style="font-weight: bold;" />
+                        </p:column>
+                        <p:column>
+                            <h:outputText id="endDate" value="#{transactionManagedBean.acceptedRentalOffer.endDate}" />   
+                        </p:column>
+                        <p:column>
+                            <p:message for="endDate" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column colspan="3">
+                            <p:commandButton type="reset" value="Clear" />&nbsp;
+                            <p:commandButton  value="Confirm Payment" actionListener="#{transactionManagedBean.makePayment}" oncomplete="PF('dialogMakePayment').show();" update="formMakePayment">     
+                            </p:commandButton>
+                        </p:column>
+                    </p:row>
+
+                </p:panelGrid>
+
+            </p:dialog>
+
+        </h:form>
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,290 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/template/defaultTemplate.xhtml"
+                xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="content">
+
+        <div>
+            <h3>Listing Management</h3>
+            <div align="right">      
+                    <p:growl id="messages" showDetail="true"/>
+                    <p:commandButton type="button" value="Create New Listing" onclick="PF('dialogCreateNewListing').show()" icon ="pi pi-file" styleClass="p-mr-2" />
+            </div>
+            <h:form id="formAllListings">
+
+                <p:messages id="messages" redisplay="false" closable="true" />
+                <p:dataTable id="dataTableAllListings" widgetVar="dataTableAllListings" value="#{listingManagementManagedBean.listingEntities}" var="listingEntity" rowKey="#{listingEntity.listingId}" rowIndexVar="row"
+                             filteredValue="#{listingManagementManagedBean.filteredListingEntities}"
+                             rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
+
+                    <f:facet name="header">
+                        <p:outputPanel style="text-align: right;">
+                            <h:outputText value="Search all fields: " />
+                            <p:inputText id="globalFilter" onkeyup="PF('dataTableAllListings').filter()" style="width:300px" placeholder="Enter keyword"/>
+                        </p:outputPanel>
+                    </f:facet>
+
+                    <p:column headerText="Listing ID" style="text-align: center;" sortBy="#{listingEntity.listingId}" filterBy="#{listingEntity.listingId}" filterMatchMode="contains">
+                        <h:outputText value="#{listingEntity.listingId}" />
+                    </p:column>
+
+                    <p:column headerText="User Name" sortBy="#{listingEntity.user.name}" filterBy="#{listingEntity.user.name}" filterMatchMode="contains">
+                        <h:outputText value="#{listingEntity.user.name}" />
+                    </p:column>
+
+                    <p:column headerText="Picture" style="text-align: center;">
+                        <p:graphicImage width="100%" value="/uploadedFiles/#{listingEntity.picturePath}" />
+                    </p:column>  
+
+                    <p:column headerText="Name" style="text-align: center;" sortBy="#{listingEntity.name}" filterBy="#{listingEntity.name}" filterMatchMode="contains">
+                        <h:outputText value="#{listingEntity.name}" />
+                    </p:column>
+
+<!--                    <p:column headerText="Description" style="text-align: center;" sortBy="#{listingEntity.description}" filterBy="#{listingEntity.description}" filterMatchMode="contains">
+                        <h:outputText value="#{listingEntity.description}" />
+                    </p:column>
+
+                    <p:column headerText="Rental Price" sortBy="#{listingEntity.rentalPrice}" filterBy="#{listingEntity.rentalPrice}" filterMatchMode="contains" style="text-align: center;">
+                        <h:outputText value="#{listingEntity.rentalPrice}">
+                            <f:convertNumber minFractionDigits="2" maxFractionDigits="2" type="currency" currencyCode="SGD" />
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="Sale Price"  sortBy="#{listingEntity.salePrice}" filterBy="#{listingEntity.salePrice}" filterMatchMode="contains" style="text-align: center;">
+                        <h:outputText value="#{listingEntity.salePrice}">
+                            <f:convertNumber minFractionDigits="2" maxFractionDigits="2" type="currency" currencyCode="SGD" />
+                        </h:outputText>
+                    </p:column>                        
+
+                    <p:column headerText="Location" style="text-align: center;" sortBy="#{listingEntity.location}" filterBy="#{listingEntity.location}" filterMatchMode="contains">
+                        <h:outputText value="#{listingEntity.location}" />
+                    </p:column>
+
+                    <p:column headerText="Rental Availability" style="text-align: center;" sortBy="#{listingEntity.rentalAvailability}" filterBy="#{listingEntity.rentalAvailability}" filterMatchMode="contains">
+                        <h:outputText value="#{listingEntity.rentalAvailability}" />
+                    </p:column>
+
+                    <p:column headerText="Sale Availability" style="text-align: center;" sortBy="#{listingEntity.forSaleAvailability}" filterBy="#{listingEntity.forSaleAvailability}" filterMatchMode="contains">
+                        <h:outputText value="#{listingEntity.forSaleAvailability}" />
+                    </p:column>
+
+                    <p:column headerText="Rent Out" style="text-align: center;" sortBy="#{listingEntity.isRentOut}" filterBy="#{listingEntity.isRentOut}" filterMatchMode="contains">
+                        <h:outputText value="#{listingEntity.isRentOut}" />
+                    </p:column>
+
+                    <p:column headerText="Category" style="text-align: center;" sortBy="#{listingEntity.categoryEntity.name}" filterBy="#{listingEntity.categoryEntity.name}" filterMatchMode="exact">
+                        <f:facet name="filter">
+                            <p:selectOneMenu id="selCategory" onchange="PF('dataTableAllListings').filter()">
+                                <f:selectItem itemValue="#{null}" itemLabel="[Select One]" noSelectionOption="true" />
+                                <f:selectItems value="#{listingManagementManagedBean.categoryEntities}" var="categoryEntity" itemValue="#{categoryEntity.name}" itemLabel="#{categoryEntity.name}" />
+                            </p:selectOneMenu>
+                        </f:facet>
+                        <h:outputText value="#{listingEntity.categoryEntity.name}" />
+                    </p:column>-->
+
+                    <p:column headerText="Action" style="text-align: center;" >
+                        <p:commandButton value="View" icon="pi pi-folder-open" actionListener="#{viewListingManagedBean.viewReviewDetails}">
+                            <f:attribute name="listingId" value="#{listingEntity.listingId}" />
+                        </p:commandButton>
+
+                        <p:commandButton rendered="#{!viewLikedItemManagedBean.alreadyLiked(listingEntity.listingId)}" value="Like" icon="pi pi-heart" actionListener="#{listingManagementManagedBean.likeItem}" update="formAllListings:dataTableAllListings formAllListings:messages" title="Like">
+                            <f:attribute name="listingEntityToLike" value="#{listingEntity}" />
+                        </p:commandButton>
+                        <p:commandButton rendered="#{viewLikedItemManagedBean.alreadyLiked(listingEntity.listingId)}" value="Unlike" icon="pi pi-ban" actionListener="#{listingManagementManagedBean.unlikeItem}" update="formAllListings:dataTableAllListings formAllListings:messages" title="Unlike">
+                            <f:attribute name="listingEntityToUnlike" value="#{listingEntity}" />
+                        </p:commandButton>
+                    </p:column>
+
+                </p:dataTable>
+
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </p:confirmDialog>
+
+            </h:form>
+
+            <ez:ViewListing id="ccViewListing" />
+
+            <h:form id="formCreateNewListing" enctype="multipart/form-data">
+
+                <p:dialog id="dialogCreateNewListing" widgetVar="dialogCreateNewListing" header="Create New Listing" closable="true">
+
+                    <p:messages id="messagesCreateNewListing" redisplay="false" />
+
+                    <p:panelGrid>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="name" value="Name: " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="name" value="#{listingManagementManagedBean.newListingEntity.name}" placeholder="Listing 1" required="true" requiredMessage="Name is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="name" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="description" value="Description " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="description" value="#{listingManagementManagedBean.newListingEntity.description}" placeholder="Listing 1" required="true" requiredMessage="Description is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="description" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="brand" value="Brand " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="brand" value="#{listingManagementManagedBean.newListingEntity.brand}" placeholder="Listing 1" required="true" requiredMessage="Brand is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="brand" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="rentalPrice" value="Rental Price " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>                            
+                                <p:spinner id="rentalPrice" value="#{listingManagementManagedBean.newListingEntity.rentalPrice}" placeholder="10.00" min="0" max="1000000" stepFactor="0.01" required="true" requiredMessage="Rental Price is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="rentalPrice" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="salePrice" value="Sale Price " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>                            
+                                <p:spinner id="salePrice" value="#{listingManagementManagedBean.newListingEntity.salePrice}" placeholder="10.00" min="0" max="1000000" stepFactor="0.01" required="true" requiredMessage="Sale Price is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="salePrice" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="location" value="Location " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="location" value="#{listingManagementManagedBean.newListingEntity.location}" placeholder="Listing 1" required="true" requiredMessage="Location is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="location" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="rentalAvailability" value="RentalAvailability " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:selectBooleanCheckbox id="rentalAvailability" value="#{listingManagementManagedBean.newListingEntity.rentalAvailability}" itemLabel="For Rent" requiredMessage="RentalAvailability is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="rentalAvailability" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="forSaleAvailability" value="SaleAvailability " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:selectBooleanCheckbox id="forSaleAvailability" value="#{listingManagementManagedBean.newListingEntity.forSaleAvailability}" itemLabel="For Sale" requiredMessage="SaleAvailability is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="forSaleAvailability" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="isRentOut" value="RentOut " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:selectBooleanCheckbox id="isRentOut" value="#{listingManagementManagedBean.newListingEntity.isRentOut}" itemLabel="Is Rent Out" requiredMessage="RentOut is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="isRentOut" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="selCategory" value="Category " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:selectOneMenu id="selCategory" value="#{listingManagementManagedBean.categoryIdNew}">
+                                    <f:selectItem itemValue="0" itemLabel="[Select One]" noSelectionOption="true" />
+                                    <f:selectItems value="#{listingManagementManagedBean.categoryEntities}" var="categoryEntity" itemValue="#{categoryEntity.categoryId}" itemLabel="#{categoryEntity.name}" />
+                                </p:selectOneMenu>
+                            </p:column>
+                            <p:column>
+                                <p:message for="selCategory" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="selTags" value="Tag(s) " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:selectManyMenu id="selTags" value="#{listingManagementManagedBean.tagIdsNew}" showCheckbox="true">
+                                    <f:selectItems value="#{listingManagementManagedBean.tagEntities}" var="tagEntity" itemValue="#{tagEntity.tagId}" itemLabel="#{tagEntity.name}" />
+                                </p:selectManyMenu>
+                            </p:column>
+                            <p:column>
+                                <p:message for="selTags" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+
+                            <p:messages  redisplay="false">
+                                <p:autoUpdate />
+                            </p:messages>
+
+                            <p:column>
+                                <p:fileUpload listener="#{listingManagementManagedBean.handleFileUpload}" multiple="true" />
+                            </p:column>
+
+                        </p:row>
+
+
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:commandButton type="reset" value="Clear" />&nbsp;
+                                <p:commandButton  value="Create New Listing" update="@form formAllListings:dataTableAllListings" actionListener="#{listingManagementManagedBean.createNewListing}" oncomplete="PF('dialogCreateNewListing').show();" />
+                            </p:column>
+                        </p:row>
+
+                    </p:panelGrid>
+
+                </p:dialog>
+
+            </h:form>
+
+        </div>
+
+
+    </ui:define>
+
+</ui:composition>
