@@ -5,15 +5,11 @@
  */
 package ejb.session.stateless;
 
-import entity.ConversationEntity;
 import entity.LikedItemEntity;
 import entity.ListingEntity;
 import entity.UserEntity;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -60,13 +56,12 @@ public class LikedItemEntitySessionBean implements LikedItemEntitySessionBeanLoc
 
             Query query = em.createQuery("SELECT l FROM LikedItemEntity l WHERE l.user.userId = :inUserId");
             query.setParameter("inUserId", userId);
-            return query.getResultList();
-            //if (!userEntity.getLikedItems().isEmpty()) {
-            //    userEntity.getLikedItems().size();
-            //    return userEntity.getLikedItems();
-            //} else {
-            //    return null;
-            //}
+            List<LikedItemEntity> list = query.getResultList();
+            for (LikedItemEntity l : list) {
+                l.getListing();
+                l.getUser();
+            }
+            return list;
         } catch (UserNotFoundException ex) {
             throw new UserNotFoundException("User with this id, " + userId + ", does not exist!");
         }

@@ -25,7 +25,7 @@ import util.exception.SalesTransactionNotFoundException;
  */
 @Named(value = "viewAllSalesTransactionManagedBean")
 @SessionScoped
-public class viewAllSalesTransactionManagedBean implements Serializable {
+public class ViewAllSalesTransactionManagedBean implements Serializable {
 
     private List<SalesTransactionEntity> salesTransactionNotCompleted;
     private List<SalesTransactionEntity> salesTransactionCompleted;
@@ -34,7 +34,7 @@ public class viewAllSalesTransactionManagedBean implements Serializable {
     @EJB
     private SalesTransactionEntitySessionBeanLocal salesTransactionEntitySessionBeanLocal;
 
-    public viewAllSalesTransactionManagedBean() {
+    public ViewAllSalesTransactionManagedBean() {
         currentUser = new UserEntity();
         salesTransactionNotCompleted = new ArrayList<>();
         salesTransactionCompleted = new ArrayList<>();

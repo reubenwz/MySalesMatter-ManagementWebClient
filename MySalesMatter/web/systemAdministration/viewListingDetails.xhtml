@@ -98,7 +98,7 @@
                                 <f:attribute name="listingEntityToMakeOffer" value="#{listingEntity}" />
                             </p:commandButton>
                             <p:commandButton value=" View Reviews" icon="pi pi-users" actionListener="#{viewAllReviewsManagedBean.viewReviewDetails}" title="View All Reviews">
-                            <f:attribute name="listingEntityToMakeOffer" value="#{listingEntity}" />
+                            <f:attribute name="listingId" value="#{listingEntity.listingId}" />
                             </p:commandButton>
                             <h:panelGroup rendered="#{listingEntity.isRentOut==true}" >
                                 <p:commandButton rendered="#{listingEntity.rentalAvailability}" value=" Reserve" icon="ui-icon-cart" actionListener="#{listingManagementManagedBean.makeRentalOffer}" update="formListingDetails:dataTableListingDetails formListingDetails:messages" title="Make Rent Out (Available)">

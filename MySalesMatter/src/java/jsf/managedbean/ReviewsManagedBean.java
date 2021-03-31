@@ -5,6 +5,7 @@
  */
 package jsf.managedbean;
 
+import ejb.session.stateless.ReviewEntitySessionBeanLocal;
 import entity.ListingEntity;
 import entity.ReviewEntity;
 import entity.UserEntity;
@@ -13,10 +14,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
+import util.exception.UserNotFoundException;
 
 /**
  *
@@ -29,29 +34,41 @@ public class ReviewsManagedBean implements Serializable {
     private List<ReviewEntity> reviewsWritten;
     private List<ReviewEntity> reviewsReceived;
     private UserEntity currentUser;
-    
+
+    @Inject
+    private ViewReviewManagedBean viewReviewManagedBean;
+
+    @EJB
+    ReviewEntitySessionBeanLocal reviewEntitySessionBeanLocal;
+
     public ReviewsManagedBean() {
         reviewsWritten = new ArrayList<>();
         reviewsReceived = new ArrayList<>();
         currentUser = new UserEntity();
     }
-    
+
     @PostConstruct
     public void postConstruct() {
-        currentUser = (UserEntity) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser");
-        reviewsWritten = currentUser.getReviews();
-        List<ListingEntity> listings = currentUser.getListings();
-        for (ListingEntity l : listings) {
-            for (ReviewEntity r : l.getReviews()) {
-                reviewsReceived.add(r);
+        try {
+            currentUser = (UserEntity) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser");
+            reviewsWritten = reviewEntitySessionBeanLocal.getReviewsByUserId(currentUser.getUserId());
+            List<ListingEntity> listings = currentUser.getListings();
+            for (ListingEntity l : listings) {
+                for (ReviewEntity r : l.getReviews()) {
+                    reviewsReceived.add(r);
+                }
             }
+        } catch (UserNotFoundException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while loading conversations: " + ex.getMessage(), null));
         }
+
     }
 
     public void viewReviewDetails(ActionEvent event) throws IOException {
         Long reviewIdToView = (Long) event.getComponent().getAttributes().get("reviewId");
         FacesContext.getCurrentInstance().getExternalContext().getFlash().put("reviewIdToView", reviewIdToView);
-        //FacesContext.getCurrentInstance().getExternalContext().redirect("viewProductDetails.xhtml");
+        ViewReviewManagedBean view = new ViewReviewManagedBean();
+        view.setReviewIdEntityToView(reviewIdToView);
     }
 
     public List<ReviewEntity> getReviewsWritten() {
@@ -77,5 +94,13 @@ public class ReviewsManagedBean implements Serializable {
     public void setReviewsReceived(List<ReviewEntity> reviewsReceived) {
         this.reviewsReceived = reviewsReceived;
     }
-    
+
+    public ViewReviewManagedBean getViewReviewManagedBean() {
+        return viewReviewManagedBean;
+    }
+
+    public void setViewReviewManagedBean(ViewReviewManagedBean viewReviewManagedBean) {
+        this.viewReviewManagedBean = viewReviewManagedBean;
+    }
+
 }

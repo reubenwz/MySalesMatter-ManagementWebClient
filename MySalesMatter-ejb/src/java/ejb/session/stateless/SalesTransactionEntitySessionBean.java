@@ -51,6 +51,9 @@ public class SalesTransactionEntitySessionBean implements SalesTransactionEntity
     
     @EJB
     OfferEntitySessionBeanLocal offerEntitySessionBeanLocal;
+    
+    @EJB
+    UserEntitySessionBeanLocal userEntitySessionBeanLocal;
 
     
 
@@ -104,6 +107,25 @@ public class SalesTransactionEntitySessionBean implements SalesTransactionEntity
         } catch (UserNotFoundException ex) {
             throw new CreateNewTransactionException("An error has occurred while creating the new Listing: " + ex.getMessage());
         }
+    }
+    
+    @Override
+    public List<SalesTransactionEntity> getSalesTransactionByUserId(Long userId) throws UserNotFoundException {
+        try {
+            UserEntity userEntity = userEntitySessionBeanLocal.retrieveUserById(userId);
+
+            Query query = em.createQuery("SELECT l FROM SalesTransactionEntity l WHERE l.user.userId = :inUserId");
+            query.setParameter("inUserId", userId);
+            List<SalesTransactionEntity> list = query.getResultList();
+            for (SalesTransactionEntity l : list) {
+                l.getOffer();
+                l.getUser();
+            }
+            return list;
+        } catch (UserNotFoundException ex) {
+            throw new UserNotFoundException("User with this id, " + userId + ", does not exist!");
+        }
+
     }
 
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<SalesTransactionEntity>> constraintViolations) {

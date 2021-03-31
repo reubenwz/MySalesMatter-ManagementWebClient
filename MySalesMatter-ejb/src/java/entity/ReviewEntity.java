@@ -16,7 +16,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -34,13 +35,14 @@ public class ReviewEntity implements Serializable {
     
     @Column(nullable = false, length = 5)
     @NotNull
-    @Size(min=1, max=5)
+    @Min(1)
+    @Max(5)
     private int starRating;
     
     @Column(nullable = false, length = 100)
     @NotNull
     @Size(min=1, max=100)
-    private String descripion;
+    private String description;
     
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @NotNull
@@ -63,7 +65,7 @@ public class ReviewEntity implements Serializable {
     public ReviewEntity(int starRating, String descripion, List<String> picturePaths) {
         this();
         this.starRating = starRating;
-        this.descripion = descripion;
+        this.description = descripion;
         this.picturePaths = picturePaths;
     }
     
@@ -109,12 +111,12 @@ public class ReviewEntity implements Serializable {
         this.starRating = starRating;
     }
 
-    public String getDescripion() {
-        return descripion;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDescripion(String descripion) {
-        this.descripion = descripion;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public UserEntity getReviewer() {
