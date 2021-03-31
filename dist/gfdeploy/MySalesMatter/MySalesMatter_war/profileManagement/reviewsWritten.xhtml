@@ -23,9 +23,9 @@
                 </p:column>
 
                 <p:column headerText="Action" style="text-align: center">
-                    <p:commandLink value="View" actionListener="#{viewLikedItemManagedBean.viewReviewDetails}">
-                        <f:attribute name="reviewId" value="#{reviewEntity.reviewId}" />
-                    </p:commandLink>
+                    <p:commandButton value="View" icon="pi pi-folder-open" actionListener="#{viewReviewManagedBean.viewReviewDetails}">
+                            <f:attribute name="reviewId" value="#{reviewEntity.reviewId}" />
+                    </p:commandButton>
                 </p:column>
             </p:dataTable>
         </h:form>
