@@ -7,43 +7,14 @@
                 xmlns:p="http://primefaces.org/ui">
 
     <ui:define name="content">
-        <h:form>
-            <h4>Transactions in Progress</h4>
-        </h:form>
-        
-        <h:form id="formSalesTransactionsNotCompleted">
-            <p:dataTable id="dataTableSalesTransactionsNotCompleted" value="#{viewAllSalesTransactionManagedBean.salesTransactionNotCompleted}" var="salesTransactionNotCompleted" style="width: 100%;">
-                <p:column headerText="Transaction Type" style="text-align: center">
-                    <h:outputText value="#{salesTransactionNotCompleted.offer.offerType}" />
-                </p:column>
-                <p:column headerText="Transaction Date" style="text-align: center">
-                    <h:outputText value="#{salesTransactionNotCompleted.transactionDate}" />
-                </p:column>
-
-                <p:column headerText="Status" style="text-align: center">
-                    <h:outputText value="#{salesTransactionNotCompleted.status}" />
-                </p:column>
-
-                <p:column headerText="Total Amount ($)" style="text-align: center">
-                    <h:outputText value="#{salesTransactionNotCompleted.totalAmt}" />
-                </p:column>
-                
-                <p:column headerText="Action" style="text-align: center">
-                    <p:commandButton value="View" icon="pi pi-folder-open" actionListener="#{viewListingManagedBean.viewListingDetails}">
-                        <f:attribute name="listingId" value="#{salesTransactionNotCompleted.offer.listing.listingId}" />
-                    </p:commandButton>
-                </p:column>
-                
-            </p:dataTable>
-        </h:form>
         
         <h:form>
-            <h4>Transactions Completed</h4>
+            <h4>Loans and Purchase</h4>
         </h:form>
         
         <h:form id="formSalesTransactionsCompleted">
-            <p:dataTable id="dataTableSalesTransactionsCompleted" value="#{viewAllSalesTransactionManagedBean.salesTransactionCompleted}" var="salesTransactionCompleted" style="width: 100%;">
-                <p:column headerText="Transaction Type" style="text-align: center">
+            <p:dataTable id="dataTableSalesTransactionsCompleted" value="#{viewAllSalesTransactionManagedBean.salesTransactionCompleted}" var="salesTransactionCompleted" style="width: 100%">
+                <p:column headerText="Transaction Type" style="text-align: center" >
                     <h:outputText value="#{salesTransactionCompleted.offer.offerType}" />
                 </p:column>
                 <p:column headerText="Transaction Date" style="text-align: center">
@@ -62,15 +33,15 @@
                     <p:commandButton value="View" icon="pi pi-folder-open" actionListener="#{viewListingManagedBean.viewListingDetails}">
                         <f:attribute name="listingId" value="#{salesTransactionCompleted.offer.listing.listingId}" />
                     </p:commandButton>
-                    <p:commandButton type="button" value="Add Review" icon="pi pi-users" onclick="PF('dialogAddReview').show()" styleClass="p-mr-2">
-                        <p:growl id="messages" showDetail="true"/>
-                        <f:attribute name="listingId" value="#{salesTransactionNotCompleted.offer.listing.listingId}" />
+
+                    <p:commandButton rendered="#{addReviewManagedBean.reviewDoesNotExist(salesTransactionCompleted.offer.listing.listingId)}" value="Add Review" oncomplete="PF('dialogAddReview').show()" actionListener="#{addReviewManagedBean.setId}" update="formAddReview">
+                        <f:attribute name="listingId" value="#{salesTransactionCompleted.offer.listing.listingId}" />
                     </p:commandButton>
                 </p:column>
             </p:dataTable>
         </h:form>
         
-        <h:form id="formAddReview" enctype="multipart/form-data" >
+        <h:form id="formAddReview">
 
                 <p:dialog id="dialogAddReview" widgetVar="dialogAddReview" header="Add Review" closable="true" >
 
@@ -83,7 +54,9 @@
                                 <p:outputLabel for="starRating" value="Star Rating: " style="font-weight: bold;" />
                             </p:column>
                             <p:column>
-                                <p:inputText id="starRating" value="#{addReviewManagedBean.starRating}" placeholder="Listing 1" required="true" requiredMessage="Name is required" />
+                                <p:rating id="starRating" value="#{addReviewManagedBean.starRating}" stars="5" required="true" requiredMessage="Product Rating is required" cancel="false">
+                                    <f:validateLongRange minimum="1" maximum="5" />
+                                </p:rating>
                             </p:column>
                             <p:column>
                                 <p:message for="starRating" />
@@ -107,8 +80,7 @@
                             <p:column colspan="3">
                                 <p:commandButton type="reset" value="Clear" />&nbsp;
                                 
-                                <p:commandButton  value="Add Review" actionListener="#{addReviewManagedBean.addReview}" oncomplete="PF('dialogAddReview').show();">
-                                    <f:attribute name="listingId" value="#{salesTransactionCompleted.offer.listing.listingId}" />
+                                <p:commandButton  value="Add Review" actionListener="#{addReviewManagedBean.addReview}" oncomplete="PF('dialogAddReview').show();" update="formAddReview">
                                 </p:commandButton> 
                             </p:column>
                         </p:row>

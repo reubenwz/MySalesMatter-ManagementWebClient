@@ -24,18 +24,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.enterprise.context.ApplicationScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.inject.Named;
-import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import org.primefaces.event.FileUploadEvent;
 import util.exception.CreateNewListingException;
@@ -44,10 +41,8 @@ import util.exception.InputDataValidationException;
 import util.exception.ListingNotFoundException;
 import util.exception.UnknownPersistenceException;
 import util.exception.UserNotFoundException;
-import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import util.enumeration.OfferType;
-import util.exception.OfferNotFoundException;
 
 /**
  *

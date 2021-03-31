@@ -9,7 +9,7 @@ import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 import util.enumeration.Status;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2021-03-31T17:19:01")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2021-03-31T21:11:57")
 @StaticMetamodel(SalesTransactionEntity.class)
 public class SalesTransactionEntity_ { 
 

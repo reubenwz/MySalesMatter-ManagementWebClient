@@ -10,8 +10,11 @@ import java.util.List;
 import javax.ejb.Local;
 import util.exception.CreateNewReviewException;
 import util.exception.InputDataValidationException;
+import util.exception.ListingNotFoundException;
 import util.exception.ReviewNotFoundException;
+import util.exception.UnknownPersistenceException;
 import util.exception.UpdateReviewException;
+import util.exception.UserNotFoundException;
 
 /**
  *
@@ -19,9 +22,11 @@ import util.exception.UpdateReviewException;
  */
 @Local
 public interface ReviewEntitySessionBeanLocal {
-    public ReviewEntity createNewReviewEntity(ReviewEntity newReviewEntity, Long reviewerId, Long listingId) throws InputDataValidationException, CreateNewReviewException;
+    public ReviewEntity createNewReviewEntity(ReviewEntity newReviewEntity, Long reviewerId, Long listingId) throws UnknownPersistenceException, InputDataValidationException, CreateNewReviewException, UserNotFoundException, ListingNotFoundException;
     public List<ReviewEntity> retrieveAllReviews();
     public ReviewEntity retrieveReviewByReviewId(Long reviewId) throws ReviewNotFoundException;
     public void updateReview(ReviewEntity reviewEntity) throws InputDataValidationException, ReviewNotFoundException, UpdateReviewException;
     public void deleteReview(Long reviewId) throws ReviewNotFoundException;
+
+    public List<ReviewEntity> getReviewsByUserId(Long userId) throws UserNotFoundException;
 }

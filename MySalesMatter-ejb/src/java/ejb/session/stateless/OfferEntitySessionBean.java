@@ -69,6 +69,8 @@ public class OfferEntitySessionBean implements OfferEntitySessionBeanLocal {
                 listingEntity.getOffers().add(newOfferEntity);
                 
                 em.persist(newOfferEntity);
+                em.merge(userEntity);
+                em.merge(listingEntity);
                 em.flush();
 
                 return newOfferEntity;

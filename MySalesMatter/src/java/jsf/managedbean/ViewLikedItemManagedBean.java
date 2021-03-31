@@ -12,11 +12,8 @@ import entity.UserEntity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
@@ -28,8 +25,8 @@ import util.exception.UserNotFoundException;
  * @author sylvia
  */
 @Named(value = "viewLikedItemManagedBean")
-@RequestScoped
-public class ViewLikedItemManagedBean {
+@ViewScoped
+public class ViewLikedItemManagedBean implements Serializable {
 
     @EJB
     private LikedItemEntitySessionBeanLocal likedItemEntitySessionBeanLocal;
@@ -75,7 +72,7 @@ public class ViewLikedItemManagedBean {
         }
         return false;
     }
-
+    
     public UserEntity getCurrentUser() {
         return currentUser;
     }

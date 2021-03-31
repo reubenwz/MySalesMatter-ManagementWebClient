@@ -12,6 +12,7 @@ import entity.UserEntity;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -20,6 +21,8 @@ import javax.faces.event.ActionEvent;
 import util.exception.CreateNewReviewException;
 import util.exception.InputDataValidationException;
 import util.exception.ListingNotFoundException;
+import util.exception.UnknownPersistenceException;
+import util.exception.UserNotFoundException;
 
 /**
  *
@@ -33,6 +36,8 @@ public class AddReviewManagedBean implements Serializable {
     private int starRating;
     private String description;
     private Long listingIdToView;
+    private Long salesTransactionIdToView;
+    private boolean reviewExist;
    
     
     @EJB
@@ -42,6 +47,7 @@ public class AddReviewManagedBean implements Serializable {
     
     
     public AddReviewManagedBean() {
+        reviewExist = false;
     }
     
     @PostConstruct
@@ -66,19 +72,33 @@ public class AddReviewManagedBean implements Serializable {
 
         try {
             Long userId = user.getUserId();
-            Long listingIdToView = (Long) event.getComponent().getAttributes().get("listingId");
-            FacesContext.getCurrentInstance().getExternalContext().getFlash().put("listingIdToView", listingIdToView);
             ReviewEntity review = new ReviewEntity();
-            review.setDescripion(description);
+            review.setDescription(description);
             review.setReviewer(user);
             review.setStarRating(starRating);
-            System.out.println("LISTING: " + listingIdToView);
             review.setListing(listingEntitySessionBeanLocal.retrieveListingByListingId(listingIdToView));
-            reviewEntitySessionBeanLocal.createNewReviewEntity(review, userId, listingIdToView);
+            review = reviewEntitySessionBeanLocal.createNewReviewEntity(review, userId, listingIdToView);
+            reviewExist = true;
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Review added successfully (Review ID: " + review.getReviewId() + ")", null));
-        } catch (CreateNewReviewException | ListingNotFoundException | InputDataValidationException ex) {
+        } catch (UserNotFoundException | UnknownPersistenceException | CreateNewReviewException | ListingNotFoundException | InputDataValidationException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating the new Listing: " + ex.getMessage(), null));
         }
+    }
+    
+    public boolean reviewDoesNotExist(Long listingId) {
+        List<ReviewEntity> reviews = user.getReviews();
+        if (!reviews.isEmpty()) {
+            for (ReviewEntity r : reviews) {
+                if (r.getListing().getListingId().equals(listingId)) {
+                    return false;
+                }
+            }
+        }
+        return true;   
+    }
+    
+    public void setId(ActionEvent event) {
+        listingIdToView = (Long) event.getComponent().getAttributes().get("listingId");        
     }
 
     public UserEntity getUser() {
@@ -111,6 +131,22 @@ public class AddReviewManagedBean implements Serializable {
 
     public void setListingIdToView(Long listingIdToView) {
         this.listingIdToView = listingIdToView;
+    }
+
+    public Long getSalesTransactionIdToView() {
+        return salesTransactionIdToView;
+    }
+
+    public void setSalesTransactionIdToView(Long salesTransactionIdToView) {
+        this.salesTransactionIdToView = salesTransactionIdToView;
+    }
+
+    public boolean isReviewExist() {
+        return reviewExist;
+    }
+
+    public void setReviewExist(boolean reviewExist) {
+        this.reviewExist = reviewExist;
     }
     
 }

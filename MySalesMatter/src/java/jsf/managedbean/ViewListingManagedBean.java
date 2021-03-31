@@ -71,11 +71,6 @@ public class ViewListingManagedBean implements Serializable{
     {        
     }
     
-    public void viewReviewDetails(ActionEvent event) throws IOException {
-        Long listingIdToView = (Long) event.getComponent().getAttributes().get("listingId");
-        FacesContext.getCurrentInstance().getExternalContext().getFlash().put("listingIdToView", listingIdToView);
-        FacesContext.getCurrentInstance().getExternalContext().redirect("/MySalesMatter/systemAdministration/viewListingDetails.xhtml");
-    }
     
     public void viewListingDetails(ActionEvent event) throws IOException {
         Long listingIdToView = (Long) event.getComponent().getAttributes().get("listingId");

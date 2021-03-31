@@ -22,8 +22,11 @@ import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import util.exception.CreateNewReviewException;
 import util.exception.InputDataValidationException;
+import util.exception.ListingNotFoundException;
 import util.exception.ReviewNotFoundException;
+import util.exception.UnknownPersistenceException;
 import util.exception.UpdateReviewException;
+import util.exception.UserNotFoundException;
 
 /**
  *
@@ -51,38 +54,53 @@ public class ReviewEntitySessionBean implements ReviewEntitySessionBeanLocal {
     }
     
     @Override
-    public ReviewEntity createNewReviewEntity(ReviewEntity newReviewEntity, Long reviewerId, Long listingId) throws InputDataValidationException, CreateNewReviewException
-    {
+    public ReviewEntity createNewReviewEntity(ReviewEntity newReviewEntity, Long reviewerId, Long listingId) throws UnknownPersistenceException, InputDataValidationException, CreateNewReviewException, UserNotFoundException, ListingNotFoundException {
         Set<ConstraintViolation<ReviewEntity>>constraintViolations = validator.validate(newReviewEntity);
         
-        if(constraintViolations.isEmpty())
-        {
-            try
-            {
+        if(constraintViolations.isEmpty()) {
+            try {
                 ListingEntity lisitng = listingEntitySessionBeanLocal.retrieveListingByListingId(listingId);
                 UserEntity user = userEntitySessionBeanLocal.retrieveUserById(reviewerId);
                 user.getReviews().add(newReviewEntity);
                 lisitng.getReviews().add(newReviewEntity);
+                entityManager.persist(newReviewEntity);
                 entityManager.merge(user);
                 entityManager.merge(lisitng);
-                entityManager.persist(newReviewEntity);
                 entityManager.flush();
-
                 return newReviewEntity;
+            } catch(PersistenceException ex) {                               
+                if(ex.getCause() != null && ex.getCause().getClass().getName().equals("org.eclipse.persistence.exceptions.DatabaseException")) {                  
+                    throw new UnknownPersistenceException(ex.getMessage());                   
+                }
+                else {
+                    throw new UnknownPersistenceException(ex.getMessage());
+                }            
+            
+            } catch(UserNotFoundException | ListingNotFoundException ex) {
+                throw new CreateNewReviewException("An error has occurred while creating the new offer: " + ex.getMessage());
             }
-            catch(PersistenceException ex)
-            {                               
-                throw new CreateNewReviewException("An unexpected error has occurred: " + ex.getMessage());              
-            }
-            catch(Exception ex)
-            {                
-                throw new CreateNewReviewException("An unexpected error has occurred: " + ex.getMessage());
-            }
-        }
-        else
-        {
+        } else {
             throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
         }
+    }
+    
+    @Override
+    public List<ReviewEntity> getReviewsByUserId(Long userId) throws UserNotFoundException {
+        try {
+            UserEntity userEntity = userEntitySessionBeanLocal.retrieveUserById(userId);
+
+            Query query = entityManager.createQuery("SELECT l FROM ReviewEntity l WHERE l.reviewer.userId = :inUserId");
+            query.setParameter("inUserId", userId);
+            List<ReviewEntity> list = query.getResultList();
+            for (ReviewEntity l : list) {
+                l.getListing();
+                l.getReviewer();
+            }
+            return list;
+        } catch (UserNotFoundException ex) {
+            throw new UserNotFoundException("User with this id, " + userId + ", does not exist!");
+        }
+
     }
     
     @Override
@@ -121,7 +139,7 @@ public class ReviewEntitySessionBean implements ReviewEntitySessionBeanLocal {
                 ReviewEntity reviewEntityToUpdate = retrieveReviewByReviewId(reviewEntity.getReviewId());
                 
                 reviewEntityToUpdate.setStarRating(reviewEntity.getStarRating()); 
-                reviewEntityToUpdate.setDescripion(reviewEntity.getDescripion()); 
+                reviewEntityToUpdate.setDescription(reviewEntity.getDescription()); 
                 reviewEntityToUpdate.setPicturePaths(reviewEntity.getPicturePaths());
             }
             else
