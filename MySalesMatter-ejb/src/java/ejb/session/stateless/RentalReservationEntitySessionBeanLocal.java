@@ -25,7 +25,7 @@ import util.exception.UnknownPersistenceException;
  */
 @Local
 public interface RentalReservationEntitySessionBeanLocal {
-    public void createRentalReservation(Date startDate, Date endDate, BigDecimal totalPrice, String issues, ReservationStatus reservationStatus, Long listingId, Long depositId) throws SalesTransactionNotFoundException, RentalReservationExistException, UnknownPersistenceException, InputDataValidationException, ListingNotFoundException, CreateNewRentalReservationException;
+    public RentalReservationEntity createRentalReservation(Date startDate, Date endDate, BigDecimal totalPrice, String issues, ReservationStatus reservationStatus, Long listingId, Long depositId) throws SalesTransactionNotFoundException, RentalReservationExistException, UnknownPersistenceException, InputDataValidationException, ListingNotFoundException, CreateNewRentalReservationException;
     public List<RentalReservationEntity> retrieveAllRentalReservation();
     public void deleteRentalReservation(Long rentalReservationId) throws RentalReservationNotFoundException;
     public void updateReservationStatus(Long rentalReservationId, ReservationStatus status) throws RentalReservationNotFoundException;

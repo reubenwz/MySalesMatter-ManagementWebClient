@@ -27,6 +27,5 @@ public interface ReviewEntitySessionBeanLocal {
     public ReviewEntity retrieveReviewByReviewId(Long reviewId) throws ReviewNotFoundException;
     public void updateReview(ReviewEntity reviewEntity) throws InputDataValidationException, ReviewNotFoundException, UpdateReviewException;
     public void deleteReview(Long reviewId) throws ReviewNotFoundException;
-
     public List<ReviewEntity> getReviewsByUserId(Long userId) throws UserNotFoundException;
 }

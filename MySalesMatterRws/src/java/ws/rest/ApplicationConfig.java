@@ -29,6 +29,12 @@ public class ApplicationConfig extends javax.ws.rs.core.Application {
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(ws.rest.ListingResource.class);
+        resources.add(ws.rest.OfferResource.class);
+        resources.add(ws.rest.RentalReservationResource.class);
+        resources.add(ws.rest.ReviewResource.class);
+        resources.add(ws.rest.SalesTransactionResource.class);
+        resources.add(ws.rest.TagResource.class);
+        resources.add(ws.rest.UserResource.class);
     }
     
 }

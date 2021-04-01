@@ -8,6 +8,7 @@ package ejb.session.stateless;
 import entity.ListingEntity;
 import entity.ReviewEntity;
 import entity.UserEntity;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import javax.ejb.EJB;
