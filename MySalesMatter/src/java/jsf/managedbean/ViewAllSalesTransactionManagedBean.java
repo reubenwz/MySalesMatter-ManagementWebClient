@@ -18,6 +18,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import util.exception.SalesTransactionNotFoundException;
+import util.exception.UserNotFoundException;
 
 /**
  *
@@ -42,28 +43,29 @@ public class ViewAllSalesTransactionManagedBean implements Serializable {
 
     @PostConstruct
     public void postConstruct() {
-        currentUser = (UserEntity) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser");
-        List<SalesTransactionEntity> transactions = currentUser.getTransactions();
-        List<SalesTransactionEntity> newSalesTransactionCompleted = new ArrayList<>();
-        List<SalesTransactionEntity> newSalesTransactionNotCompleted = new ArrayList<>();
+        try {
+            currentUser = (UserEntity) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser");
+            List<SalesTransactionEntity> transactions = salesTransactionEntitySessionBeanLocal.getSalesTransactionByUserId(currentUser.getUserId());
+            List<SalesTransactionEntity> newSalesTransactionCompleted = new ArrayList<>();
+            List<SalesTransactionEntity> newSalesTransactionNotCompleted = new ArrayList<>();
 
-        if (!transactions.isEmpty()) {
-            for (SalesTransactionEntity s : transactions) {
-                if (s.getStatus().toString().toLowerCase().equals("paid")) {
-                    newSalesTransactionCompleted.add(s);
-                } else {
-                    newSalesTransactionNotCompleted.add(s);
+            if (!transactions.isEmpty()) {
+                for (SalesTransactionEntity s : transactions) {
+                    if (s.getStatus().toString().toLowerCase().equals("paid")) {
+                        newSalesTransactionCompleted.add(s);
+                    } else {
+                        newSalesTransactionNotCompleted.add(s);
+                    }
                 }
             }
-        }
-        try {
+
             for (SalesTransactionEntity s : newSalesTransactionCompleted) {
                 salesTransactionCompleted.add(salesTransactionEntitySessionBeanLocal.retrieveTransactionById(s.getSalesTransactionId()));
             }
             for (SalesTransactionEntity s : newSalesTransactionNotCompleted) {
                 salesTransactionNotCompleted.add(salesTransactionEntitySessionBeanLocal.retrieveTransactionById(s.getSalesTransactionId()));
             }
-        } catch (SalesTransactionNotFoundException ex) {
+        } catch (SalesTransactionNotFoundException | UserNotFoundException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while loading conversations: " + ex.getMessage(), null));
         }
 
@@ -82,7 +84,6 @@ public class ViewAllSalesTransactionManagedBean implements Serializable {
 //
 //        return newT;
 //    }
-
     public List<SalesTransactionEntity> getSalesTransactionNotCompleted() {
         return salesTransactionNotCompleted;
     }
