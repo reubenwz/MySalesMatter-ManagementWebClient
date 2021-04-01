@@ -10,7 +10,6 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Local;
-import util.enumeration.TransactionType;
 import util.exception.CreateNewTransactionException;
 import util.exception.InputDataValidationException;
 import util.exception.OfferNotFoundException;
@@ -35,7 +34,7 @@ public interface SalesTransactionEntitySessionBeanLocal {
 
     public void updateStatus(Long transactionId, String status) throws SalesTransactionNotFoundException;
 
-    public void createSalesTransaction(Long offerId, Long userId, String status, Date transactionDate, BigDecimal totalAmt) throws UnknownPersistenceException, InputDataValidationException, UserNotFoundException, CreateNewTransactionException, SalesTransactionExistException, OfferNotFoundException;
+    public SalesTransactionEntity createSalesTransaction(Long offerId, Long userId, String status, Date transactionDate, BigDecimal totalAmt) throws UnknownPersistenceException, InputDataValidationException, UserNotFoundException, CreateNewTransactionException, SalesTransactionExistException, OfferNotFoundException;
 
     public List<SalesTransactionEntity> getSalesTransactionByUserId(Long userId) throws UserNotFoundException;
     

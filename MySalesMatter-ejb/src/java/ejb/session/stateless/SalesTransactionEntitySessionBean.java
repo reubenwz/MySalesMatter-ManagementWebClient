@@ -63,7 +63,7 @@ public class SalesTransactionEntitySessionBean implements SalesTransactionEntity
     }
 
     @Override
-    public void createSalesTransaction(Long offerId, Long userId, String status, Date transactionDate, BigDecimal totalAmt) throws UnknownPersistenceException, InputDataValidationException, UserNotFoundException, CreateNewTransactionException, SalesTransactionExistException, OfferNotFoundException {
+    public SalesTransactionEntity createSalesTransaction(Long offerId, Long userId, String status, Date transactionDate, BigDecimal totalAmt) throws UnknownPersistenceException, InputDataValidationException, UserNotFoundException, CreateNewTransactionException, SalesTransactionExistException, OfferNotFoundException {
 
         try {
             UserEntity userEntity = generalUserEntitySessionBeanLocal.retrieveUserById(userId);
@@ -90,6 +90,7 @@ public class SalesTransactionEntitySessionBean implements SalesTransactionEntity
                     offerEntity.setSales(salesTransactionEntity);
                     em.merge(offerEntity);
                     em.flush();
+                    
                 } catch (PersistenceException ex) {
                     if (ex.getCause() != null && ex.getCause().getClass().getName().equals("org.eclipse.persistence.exceptions.DatabaseException")) {
 
@@ -101,12 +102,14 @@ public class SalesTransactionEntitySessionBean implements SalesTransactionEntity
 
                     }
                 }
+                return salesTransactionEntity;
             } else {
                 throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
             }
         } catch (UserNotFoundException ex) {
             throw new CreateNewTransactionException("An error has occurred while creating the new Listing: " + ex.getMessage());
         }
+        
     }
     
     @Override

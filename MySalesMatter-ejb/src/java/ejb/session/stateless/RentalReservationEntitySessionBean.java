@@ -55,7 +55,7 @@ public class RentalReservationEntitySessionBean implements RentalReservationEnti
     }
 
     @Override
-    public void createRentalReservation(Date startDate, Date endDate, BigDecimal totalPrice, String issues, ReservationStatus reservationStatus, Long listingId, Long depositId) throws SalesTransactionNotFoundException, RentalReservationExistException, UnknownPersistenceException, InputDataValidationException, ListingNotFoundException, CreateNewRentalReservationException {
+    public RentalReservationEntity createRentalReservation(Date startDate, Date endDate, BigDecimal totalPrice, String issues, ReservationStatus reservationStatus, Long listingId, Long depositId) throws SalesTransactionNotFoundException, RentalReservationExistException, UnknownPersistenceException, InputDataValidationException, ListingNotFoundException, CreateNewRentalReservationException {
 
         try {
             ListingEntity listingEntity = listingEntitySessionBeanLocal.retrieveListingByListingId(listingId);
@@ -82,6 +82,7 @@ public class RentalReservationEntitySessionBean implements RentalReservationEnti
             } else {
                 throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
             }
+            return rentalReservation;
         } catch (ListingNotFoundException ex) {
             throw new CreateNewRentalReservationException("An error has occurred while creating the new Listing: " + ex.getMessage());
         }
