@@ -10,7 +10,7 @@ import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 import util.enumeration.OfferType;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2021-03-31T23:51:15")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2021-04-01T23:40:13")
 @StaticMetamodel(OfferEntity.class)
 public abstract class OfferEntity_ { 
 
