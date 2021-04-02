@@ -77,7 +77,7 @@ public class UserResource {
         }
     }
 
-    @Path("retrieveUser/{userId}")
+    @Path("retrieveUserById/{userId}")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
@@ -100,7 +100,7 @@ public class UserResource {
         }
     }
 
-    @Path("retrieveUser/{email}")
+    @Path("retrieveUserByEmail/{email}")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)

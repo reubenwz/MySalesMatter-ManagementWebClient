@@ -293,9 +293,9 @@ public class ListingResource {
         }
     }
 
-    @Path("filterListingsByTags")
+    /*@Path("filterListingsByTags")
     @GET
-    @Consumes(MediaType.TEXT_PLAIN)
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response filterListingsByTags(FilterByTagsReq filterByTagsReq) {
         try {
@@ -330,7 +330,7 @@ public class ListingResource {
         } catch (Exception ex) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
         }
-    }
+    }*/
 
     @Path("updateListing/{listingId}")
     @POST

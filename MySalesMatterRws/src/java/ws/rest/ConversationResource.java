@@ -54,7 +54,7 @@ public class ConversationResource {
     public ConversationResource() {
     }
     
-    @PUT
+    /*@PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createNewConversation(CreateConversationReq createConversationReq) {
@@ -72,7 +72,7 @@ public class ConversationResource {
         } else {
             return Response.status(Response.Status.BAD_REQUEST).entity("Invalid create new conversation request").build();
         }
-    }
+    }*/
     
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
