@@ -13,7 +13,7 @@
         </h:form>
         
         <h:form id="formSalesTransactionsCompleted">
-            <p:dataTable id="dataTableSalesTransactionsCompleted" value="#{viewAllSalesTransactionManagedBean.salesTransactionCompleted}" var="salesTransactionCompleted" style="width: 100%">
+            <p:dataTable id="dataTableSalesTransactionsCompleted" value="#{viewAllSalesTransactionManagedBean.retrieveSalesTransactionCompleted()}" var="salesTransactionCompleted" style="width: 100%">
                 <p:column headerText="Transaction Type" style="text-align: center" >
                     <h:outputText value="#{salesTransactionCompleted.offer.offerType}" />
                 </p:column>

@@ -11,6 +11,8 @@ import entity.UserEntity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
@@ -71,19 +73,16 @@ public class ViewAllSalesTransactionManagedBean implements Serializable {
 
     }
 
-//    public List<SalesTransactionEntity> retrieveSalesTransactionCompleted() {
-//        List<SalesTransactionEntity> transactions = currentUser.getTransactions();
-//        List<SalesTransactionEntity> newT = new ArrayList<>();
-//        if (!transactions.isEmpty()) {
-//            for (SalesTransactionEntity s : transactions) {
-//                if (s.getStatus().toString().toLowerCase().equals("paid")) {
-//                    newT.add(s);
-//                }
-//            }
-//        }
-//
-//        return newT;
-//    }
+    public List<SalesTransactionEntity> retrieveSalesTransactionCompleted() {
+        List<SalesTransactionEntity> transactions = new ArrayList<>();
+        try {
+            transactions = salesTransactionEntitySessionBeanLocal.getSalesTransactionByUserId(currentUser.getUserId());
+ 
+        } catch (UserNotFoundException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while loading conversations: " + ex.getMessage(), null));
+        }
+        return transactions;
+    }
     public List<SalesTransactionEntity> getSalesTransactionNotCompleted() {
         return salesTransactionNotCompleted;
     }
