@@ -72,10 +72,22 @@ public class OfferResource {
 
             List<OfferEntity> offerEntities = offerEntitySessionBeanLocal.retrieveAllOffers();
             for(OfferEntity o: offerEntities)
-            {                
-                o.setListing(null);
-                o.setSales(null);
-                o.setUser(null);
+            {        
+                o.getListing().getOffers().clear();
+                o.getListing().getReservations().clear();
+                o.getListing().getReviews().clear();
+                o.getListing().getTags().clear();
+                o.getListing().setUser(null);
+                o.getListing().setCategoryEntity(null);
+                o.getSales().setOffer(null);
+                o.getSales().setUser(null);
+                o.getUser().getConversationsAsOfferee().clear();
+                o.getUser().getConversationsAsOfferer().clear();
+                o.getUser().getLikedItems().clear();
+                o.getUser().getListings().clear();
+                o.getUser().getOffers().clear();
+                o.getUser().getReviews().clear();
+                o.getUser().getTransactions().clear();
             }
             
             GenericEntity<List<OfferEntity>> genericEntity = new GenericEntity<List<OfferEntity>>(offerEntities) {
@@ -107,13 +119,25 @@ public class OfferResource {
             UserEntity userEntity = userEntitySessionBeanLocal.userLogin(username, password);
             System.out.println("********** OfferResource.retrieveOfferById(): User " + userEntity.getUsername() + " login remotely via web service");
 
-            OfferEntity offerEntity = offerEntitySessionBeanLocal.retrieveOfferById(offerId);
+            OfferEntity o = offerEntitySessionBeanLocal.retrieveOfferById(offerId);
             
-            offerEntity.setListing(null);
-            offerEntity.setSales(null);
-            offerEntity.setUser(null);
+            o.getListing().getOffers().clear();
+            o.getListing().getReservations().clear();
+            o.getListing().getReviews().clear();
+            o.getListing().getTags().clear();
+            o.getListing().setUser(null);
+            o.getListing().setCategoryEntity(null);
+            o.getSales().setOffer(null);
+            o.getSales().setUser(null);
+            o.getUser().getConversationsAsOfferee().clear();
+            o.getUser().getConversationsAsOfferer().clear();
+            o.getUser().getLikedItems().clear();
+            o.getUser().getListings().clear();
+            o.getUser().getOffers().clear();
+            o.getUser().getReviews().clear();
+            o.getUser().getTransactions().clear();
             
-            return Response.status(Response.Status.OK).entity(offerEntity).build();
+            return Response.status(Response.Status.OK).entity(o).build();
         }
         catch(InvalidLoginCredentialException ex)
         {
@@ -239,9 +263,21 @@ public class OfferResource {
             List<OfferEntity> offerEntities = offerEntitySessionBeanLocal.retrieveOffersByUserId(userEntity.getUserId());
             for(OfferEntity o: offerEntities)
             {                
-                o.setListing(null);
-                o.setSales(null);
-                o.setUser(null);
+                o.getListing().getOffers().clear();
+                o.getListing().getReservations().clear();
+                o.getListing().getReviews().clear();
+                o.getListing().getTags().clear();
+                o.getListing().setUser(null);
+                o.getListing().setCategoryEntity(null);
+                o.getSales().setOffer(null);
+                o.getSales().setUser(null);
+                o.getUser().getConversationsAsOfferee().clear();
+                o.getUser().getConversationsAsOfferer().clear();
+                o.getUser().getLikedItems().clear();
+                o.getUser().getListings().clear();
+                o.getUser().getOffers().clear();
+                o.getUser().getReviews().clear();
+                o.getUser().getTransactions().clear();
             }
             
             GenericEntity<List<OfferEntity>> genericEntity = new GenericEntity<List<OfferEntity>>(offerEntities) {
@@ -275,9 +311,21 @@ public class OfferResource {
             List<OfferEntity> offerEntities = offerEntitySessionBeanLocal.retrieveOffersByListingId(listingId);
             for(OfferEntity o: offerEntities)
             {                
-                o.setListing(null);
-                o.setSales(null);
-                o.setUser(null);
+                o.getListing().getOffers().clear();
+                o.getListing().getReservations().clear();
+                o.getListing().getReviews().clear();
+                o.getListing().getTags().clear();
+                o.getListing().setUser(null);
+                o.getListing().setCategoryEntity(null);
+                o.getSales().setOffer(null);
+                o.getSales().setUser(null);
+                o.getUser().getConversationsAsOfferee().clear();
+                o.getUser().getConversationsAsOfferer().clear();
+                o.getUser().getLikedItems().clear();
+                o.getUser().getListings().clear();
+                o.getUser().getOffers().clear();
+                o.getUser().getReviews().clear();
+                o.getUser().getTransactions().clear();
             }
             
             GenericEntity<List<OfferEntity>> genericEntity = new GenericEntity<List<OfferEntity>>(offerEntities) {

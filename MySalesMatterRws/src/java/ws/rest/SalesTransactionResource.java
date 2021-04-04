@@ -72,9 +72,17 @@ public class SalesTransactionResource {
 
             List<SalesTransactionEntity> salesTransactionEntities = salesTransactionEntitySessionBeanLocal.retrieveAllTransactions();
             for(SalesTransactionEntity s: salesTransactionEntities)
-            {                
-                s.setOffer(null);
-                s.setUser(null);
+            {    
+                s.getOffer().setListing(null);
+                s.getOffer().setSales(null);
+                s.getOffer().setUser(null);
+                s.getUser().getConversationsAsOfferee().clear();
+                s.getUser().getConversationsAsOfferer().clear();
+                s.getUser().getLikedItems().clear();
+                s.getUser().getListings().clear();
+                s.getUser().getOffers().clear();
+                s.getUser().getReviews().clear();
+                s.getUser().getTransactions().clear();
             }
             
             GenericEntity<List<SalesTransactionEntity>> genericEntity = new GenericEntity<List<SalesTransactionEntity>>(salesTransactionEntities) {
@@ -107,8 +115,16 @@ public class SalesTransactionResource {
             List<SalesTransactionEntity> salesTransactionEntities = salesTransactionEntitySessionBeanLocal.getSalesTransactionByUserId(userEntity.getUserId());
             for(SalesTransactionEntity s: salesTransactionEntities)
             {                
-                s.setOffer(null);
-                s.setUser(null);
+                s.getOffer().setListing(null);
+                s.getOffer().setSales(null);
+                s.getOffer().setUser(null);
+                s.getUser().getConversationsAsOfferee().clear();
+                s.getUser().getConversationsAsOfferer().clear();
+                s.getUser().getLikedItems().clear();
+                s.getUser().getListings().clear();
+                s.getUser().getOffers().clear();
+                s.getUser().getReviews().clear();
+                s.getUser().getTransactions().clear();
             }
             
             GenericEntity<List<SalesTransactionEntity>> genericEntity = new GenericEntity<List<SalesTransactionEntity>>(salesTransactionEntities) {

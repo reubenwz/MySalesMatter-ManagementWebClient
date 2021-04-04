@@ -7,6 +7,7 @@ package ws.rest;
 
 import ejb.session.stateless.TagEntitySessionBeanLocal;
 import ejb.session.stateless.UserEntitySessionBeanLocal;
+import entity.ListingEntity;
 import entity.TagEntity;
 import entity.UserEntity;
 import java.util.List;
@@ -69,9 +70,16 @@ public class TagResource {
 
             List<TagEntity> tagEntities = tagEntitySessionBeanLocal.retrieveAllTags();
             
-            for(TagEntity tagEntity:tagEntities)
+            for(TagEntity t:tagEntities)
             {                
-                tagEntity.getListings().clear();
+                for(ListingEntity l : t.getListings()) {
+                    l.getOffers().clear();
+                    l.getReservations().clear();
+                    l.getReviews().clear();
+                    l.getTags().clear();
+                    l.setUser(null);
+                    l.setCategoryEntity(null);
+                }
             }
             
             GenericEntity<List<TagEntity>> genericEntity = new GenericEntity<List<TagEntity>>(tagEntities) {
@@ -102,18 +110,18 @@ public class TagResource {
             UserEntity userEntity = userEntitySessionBeanLocal.userLogin(username, password);
             System.out.println("********** TagResource.retrieveTagByTagId(): User " + userEntity.getUsername() + " login remotely via web service");
 
-            TagEntity tagEntity = tagEntitySessionBeanLocal.retrieveTagByTagId(tagId);
+            TagEntity t = tagEntitySessionBeanLocal.retrieveTagByTagId(tagId);
             
-//            for (ListingEntity l : tagEntity.getListings()) {
-//                l.getOffers().clear();
-//                l.getReservations().clear();
-//                l.getReservedDates().clear();
-//                l.getReviews().clear();
-//                l.getTags().clear();
-//            }
-            tagEntity.getListings().clear();
+            for(ListingEntity l : t.getListings()) {
+                l.getOffers().clear();
+                l.getReservations().clear();
+                l.getReviews().clear();
+                l.getTags().clear();
+                l.setUser(null);
+                l.setCategoryEntity(null);
+            }
             
-            return Response.status(Response.Status.OK).entity(tagEntity).build();
+            return Response.status(Response.Status.OK).entity(t).build();
         }
         catch(InvalidLoginCredentialException ex)
         {

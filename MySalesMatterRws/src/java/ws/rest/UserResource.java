@@ -6,6 +6,11 @@
 package ws.rest;
 
 import ejb.session.stateless.UserEntitySessionBeanLocal;
+import entity.ConversationEntity;
+import entity.LikedItemEntity;
+import entity.OfferEntity;
+import entity.ReviewEntity;
+import entity.SalesTransactionEntity;
 import entity.UserEntity;
 import java.util.List;
 import java.util.logging.Level;
@@ -60,14 +65,24 @@ public class UserResource {
             UserEntity userEntity = userEntitySessionBeanLocal.userLogin(username, password);
             System.out.println("********** UserResource.userLogin(): User " + userEntity.getUsername() + " login remotely via web service");
 
-            userEntity.setPassword(null);
-            userEntity.getLikedItems().clear();
-            userEntity.getListings().clear();
-            userEntity.getConversationsAsOfferee().clear();
-            userEntity.getConversationsAsOfferer().clear();
-            userEntity.getOffers().clear();
-            userEntity.getReviews().clear();
-            userEntity.getTransactions().clear();
+            for(ReviewEntity r: userEntity.getReviews()) {
+                r.setListing(null);
+                r.setReviewer(null);
+            }
+            for(LikedItemEntity l: userEntity.getLikedItems()) {
+                l.setUser(null);
+                l.setListing(null);
+            }
+            for(OfferEntity o: userEntity.getOffers()) {
+                o.setListing(null);
+                o.setOfferType(null);
+                o.setSales(null);
+                o.setUser(null);                
+            }
+            for(SalesTransactionEntity s: userEntity.getTransactions()) {
+                s.setOffer(null);
+                s.setUser(null);
+            }
 
             return Response.status(Status.OK).entity(userEntity).build();
         } catch (InvalidLoginCredentialException ex) {
@@ -85,14 +100,24 @@ public class UserResource {
         try {
             UserEntity userEntity = userEntitySessionBeanLocal.retrieveUserById(userId);
 
-            userEntity.setPassword(null);
-            userEntity.getLikedItems().clear();
-            userEntity.getListings().clear();
-            userEntity.getConversationsAsOfferee().clear();
-            userEntity.getConversationsAsOfferer().clear();
-            userEntity.getOffers().clear();
-            userEntity.getReviews().clear();
-            userEntity.getTransactions().clear();
+            for(ReviewEntity r: userEntity.getReviews()) {
+                r.setListing(null);
+                r.setReviewer(null);
+            }
+            for(LikedItemEntity l: userEntity.getLikedItems()) {
+                l.setUser(null);
+                l.setListing(null);
+            }
+            for(OfferEntity o: userEntity.getOffers()) {
+                o.setListing(null);
+                o.setOfferType(null);
+                o.setSales(null);
+                o.setUser(null);                
+            }
+            for(SalesTransactionEntity s: userEntity.getTransactions()) {
+                s.setOffer(null);
+                s.setUser(null);
+            }
 
             return Response.status(Status.OK).entity(userEntity).build();
         } catch (Exception ex) {
@@ -108,14 +133,24 @@ public class UserResource {
         try {
             UserEntity userEntity = userEntitySessionBeanLocal.retrieveUserByEmail(email);
 
-            userEntity.setPassword(null);
-            userEntity.getLikedItems().clear();
-            userEntity.getListings().clear();
-            userEntity.getConversationsAsOfferee().clear();
-            userEntity.getConversationsAsOfferer().clear();
-            userEntity.getOffers().clear();
-            userEntity.getReviews().clear();
-            userEntity.getTransactions().clear();
+            for(ReviewEntity r: userEntity.getReviews()) {
+                r.setListing(null);
+                r.setReviewer(null);
+            }
+            for(LikedItemEntity l: userEntity.getLikedItems()) {
+                l.setUser(null);
+                l.setListing(null);
+            }
+            for(OfferEntity o: userEntity.getOffers()) {
+                o.setListing(null);
+                o.setOfferType(null);
+                o.setSales(null);
+                o.setUser(null);                
+            }
+            for(SalesTransactionEntity s: userEntity.getTransactions()) {
+                s.setOffer(null);
+                s.setUser(null);
+            }
 
             return Response.status(Status.OK).entity(userEntity).build();
         } catch (Exception ex) {
@@ -154,14 +189,24 @@ public class UserResource {
             List<UserEntity> userEntities = userEntitySessionBeanLocal.retrieveAllUsers();
 
             for (UserEntity userEntity : userEntities) {
-                userEntity.setPassword(null);
-                userEntity.getLikedItems().clear();
-                userEntity.getListings().clear();
-                userEntity.getConversationsAsOfferee().clear();
-                userEntity.getConversationsAsOfferer().clear();
-                userEntity.getOffers().clear();
-                userEntity.getReviews().clear();
-                userEntity.getTransactions().clear();
+                for(ReviewEntity r: userEntity.getReviews()) {
+                    r.setListing(null);
+                    r.setReviewer(null);
+                }
+                for(LikedItemEntity l: userEntity.getLikedItems()) {
+                    l.setUser(null);
+                    l.setListing(null);
+                }
+                for(OfferEntity o: userEntity.getOffers()) {
+                    o.setListing(null);
+                    o.setOfferType(null);
+                    o.setSales(null);
+                    o.setUser(null);                
+                }
+                for(SalesTransactionEntity s: userEntity.getTransactions()) {
+                    s.setOffer(null);
+                    s.setUser(null);
+                }
             }
 
             GenericEntity<List<UserEntity>> genericEntity = new GenericEntity<List<UserEntity>>(userEntities) {

@@ -69,7 +69,12 @@ public class RentalReservationResource {
 
             List<RentalReservationEntity> rentalReservationEntities = rentalReservationEntitySessionBeanLocal.retrieveAllRentalReservation();
             for (RentalReservationEntity r : rentalReservationEntities) {
-                r.setListing(null);
+                r.getListing().getOffers().clear();
+                r.getListing().getReservations().clear();
+                r.getListing().getReviews().clear();
+                r.getListing().getTags().clear();
+                r.getListing().setUser(null);
+                r.getListing().setCategoryEntity(null);
             }
 
             GenericEntity<List<RentalReservationEntity>> genericEntity = new GenericEntity<List<RentalReservationEntity>>(rentalReservationEntities) {
@@ -94,11 +99,16 @@ public class RentalReservationResource {
             UserEntity userEntity = userEntitySessionBeanLocal.userLogin(username, password);
             System.out.println("********** RentalReservationResource.retrieveRentalReservationById(): User " + userEntity.getUsername() + " login remotely via web service");
 
-            RentalReservationEntity rentalReservationEntity = rentalReservationEntitySessionBeanLocal.retrieveRentalReservationById(reservationId);
+            RentalReservationEntity r = rentalReservationEntitySessionBeanLocal.retrieveRentalReservationById(reservationId);
 
-            rentalReservationEntity.setListing(null);
+            r.getListing().getOffers().clear();
+            r.getListing().getReservations().clear();
+            r.getListing().getReviews().clear();
+            r.getListing().getTags().clear();
+            r.getListing().setUser(null);
+            r.getListing().setCategoryEntity(null);
 
-            return Response.status(Response.Status.OK).entity(rentalReservationEntity).build();
+            return Response.status(Response.Status.OK).entity(r).build();
         } catch (InvalidLoginCredentialException ex) {
             return Response.status(Response.Status.UNAUTHORIZED).entity(ex.getMessage()).build();
         } catch (RentalReservationNotFoundException ex) {

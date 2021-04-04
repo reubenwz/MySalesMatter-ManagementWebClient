@@ -72,10 +72,20 @@ public class ReviewResource {
             System.out.println("********** ReviewResource.retrieveAllReviews(): User " + userEntity.getUsername() + " login remotely via web service");
 
             List<ReviewEntity> reviewEntities = reviewEntitySessionBeanLocal.retrieveAllReviews();
-            for(ReviewEntity r: reviewEntities)
+            for(ReviewEntity reviewEntity: reviewEntities)
             {                
-                r.getPicturePaths().clear();
-                r.setReviewer(null);
+                reviewEntity.getListing().getOffers().clear();
+                reviewEntity.getListing().getReservations().clear();
+                reviewEntity.getListing().getReviews().clear();
+                reviewEntity.getListing().getTags().clear();
+                reviewEntity.getReviewer().getConversationsAsOfferee().clear();
+                reviewEntity.getReviewer().getConversationsAsOfferer().clear();
+                reviewEntity.getReviewer().getLikedItems().clear();
+                reviewEntity.getReviewer().getListings().clear();
+                reviewEntity.getReviewer().getOffers().clear();
+                reviewEntity.getReviewer().getReviews().clear();
+                reviewEntity.getReviewer().getTransactions().clear();
+            
             }
             
             GenericEntity<List<ReviewEntity>> genericEntity = new GenericEntity<List<ReviewEntity>>(reviewEntities) {
@@ -106,10 +116,20 @@ public class ReviewResource {
             System.out.println("********** ReviewResource.retrieveReviewByReviewId(): User " + userEntity.getUsername() + " login remotely via web service");
 
             List<ReviewEntity> reviewEntities = reviewEntitySessionBeanLocal.getReviewsByUserId(userEntity.getUserId());
-            for(ReviewEntity r: reviewEntities)
+            for(ReviewEntity reviewEntity: reviewEntities)
             {                
-                r.getPicturePaths().clear();
-                r.setReviewer(null);
+                reviewEntity.getListing().getOffers().clear();
+                reviewEntity.getListing().getReservations().clear();
+                reviewEntity.getListing().getReviews().clear();
+                reviewEntity.getListing().getTags().clear();
+                reviewEntity.getReviewer().getConversationsAsOfferee().clear();
+                reviewEntity.getReviewer().getConversationsAsOfferer().clear();
+                reviewEntity.getReviewer().getLikedItems().clear();
+                reviewEntity.getReviewer().getListings().clear();
+                reviewEntity.getReviewer().getOffers().clear();
+                reviewEntity.getReviewer().getReviews().clear();
+                reviewEntity.getReviewer().getTransactions().clear();
+            
             }
             
             GenericEntity<List<ReviewEntity>> genericEntity = new GenericEntity<List<ReviewEntity>>(reviewEntities) {
@@ -141,9 +161,17 @@ public class ReviewResource {
             System.out.println("********** ReviewResource.retrieveReviewByReviewId(): User " + userEntity.getUsername() + " login remotely via web service");
 
             ReviewEntity reviewEntity = reviewEntitySessionBeanLocal.retrieveReviewByReviewId(reviewId);
-            
-            reviewEntity.getPicturePaths().clear();
-            reviewEntity.setReviewer(null);
+            reviewEntity.getListing().getOffers().clear();
+            reviewEntity.getListing().getReservations().clear();
+            reviewEntity.getListing().getReviews().clear();
+            reviewEntity.getListing().getTags().clear();
+            reviewEntity.getReviewer().getConversationsAsOfferee().clear();
+            reviewEntity.getReviewer().getConversationsAsOfferer().clear();
+            reviewEntity.getReviewer().getLikedItems().clear();
+            reviewEntity.getReviewer().getListings().clear();
+            reviewEntity.getReviewer().getOffers().clear();
+            reviewEntity.getReviewer().getReviews().clear();
+            reviewEntity.getReviewer().getTransactions().clear();
             
             return Response.status(Response.Status.OK).entity(reviewEntity).build();
         }
