@@ -100,7 +100,7 @@ public class LikedItemResource {
         }
     }
     
-    @Path("unlikeItem/{likedItemId}")
+    @Path("unlikeItem")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
