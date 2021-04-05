@@ -77,6 +77,7 @@ public class LikedItemResource {
         }
     }
 
+    @Path("createNewLikedItem")
     @PUT
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
