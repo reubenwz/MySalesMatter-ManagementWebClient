@@ -300,7 +300,7 @@ public class ListingEntitySessionBean implements ListingEntitySessionBeanLocal {
                 listingEntityToUpdate.setRentalAvailability(listingEntity.isRentalAvailability());
                 listingEntityToUpdate.setForSaleAvailability(listingEntity.isForSaleAvailability());
                 listingEntityToUpdate.setIsRentOut(listingEntity.isIsRentOut());
-                listingEntityToUpdate.setReservedDates(listingEntity.getReservedDates());
+                //listingEntityToUpdate.setReservedDates(listingEntity.getReservedDates());
                 listingEntityToUpdate.setPicturePath(listingEntity.getPicturePath());
                 entityManager.merge(listingEntityToUpdate);
 
@@ -316,7 +316,7 @@ public class ListingEntitySessionBean implements ListingEntitySessionBeanLocal {
     @Override
     public void deleteListing(Long listingId) throws ListingNotFoundException, DeleteListingException {
         ListingEntity listingEntityToRemove = retrieveListingByListingId(listingId);
-        if (listingEntityToRemove.getReviews().isEmpty() || listingEntityToRemove.getTags().isEmpty() || listingEntityToRemove.getReservations().isEmpty()) {
+        if (listingEntityToRemove.getReviews().isEmpty() || listingEntityToRemove.getTags().isEmpty()) {
 
             UserEntity user = listingEntityToRemove.getUser();
 

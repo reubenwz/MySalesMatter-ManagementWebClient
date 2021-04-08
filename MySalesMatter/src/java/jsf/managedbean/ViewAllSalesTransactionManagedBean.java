@@ -51,15 +51,15 @@ public class ViewAllSalesTransactionManagedBean implements Serializable {
             List<SalesTransactionEntity> newSalesTransactionCompleted = new ArrayList<>();
             List<SalesTransactionEntity> newSalesTransactionNotCompleted = new ArrayList<>();
 
-            if (!transactions.isEmpty()) {
-                for (SalesTransactionEntity s : transactions) {
-                    if (s.getStatus().toString().toLowerCase().equals("paid")) {
-                        newSalesTransactionCompleted.add(s);
-                    } else {
-                        newSalesTransactionNotCompleted.add(s);
-                    }
-                }
-            }
+//            if (!transactions.isEmpty()) {
+//                for (SalesTransactionEntity s : transactions) {
+//                    if (s.getStatus().toString().toLowerCase().equals("paid")) {
+//                        newSalesTransactionCompleted.add(s);
+//                    } else {
+//                        newSalesTransactionNotCompleted.add(s);
+//                    }
+//                }
+//            }
 
             for (SalesTransactionEntity s : newSalesTransactionCompleted) {
                 salesTransactionCompleted.add(salesTransactionEntitySessionBeanLocal.retrieveTransactionById(s.getSalesTransactionId()));

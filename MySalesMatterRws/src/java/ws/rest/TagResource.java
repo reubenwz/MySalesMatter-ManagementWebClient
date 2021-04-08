@@ -74,7 +74,7 @@ public class TagResource {
             {                
                 for(ListingEntity l : t.getListings()) {
                     l.getOffers().clear();
-                    l.getReservations().clear();
+                    //l.getReservations().clear();
                     l.getReviews().clear();
                     l.getTags().clear();
                     l.setUser(null);
@@ -114,7 +114,7 @@ public class TagResource {
             
             for(ListingEntity l : t.getListings()) {
                 l.getOffers().clear();
-                l.getReservations().clear();
+                //l.getReservations().clear();
                 l.getReviews().clear();
                 l.getTags().clear();
                 l.setUser(null);

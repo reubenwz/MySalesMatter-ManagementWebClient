@@ -60,8 +60,8 @@ public class ConversationEntitySessionBean implements ConversationEntitySessionB
 
             newConversationEntity.setOfferee(offeree);
             newConversationEntity.setOfferer(offerer);
-            offeree.getConversationsAsOfferee().add(newConversationEntity);
-            offerer.getConversationsAsOfferer().add(newConversationEntity);
+            //offeree.getConversationsAsOfferee().add(newConversationEntity);
+            //offerer.getConversationsAsOfferer().add(newConversationEntity);
 
             Set<ConstraintViolation<ConversationEntity>> constraintViolations = validator.validate(newConversationEntity);
 
@@ -86,8 +86,8 @@ public class ConversationEntitySessionBean implements ConversationEntitySessionB
         UserEntity offerer = userEntitySessionBeanLocal.retrieveUserById(offererId);
         newConversationEntity.setOfferee(offeree);
         newConversationEntity.setOfferer(offerer);
-        offeree.getConversationsAsOfferee().add(newConversationEntity);
-        offerer.getConversationsAsOfferer().add(newConversationEntity);
+        //offeree.getConversationsAsOfferee().add(newConversationEntity);
+        //offerer.getConversationsAsOfferer().add(newConversationEntity);
         
         em.persist(newConversationEntity);
         return newConversationEntity;
@@ -97,8 +97,8 @@ public class ConversationEntitySessionBean implements ConversationEntitySessionB
     public List<ConversationEntity> retrieveConverationsByUser(Long userId) throws UserNotFoundException {
         List<ConversationEntity> conversations = new ArrayList<>();
         UserEntity user = userEntitySessionBeanLocal.retrieveUserById(userId);
-        conversations.addAll(user.getConversationsAsOfferee());
-        conversations.addAll(user.getConversationsAsOfferer());
+        //conversations.addAll(user.getConversationsAsOfferee());
+        //conversations.addAll(user.getConversationsAsOfferer());
 
         try {
             for (ConversationEntity c : conversations) {

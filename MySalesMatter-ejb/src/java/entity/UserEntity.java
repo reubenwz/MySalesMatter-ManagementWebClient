@@ -68,15 +68,15 @@ public class UserEntity implements Serializable {
     @NotNull
     private String password;
     
-    @OneToMany(mappedBy = "offerer", fetch = FetchType.LAZY)
-    @JoinColumn(nullable = false)
-    @NotNull
-    private List<ConversationEntity> conversationsAsOfferer;
-    
-    @OneToMany(mappedBy = "offeree", fetch = FetchType.LAZY)
-    @JoinColumn(nullable = false)
-    @NotNull
-    private List<ConversationEntity> conversationsAsOfferee;
+//    @OneToMany(mappedBy = "offerer", fetch = FetchType.LAZY)
+//    @JoinColumn(nullable = false)
+//    @NotNull
+//    private List<ConversationEntity> conversationsAsOfferer;
+//    
+//    @OneToMany(mappedBy = "offeree", fetch = FetchType.LAZY)
+//    @JoinColumn(nullable = false)
+//    @NotNull
+//    private List<ConversationEntity> conversationsAsOfferee;
     
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
@@ -108,8 +108,8 @@ public class UserEntity implements Serializable {
     private List<OfferEntity> offers;
     
     public UserEntity() {
-        conversationsAsOfferer = new ArrayList<>();
-        conversationsAsOfferee = new ArrayList<>();
+        //conversationsAsOfferer = new ArrayList<>();
+        //conversationsAsOfferee = new ArrayList<>();
         reviews = new ArrayList<>();
         likedItems = new ArrayList<>();
         transactions = new ArrayList<>();
@@ -215,22 +215,6 @@ public class UserEntity implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public List<ConversationEntity> getConversationsAsOfferer() {
-        return conversationsAsOfferer;
-    }
-
-    public void setConversationsAsOfferer(List<ConversationEntity> conversationsAsOfferer) {
-        this.conversationsAsOfferer = conversationsAsOfferer;
-    }
-
-    public List<ConversationEntity> getConversationsAsOfferee() {
-        return conversationsAsOfferee;
-    }
-
-    public void setConversationsAsOfferee(List<ConversationEntity> conversationsAsOfferee) {
-        this.conversationsAsOfferee = conversationsAsOfferee;
     }
 
     public List<SalesTransactionEntity> getTransactions() {

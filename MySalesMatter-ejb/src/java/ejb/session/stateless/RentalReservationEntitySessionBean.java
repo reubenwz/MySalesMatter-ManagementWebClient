@@ -113,7 +113,7 @@ public class RentalReservationEntitySessionBean implements RentalReservationEnti
         try {
             RentalReservationEntity rentalReservationEntity = retrieveRentalReservationById(rentalReservationId);
             ListingEntity listingEntity = rentalReservationEntity.getListing();
-            listingEntity.getReservations().remove(rentalReservationEntity);
+            //listingEntity.getReservations().remove(rentalReservationEntity);
             em.merge(listingEntity);
             em.remove(rentalReservationEntity);
         } catch (RentalReservationNotFoundException ex) {

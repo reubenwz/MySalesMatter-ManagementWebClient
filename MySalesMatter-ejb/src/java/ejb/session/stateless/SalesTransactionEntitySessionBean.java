@@ -72,11 +72,11 @@ public class SalesTransactionEntitySessionBean implements SalesTransactionEntity
             salesTransactionEntity.setUser(userEntity);
             salesTransactionEntity.setOffer(offerEntity);
             
-            if (status.toLowerCase().equals("paid")) {
-                salesTransactionEntity.setStatus(Status.PAID);
-            } else {
-                salesTransactionEntity.setStatus(Status.NOT_PAID);
-            }
+//            if (status.toLowerCase().equals("paid")) {
+//                salesTransactionEntity.setStatus(Status.PAID);
+//            } else {
+//                salesTransactionEntity.setStatus(Status.NOT_PAID);
+//            }
             salesTransactionEntity.setTotalAmt(totalAmt);
             salesTransactionEntity.setTransactionDate(transactionDate);
             
@@ -152,9 +152,9 @@ public class SalesTransactionEntitySessionBean implements SalesTransactionEntity
     public void deleteTransaction(Long transactionId) throws SalesTransactionNotFoundException, TransactionDeletionException {
         try {
             SalesTransactionEntity salesTransactionEntity = retrieveTransactionById(transactionId);
-            if (salesTransactionEntity.getStatus().toString().toLowerCase().equals("PAID")) {
-                throw new TransactionDeletionException("Transaction with this id, " + transactionId + " cannot be deleted as it has been paid.");
-            } else {
+//            if (salesTransactionEntity.getStatus().toString().toLowerCase().equals("PAID")) {
+//                throw new TransactionDeletionException("Transaction with this id, " + transactionId + " cannot be deleted as it has been paid.");
+//            } else {
                 OfferEntity offerEntity = salesTransactionEntity.getOffer();
                 ListingEntity listing = offerEntity.getListing();
                 UserEntity user = salesTransactionEntity.getUser();
@@ -164,7 +164,7 @@ public class SalesTransactionEntitySessionBean implements SalesTransactionEntity
                 em.remove(offerEntity);
                 em.merge(listing);
                 em.remove(salesTransactionEntity);
-            }
+            //}
             
         } catch (SalesTransactionNotFoundException ex) {
             throw new SalesTransactionNotFoundException("Transaction with this id, " + transactionId + ", does not exist!");
@@ -175,11 +175,11 @@ public class SalesTransactionEntitySessionBean implements SalesTransactionEntity
     public void updateStatus(Long transactionId, String status) throws SalesTransactionNotFoundException {
         try {
             SalesTransactionEntity transactionEntity = retrieveTransactionById(transactionId);
-            if (status.toLowerCase().equals("paid")) {
-                transactionEntity.setStatus(Status.PAID);
-            } else {
-                transactionEntity.setStatus(Status.NOT_PAID);
-            }
+//            if (status.toLowerCase().equals("paid")) {
+//                transactionEntity.setStatus(Status.PAID);
+//            } else {
+//                transactionEntity.setStatus(Status.NOT_PAID);
+//            }
         } catch (SalesTransactionNotFoundException ex) {
             throw new SalesTransactionNotFoundException("Transaction with this id, " + transactionId + ", does not exist!");
         }

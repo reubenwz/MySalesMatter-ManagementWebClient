@@ -106,11 +106,11 @@ public class ConversationResource {
 
             List<ConversationEntity> conversationEntities = conversationEntitySessionBeanLocal.retrieveConverationsByUser(userEntity.getUserId());
 
-            for (ConversationEntity c : conversationEntities) {
-                c.getOfferee().getConversationsAsOfferee().remove(c);
-                c.getOfferer().getConversationsAsOfferer().remove(c);
-                
-            }
+//            for (ConversationEntity c : conversationEntities) {
+//                c.getOfferee().getConversationsAsOfferee().remove(c);
+//                c.getOfferer().getConversationsAsOfferer().remove(c);
+//                
+//            }
 
             GenericEntity<List<ConversationEntity>> genericEntity = new GenericEntity<List<ConversationEntity>>(conversationEntities) {
             };
@@ -136,8 +136,8 @@ public class ConversationResource {
 
             ConversationEntity c = conversationEntitySessionBeanLocal.retrieveConversationById(conversationId);
 
-            c.getOfferee().getConversationsAsOfferee().remove(c);
-            c.getOfferer().getConversationsAsOfferer().remove(c);
+            //c.getOfferee().getConversationsAsOfferee().remove(c);
+            //c.getOfferer().getConversationsAsOfferer().remove(c);
 
             return Response.status(Response.Status.OK).entity(c).build();
         } catch (InvalidLoginCredentialException ex) {

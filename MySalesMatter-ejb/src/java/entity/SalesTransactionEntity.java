@@ -37,10 +37,10 @@ public class SalesTransactionEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long salesTransactionId;
     
-    @NotNull
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Status status;
+//    @NotNull
+//    @Column(nullable = false)
+//    @Enumerated(EnumType.STRING)
+//    private Status status;
     
     @Column(nullable = false)
     @NotNull
@@ -65,8 +65,8 @@ public class SalesTransactionEntity implements Serializable {
     public SalesTransactionEntity() {
     }
 
-    public SalesTransactionEntity(Status status, BigDecimal totalAmt, Date transactionDate) {
-        this.status = status;
+    public SalesTransactionEntity(BigDecimal totalAmt, Date transactionDate) {
+        //this.status = status;
         this.totalAmt = totalAmt;
         this.transactionDate = transactionDate;
     }
@@ -103,14 +103,6 @@ public class SalesTransactionEntity implements Serializable {
     @Override
     public String toString() {
         return "entity.SalesTransactionEntity[ id=" + salesTransactionId + " ]";
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
     }
 
     public BigDecimal getTotalAmt() {

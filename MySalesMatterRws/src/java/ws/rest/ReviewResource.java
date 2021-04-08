@@ -75,11 +75,11 @@ public class ReviewResource {
             for(ReviewEntity reviewEntity: reviewEntities)
             {                
                 reviewEntity.getListing().getOffers().clear();
-                reviewEntity.getListing().getReservations().clear();
+                //reviewEntity.getListing().getReservations().clear();
                 reviewEntity.getListing().getReviews().clear();
                 reviewEntity.getListing().getTags().clear();
-                reviewEntity.getReviewer().getConversationsAsOfferee().clear();
-                reviewEntity.getReviewer().getConversationsAsOfferer().clear();
+                //reviewEntity.getReviewer().getConversationsAsOfferee().clear();
+                //reviewEntity.getReviewer().getConversationsAsOfferer().clear();
                 reviewEntity.getReviewer().getLikedItems().clear();
                 reviewEntity.getReviewer().getListings().clear();
                 reviewEntity.getReviewer().getOffers().clear();
@@ -119,11 +119,11 @@ public class ReviewResource {
             for(ReviewEntity reviewEntity: reviewEntities)
             {                
                 reviewEntity.getListing().getOffers().clear();
-                reviewEntity.getListing().getReservations().clear();
+                //reviewEntity.getListing().getReservations().clear();
                 reviewEntity.getListing().getReviews().clear();
                 reviewEntity.getListing().getTags().clear();
-                reviewEntity.getReviewer().getConversationsAsOfferee().clear();
-                reviewEntity.getReviewer().getConversationsAsOfferer().clear();
+                //reviewEntity.getReviewer().getConversationsAsOfferee().clear();
+                //reviewEntity.getReviewer().getConversationsAsOfferer().clear();
                 reviewEntity.getReviewer().getLikedItems().clear();
                 reviewEntity.getReviewer().getListings().clear();
                 reviewEntity.getReviewer().getOffers().clear();
@@ -162,11 +162,11 @@ public class ReviewResource {
 
             ReviewEntity reviewEntity = reviewEntitySessionBeanLocal.retrieveReviewByReviewId(reviewId);
             reviewEntity.getListing().getOffers().clear();
-            reviewEntity.getListing().getReservations().clear();
+            //reviewEntity.getListing().getReservations().clear();
             reviewEntity.getListing().getReviews().clear();
             reviewEntity.getListing().getTags().clear();
-            reviewEntity.getReviewer().getConversationsAsOfferee().clear();
-            reviewEntity.getReviewer().getConversationsAsOfferer().clear();
+            //reviewEntity.getReviewer().getConversationsAsOfferee().clear();
+            //reviewEntity.getReviewer().getConversationsAsOfferer().clear();
             reviewEntity.getReviewer().getLikedItems().clear();
             reviewEntity.getReviewer().getListings().clear();
             reviewEntity.getReviewer().getOffers().clear();

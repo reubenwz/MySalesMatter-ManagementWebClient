@@ -120,8 +120,8 @@ public class UserEntitySessionBean implements UserEntitySessionBeanLocal {
         UserEntity user = em.find(UserEntity.class, id);
         if (user != null) {
             user.getTransactions().size();
-            user.getConversationsAsOfferee().size();
-            user.getConversationsAsOfferer().size();
+            //user.getConversationsAsOfferee().size();
+            //user.getConversationsAsOfferer().size();
             user.getLikedItems().size();
             user.getListings().size();
             user.getOffers().size();

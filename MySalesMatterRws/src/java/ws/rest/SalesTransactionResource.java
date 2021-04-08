@@ -76,8 +76,8 @@ public class SalesTransactionResource {
                 s.getOffer().setListing(null);
                 s.getOffer().setSales(null);
                 s.getOffer().setUser(null);
-                s.getUser().getConversationsAsOfferee().clear();
-                s.getUser().getConversationsAsOfferer().clear();
+                //s.getUser().getConversationsAsOfferee().clear();
+                //s.getUser().getConversationsAsOfferer().clear();
                 s.getUser().getLikedItems().clear();
                 s.getUser().getListings().clear();
                 s.getUser().getOffers().clear();
@@ -118,8 +118,8 @@ public class SalesTransactionResource {
                 s.getOffer().setListing(null);
                 s.getOffer().setSales(null);
                 s.getOffer().setUser(null);
-                s.getUser().getConversationsAsOfferee().clear();
-                s.getUser().getConversationsAsOfferer().clear();
+                //s.getUser().getConversationsAsOfferee().clear();
+                //s.getUser().getConversationsAsOfferer().clear();
                 s.getUser().getLikedItems().clear();
                 s.getUser().getListings().clear();
                 s.getUser().getOffers().clear();

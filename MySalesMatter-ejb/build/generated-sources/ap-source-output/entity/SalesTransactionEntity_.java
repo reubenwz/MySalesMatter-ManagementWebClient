@@ -7,9 +7,8 @@ import java.util.Date;
 import javax.annotation.Generated;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
-import util.enumeration.Status;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2021-04-05T09:32:48")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2021-04-08T09:18:59")
 @StaticMetamodel(SalesTransactionEntity.class)
 public class SalesTransactionEntity_ { 
 
@@ -18,6 +17,5 @@ public class SalesTransactionEntity_ {
     public static volatile SingularAttribute<SalesTransactionEntity, Long> salesTransactionId;
     public static volatile SingularAttribute<SalesTransactionEntity, Date> transactionDate;
     public static volatile SingularAttribute<SalesTransactionEntity, UserEntity> user;
-    public static volatile SingularAttribute<SalesTransactionEntity, Status> status;
 
 }

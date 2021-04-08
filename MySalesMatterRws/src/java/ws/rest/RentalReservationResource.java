@@ -70,7 +70,7 @@ public class RentalReservationResource {
             List<RentalReservationEntity> rentalReservationEntities = rentalReservationEntitySessionBeanLocal.retrieveAllRentalReservation();
             for (RentalReservationEntity r : rentalReservationEntities) {
                 r.getListing().getOffers().clear();
-                r.getListing().getReservations().clear();
+                //r.getListing().getReservations().clear();
                 r.getListing().getReviews().clear();
                 r.getListing().getTags().clear();
                 r.getListing().setUser(null);
@@ -102,7 +102,7 @@ public class RentalReservationResource {
             RentalReservationEntity r = rentalReservationEntitySessionBeanLocal.retrieveRentalReservationById(reservationId);
 
             r.getListing().getOffers().clear();
-            r.getListing().getReservations().clear();
+            //r.getListing().getReservations().clear();
             r.getListing().getReviews().clear();
             r.getListing().getTags().clear();
             r.getListing().setUser(null);

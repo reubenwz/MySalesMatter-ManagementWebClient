@@ -74,15 +74,15 @@ public class OfferResource {
             for(OfferEntity o: offerEntities)
             {        
                 o.getListing().getOffers().clear();
-                o.getListing().getReservations().clear();
+                //o.getListing().getReservations().clear();
                 o.getListing().getReviews().clear();
                 o.getListing().getTags().clear();
                 o.getListing().setUser(null);
                 o.getListing().setCategoryEntity(null);
                 o.getSales().setOffer(null);
                 o.getSales().setUser(null);
-                o.getUser().getConversationsAsOfferee().clear();
-                o.getUser().getConversationsAsOfferer().clear();
+                //o.getUser().getConversationsAsOfferee().clear();
+                //o.getUser().getConversationsAsOfferer().clear();
                 o.getUser().getLikedItems().clear();
                 o.getUser().getListings().clear();
                 o.getUser().getOffers().clear();
@@ -122,15 +122,15 @@ public class OfferResource {
             OfferEntity o = offerEntitySessionBeanLocal.retrieveOfferById(offerId);
             
             o.getListing().getOffers().clear();
-            o.getListing().getReservations().clear();
+            //o.getListing().getReservations().clear();
             o.getListing().getReviews().clear();
             o.getListing().getTags().clear();
             o.getListing().setUser(null);
             o.getListing().setCategoryEntity(null);
             o.getSales().setOffer(null);
             o.getSales().setUser(null);
-            o.getUser().getConversationsAsOfferee().clear();
-            o.getUser().getConversationsAsOfferer().clear();
+            //o.getUser().getConversationsAsOfferee().clear();
+            //o.getUser().getConversationsAsOfferer().clear();
             o.getUser().getLikedItems().clear();
             o.getUser().getListings().clear();
             o.getUser().getOffers().clear();
@@ -264,15 +264,15 @@ public class OfferResource {
             for(OfferEntity o: offerEntities)
             {                
                 o.getListing().getOffers().clear();
-                o.getListing().getReservations().clear();
+                //o.getListing().getReservations().clear();
                 o.getListing().getReviews().clear();
                 o.getListing().getTags().clear();
                 o.getListing().setUser(null);
                 o.getListing().setCategoryEntity(null);
                 o.getSales().setOffer(null);
                 o.getSales().setUser(null);
-                o.getUser().getConversationsAsOfferee().clear();
-                o.getUser().getConversationsAsOfferer().clear();
+                //o.getUser().getConversationsAsOfferee().clear();
+                //o.getUser().getConversationsAsOfferer().clear();
                 o.getUser().getLikedItems().clear();
                 o.getUser().getListings().clear();
                 o.getUser().getOffers().clear();
@@ -312,15 +312,15 @@ public class OfferResource {
             for(OfferEntity o: offerEntities)
             {                
                 o.getListing().getOffers().clear();
-                o.getListing().getReservations().clear();
+                //o.getListing().getReservations().clear();
                 o.getListing().getReviews().clear();
                 o.getListing().getTags().clear();
                 o.getListing().setUser(null);
                 o.getListing().setCategoryEntity(null);
                 o.getSales().setOffer(null);
                 o.getSales().setUser(null);
-                o.getUser().getConversationsAsOfferee().clear();
-                o.getUser().getConversationsAsOfferer().clear();
+                //o.getUser().getConversationsAsOfferee().clear();
+                //o.getUser().getConversationsAsOfferer().clear();
                 o.getUser().getLikedItems().clear();
                 o.getUser().getListings().clear();
                 o.getUser().getOffers().clear();

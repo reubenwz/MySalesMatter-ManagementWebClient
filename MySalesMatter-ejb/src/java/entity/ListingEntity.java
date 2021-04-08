@@ -85,9 +85,9 @@ public class ListingEntity implements Serializable {
     @Column(nullable = false)
     private boolean isRentOut;
 
-    @NotNull
-    @Column(nullable = false)
-    private List<Date> reservedDates;
+//    @NotNull
+//    @Column(nullable = false)
+//    private List<Date> reservedDates;
 
 //    @NotNull
 //    @Column(nullable = false)
@@ -108,9 +108,9 @@ public class ListingEntity implements Serializable {
     @JoinColumn(nullable = false)
     private List<ReviewEntity> reviews;
 
-    @OneToMany(mappedBy = "listing", fetch = FetchType.LAZY)
-    @JoinColumn(nullable = false)
-    private List<RentalReservationEntity> reservations;
+//    @OneToMany(mappedBy = "listing", fetch = FetchType.LAZY)
+//    @JoinColumn(nullable = false)
+//    private List<RentalReservationEntity> reservations;
 
     @OneToMany(mappedBy = "listing", fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
@@ -120,14 +120,14 @@ public class ListingEntity implements Serializable {
     @JoinColumn(nullable = false)
     private UserEntity user;
     
-    @ManyToMany(mappedBy = "listings", fetch = FetchType.LAZY)
-    @JoinColumn(nullable = false)
-    private List<NotificationEntity> notifications;
+//    @ManyToMany(mappedBy = "listings", fetch = FetchType.LAZY)
+//    @JoinColumn(nullable = false)
+//    private List<NotificationEntity> notifications;
 
     public ListingEntity() {
         this.name = "";
-        this.reservedDates = new ArrayList<>();
-        this.reservations = new ArrayList<>();
+        //this.reservedDates = new ArrayList<>();
+        //this.reservations = new ArrayList<>();
         this.reviews = new ArrayList<>();
         this.tags = new ArrayList<>();
         //this.picturePaths = new ArrayList<>();
@@ -162,7 +162,7 @@ public class ListingEntity implements Serializable {
         this.location = location;
         //this.picturePaths = picturePaths;
         this.picturePath = picturePath;
-        this.reservedDates = reservedDates;
+        //this.reservedDates = reservedDates;
     }
 
     public ListingEntity(String name, String description, String brand, BigDecimal rentalPrice, BigDecimal salePrice, String location, String picturePath) {
@@ -176,7 +176,7 @@ public class ListingEntity implements Serializable {
         this.location = location;
         //this.picturePaths = picturePaths;
         this.picturePath = picturePath;
-        this.reservedDates = new ArrayList<>();
+        //this.reservedDates = new ArrayList<>();
     }
 
     public void addTag(TagEntity tagEntity) {
@@ -315,22 +315,7 @@ public class ListingEntity implements Serializable {
     public void setForSaleAvailability(boolean forSaleAvailability) {
         this.forSaleAvailability = forSaleAvailability;
     }
-
-    public List<Date> getReservedDates() {
-        return reservedDates;
-    }
-
-    public void setReservedDates(List<Date> reservedDates) {
-        this.reservedDates = reservedDates;
-    }
-
-//    public List<String> getPicturePaths() {
-//        return picturePaths;
-//    }
-//
-//    public void setPicturePaths(List<String> picturePaths) {
-//        this.picturePaths = picturePaths;
-//    }
+    
     public String getPicturePath() {
         return picturePath;
     }
@@ -353,14 +338,6 @@ public class ListingEntity implements Serializable {
 
     public void setTags(List<TagEntity> tags) {
         this.tags = tags;
-    }
-
-    public List<RentalReservationEntity> getReservations() {
-        return reservations;
-    }
-
-    public void setReservations(List<RentalReservationEntity> reservations) {
-        this.reservations = reservations;
     }
 
     public CategoryEntity getCategoryEntity() {
