@@ -7,11 +7,11 @@
                 xmlns:p="http://primefaces.org/ui">
 
     <ui:define name="content">
-        
+
         <h:form>
             <h4>Loans and Purchase</h4>
         </h:form>
-        
+
         <h:form id="formSalesTransactionsCompleted">
             <p:dataTable id="dataTableSalesTransactionsCompleted" value="#{viewAllSalesTransactionManagedBean.retrieveSalesTransactionCompleted()}" var="salesTransactionCompleted" style="width: 100%">
                 <p:column headerText="Transaction Type" style="text-align: center" >
@@ -19,10 +19,6 @@
                 </p:column>
                 <p:column headerText="Transaction Date" style="text-align: center">
                     <h:outputText value="#{salesTransactionCompleted.transactionDate}" />
-                </p:column>
-
-                <p:column headerText="Status" style="text-align: center">
-                    <h:outputText value="#{salesTransactionCompleted.status}" />
                 </p:column>
 
                 <p:column headerText="Total Amount ($)" style="text-align: center">
@@ -33,6 +29,8 @@
                     <p:commandButton value="View" icon="pi pi-folder-open" actionListener="#{viewListingManagedBean.viewListingDetails}">
                         <f:attribute name="listingId" value="#{salesTransactionCompleted.offer.listing.listingId}" />
                     </p:commandButton>
+                    
+                    &nbsp; | &nbsp;
 
                     <p:commandButton rendered="#{addReviewManagedBean.reviewDoesNotExist(salesTransactionCompleted.offer.listing.listingId)}" value="Add Review" oncomplete="PF('dialogAddReview').show()" actionListener="#{addReviewManagedBean.setId}" update="formAddReview">
                         <f:attribute name="listingId" value="#{salesTransactionCompleted.offer.listing.listingId}" />
@@ -40,57 +38,63 @@
                 </p:column>
             </p:dataTable>
         </h:form>
-        
+
         <h:form id="formAddReview">
 
-                <p:dialog id="dialogAddReview" widgetVar="dialogAddReview" header="Add Review" closable="true" >
+            <p:dialog id="dialogAddReview" widgetVar="dialogAddReview" header="Add Review" closable="true" >
 
-                    <p:messages id="messagesAddReview" redisplay="false" />
+                <p:messages id="messagesAddReview" redisplay="false" />
 
-                    <p:panelGrid>
+                <p:panelGrid>
 
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel for="starRating" value="Star Rating: " style="font-weight: bold;" />
-                            </p:column>
-                            <p:column>
-                                <p:rating id="starRating" value="#{addReviewManagedBean.starRating}" stars="5" required="true" requiredMessage="Product Rating is required" cancel="false">
-                                    <f:validateLongRange minimum="1" maximum="5" />
-                                </p:rating>
-                            </p:column>
-                            <p:column>
-                                <p:message for="starRating" />
-                            </p:column>
-                        </p:row>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="starRating" value="Star Rating: " style="font-weight: bold;" />
+                        </p:column>
+                        <p:column>
+                            <p:rating id="starRating" value="#{addReviewManagedBean.starRating}" stars="5" required="true" requiredMessage="Product Rating is required" cancel="false">
+                                <f:validateLongRange minimum="1" maximum="5" />
+                            </p:rating>
+                        </p:column>
+                        <p:column>
+                            <p:message for="starRating" />
+                        </p:column>
+                    </p:row>
 
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel for="description" value="Description " style="font-weight: bold;" />
-                            </p:column>
-                            <p:column>
-                                <p:inputText id="description" value="#{addReviewManagedBean.description}" placeholder="Listing 1" required="true" requiredMessage="Description is required" />
-                            </p:column>
-                            <p:column>
-                                <p:message for="description" />
-                            </p:column>
-                        </p:row>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="description" value="Description " style="font-weight: bold;" />
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="description" value="#{addReviewManagedBean.description}" placeholder="Listing 1" required="true" requiredMessage="Description is required" />
+                        </p:column>
+                        <p:column>
+                            <p:message for="description" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:fileUpload listener="#{addReviewManagedBean.handleFileUpload}" multiple="true" />
+                        </p:column>
+                    </p:row>
 
 
-                        <p:row>
-                            <p:column colspan="3">
-                                <p:commandButton type="reset" value="Clear" />&nbsp;
-                                
-                                <p:commandButton  value="Add Review" actionListener="#{addReviewManagedBean.addReview}" oncomplete="PF('dialogAddReview').show();" update="formAddReview">
-                                </p:commandButton> 
-                            </p:column>
-                        </p:row>
+                    <p:row>
+                        <p:column colspan="3">
+                            <p:commandButton type="reset" value="Clear" />&nbsp;
 
-                    </p:panelGrid>
+                            <p:commandButton  value="Add Review" actionListener="#{addReviewManagedBean.addReview}" oncomplete="PF('dialogAddReview').show();" update="formAddReview">
+                            </p:commandButton> 
+                        </p:column>
+                    </p:row>
 
-                </p:dialog>
+                </p:panelGrid>
 
-            </h:form>
-        
+            </p:dialog>
+
+        </h:form>
+
     </ui:define>
 
 </ui:composition>

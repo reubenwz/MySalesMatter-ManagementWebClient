@@ -9,6 +9,10 @@ import ejb.session.stateless.ListingEntitySessionBeanLocal;
 import ejb.session.stateless.ReviewEntitySessionBeanLocal;
 import entity.ReviewEntity;
 import entity.UserEntity;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
@@ -18,6 +22,7 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import org.primefaces.event.FileUploadEvent;
 import util.exception.CreateNewReviewException;
 import util.exception.InputDataValidationException;
 import util.exception.ListingNotFoundException;
@@ -38,6 +43,7 @@ public class AddReviewManagedBean implements Serializable {
     private Long listingIdToView;
     private Long salesTransactionIdToView;
     private boolean reviewExist;
+    private String tempPicturePath = "";
    
     
     @EJB
@@ -73,6 +79,7 @@ public class AddReviewManagedBean implements Serializable {
         try {
             Long userId = user.getUserId();
             ReviewEntity review = new ReviewEntity();
+            review.setPicturePaths(tempPicturePath);
             review.setDescription(description);
             review.setReviewer(user);
             review.setStarRating(starRating);
@@ -95,6 +102,40 @@ public class AddReviewManagedBean implements Serializable {
             }
         }
         return true;   
+    }
+    
+    public void handleFileUpload(FileUploadEvent event) {
+        try {
+            String newFilePath = FacesContext.getCurrentInstance().getExternalContext().getInitParameter("alternatedocroot_1") + System.getProperty("file.separator") + event.getFile().getFileName();
+
+            File file = new File(newFilePath);
+            setTempPicturePath(event.getFile().getFileName());
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
+
+            int a;
+            int BUFFER_SIZE = 8192;
+            byte[] buffer = new byte[BUFFER_SIZE];
+
+            InputStream inputStream = event.getFile().getInputStream();
+
+            while (true) {
+                a = inputStream.read(buffer);
+
+                if (a < 0) {
+                    break;
+                }
+
+                fileOutputStream.write(buffer, 0, a);
+                fileOutputStream.flush();
+            }
+
+            fileOutputStream.close();
+            inputStream.close();
+
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "File uploaded successfully", ""));
+        } catch (IOException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "File upload error: " + ex.getMessage(), ""));
+        }
     }
     
     public void setId(ActionEvent event) {
@@ -147,6 +188,14 @@ public class AddReviewManagedBean implements Serializable {
 
     public void setReviewExist(boolean reviewExist) {
         this.reviewExist = reviewExist;
+    }
+
+    public String getTempPicturePath() {
+        return tempPicturePath;
+    }
+
+    public void setTempPicturePath(String tempPicturePath) {
+        this.tempPicturePath = tempPicturePath;
     }
     
 }
