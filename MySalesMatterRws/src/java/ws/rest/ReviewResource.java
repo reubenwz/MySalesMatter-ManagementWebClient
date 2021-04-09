@@ -198,7 +198,7 @@ public class ReviewResource {
                 UserEntity userEntity = userEntitySessionBeanLocal.userLogin(updateReviewReq.getUsername(), updateReviewReq.getPassword());
                 System.out.println("********** ReviewResource.updateReview(): User " + userEntity.getUsername() + " login remotely via web service");
 
-                reviewEntitySessionBeanLocal.updateReview(updateReviewReq.getReview());
+                reviewEntitySessionBeanLocal.updateReview(updateReviewReq.getReviewId(), updateReviewReq.getStarRating(), updateReviewReq.getDesc(), updateReviewReq.getPictPath());
 
                 return Response.status(Response.Status.OK).build();
             } catch (InvalidLoginCredentialException ex) {

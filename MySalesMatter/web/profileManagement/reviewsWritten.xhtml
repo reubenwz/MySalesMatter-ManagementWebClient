@@ -24,11 +24,68 @@
 
                 <p:column headerText="Action" style="text-align: center">
                     <p:commandButton value="View" icon="pi pi-folder-open" actionListener="#{viewReviewManagedBean.viewReviewDetails}">
-                            <f:attribute name="reviewId" value="#{reviewEntity.reviewId}" />
+                        <f:attribute name="reviewId" value="#{reviewEntity.reviewId}" />
+                    </p:commandButton> &nbsp; | &nbsp;
+                    <p:commandButton value="Edit" icon="pi pi-pencil" actionListener="#{reviewsManagedBean.doUpdateReview}" update="formUpdateReview" oncomplete="PF('dialogUpdateReview').show()" title="Update">
+                        <f:attribute name="reviewId" value="#{reviewEntity.reviewId}" />
                     </p:commandButton>
                 </p:column>
             </p:dataTable>
         </h:form>
+
+        <h:form id="formUpdateReview">
+
+            <p:dialog id="dialogUpdateReview" widgetVar="dialogUpdateReview" header="Update Review" closable="true">
+
+                <p:messages id="messagesUpdateReview" redisplay="false" />
+
+                <p:panelGrid>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="starRating" value="Star Rating: " style="font-weight: bold;" />
+                        </p:column>
+                        <p:column>
+                            <p:rating id="starRating" value="#{reviewsManagedBean.newStarRating}" stars="5" required="true" requiredMessage="Listing Rating is required" cancel="false">
+                                <f:validateLongRange minimum="1" maximum="5" />
+                            </p:rating>
+                        </p:column>
+                        <p:column>
+                            <p:message for="starRating" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="description" value="Description " style="font-weight: bold;" />
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="description" value="#{reviewsManagedBean.newDescription}" placeholder="New description" required="true" requiredMessage="Description is required" />
+                        </p:column>
+                        <p:column>
+                            <p:message for="description" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:fileUpload listener="#{reviewsManagedBean.handleFileUpload}" multiple="true" />
+                        </p:column>
+                    </p:row>
+
+
+                    <p:row>
+                        <p:column colspan="3">
+                            <p:commandButton value="Update Review" update="@form formReviewsWritten:dataTableReviewsWritten" actionListener="#{reviewsManagedBean.updateReview}" oncomplete="PF('dialogUpdateReview').show();" />
+                        </p:column>
+                    </p:row>
+
+                </p:panelGrid>
+
+            </p:dialog>
+
+        </h:form>
+
     </ui:define>
 
 

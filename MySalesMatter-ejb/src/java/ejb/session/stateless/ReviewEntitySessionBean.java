@@ -8,7 +8,6 @@ package ejb.session.stateless;
 import entity.ListingEntity;
 import entity.ReviewEntity;
 import entity.UserEntity;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import javax.ejb.EJB;
@@ -35,30 +34,29 @@ import util.exception.UserNotFoundException;
  */
 @Stateless
 public class ReviewEntitySessionBean implements ReviewEntitySessionBeanLocal {
+
     @PersistenceContext(unitName = "MySalesMatter-ejbPU")
     private EntityManager entityManager;
-    
+
     private final ValidatorFactory validatorFactory;
     private final Validator validator;
 
     @EJB
     UserEntitySessionBeanLocal userEntitySessionBeanLocal;
-    
+
     @EJB
     ListingEntitySessionBeanLocal listingEntitySessionBeanLocal;
-    
-    
-    public ReviewEntitySessionBean()
-    {
+
+    public ReviewEntitySessionBean() {
         validatorFactory = Validation.buildDefaultValidatorFactory();
         validator = validatorFactory.getValidator();
     }
-    
+
     @Override
     public ReviewEntity createNewReviewEntity(ReviewEntity newReviewEntity, Long reviewerId, Long listingId) throws UnknownPersistenceException, InputDataValidationException, CreateNewReviewException, UserNotFoundException, ListingNotFoundException {
-        Set<ConstraintViolation<ReviewEntity>>constraintViolations = validator.validate(newReviewEntity);
-        
-        if(constraintViolations.isEmpty()) {
+        Set<ConstraintViolation<ReviewEntity>> constraintViolations = validator.validate(newReviewEntity);
+
+        if (constraintViolations.isEmpty()) {
             try {
                 ListingEntity lisitng = listingEntitySessionBeanLocal.retrieveListingByListingId(listingId);
                 UserEntity user = userEntitySessionBeanLocal.retrieveUserById(reviewerId);
@@ -69,22 +67,21 @@ public class ReviewEntitySessionBean implements ReviewEntitySessionBeanLocal {
                 entityManager.merge(lisitng);
                 entityManager.flush();
                 return newReviewEntity;
-            } catch(PersistenceException ex) {                               
-                if(ex.getCause() != null && ex.getCause().getClass().getName().equals("org.eclipse.persistence.exceptions.DatabaseException")) {                  
-                    throw new UnknownPersistenceException(ex.getMessage());                   
-                }
-                else {
+            } catch (PersistenceException ex) {
+                if (ex.getCause() != null && ex.getCause().getClass().getName().equals("org.eclipse.persistence.exceptions.DatabaseException")) {
                     throw new UnknownPersistenceException(ex.getMessage());
-                }            
-            
-            } catch(UserNotFoundException | ListingNotFoundException ex) {
+                } else {
+                    throw new UnknownPersistenceException(ex.getMessage());
+                }
+
+            } catch (UserNotFoundException | ListingNotFoundException ex) {
                 throw new CreateNewReviewException("An error has occurred while creating the new offer: " + ex.getMessage());
             }
         } else {
             throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
         }
     }
-    
+
     @Override
     public List<ReviewEntity> getReviewsByUserId(Long userId) throws UserNotFoundException {
         try {
@@ -103,60 +100,41 @@ public class ReviewEntitySessionBean implements ReviewEntitySessionBeanLocal {
         }
 
     }
-    
+
     @Override
-    public List<ReviewEntity> retrieveAllReviews()
-    {
+    public List<ReviewEntity> retrieveAllReviews() {
         Query query = entityManager.createQuery("SELECT r FROM ReviewEntity r ORDER BY r.reviewId ASC");
         List<ReviewEntity> reviewEntities = query.getResultList();
-   
+
         return reviewEntities;
     }
-    
+
     @Override
-    public ReviewEntity retrieveReviewByReviewId(Long reviewId) throws ReviewNotFoundException
-    {
+    public ReviewEntity retrieveReviewByReviewId(Long reviewId) throws ReviewNotFoundException {
         ReviewEntity reviewEntity = entityManager.find(ReviewEntity.class, reviewId);
-        
-        if(reviewEntity != null)
-        {
+
+        if (reviewEntity != null) {
             return reviewEntity;
-        }
-        else
-        {
+        } else {
             throw new ReviewNotFoundException("Review ID " + reviewId + " does not exist!");
-        }               
-    }
-    
-    @Override
-    public void updateReview(ReviewEntity reviewEntity) throws InputDataValidationException, ReviewNotFoundException, UpdateReviewException
-    {
-        Set<ConstraintViolation<ReviewEntity>>constraintViolations = validator.validate(reviewEntity);
-        
-        if(constraintViolations.isEmpty())
-        {
-            if(reviewEntity.getReviewId()!= null)
-            {
-                ReviewEntity reviewEntityToUpdate = retrieveReviewByReviewId(reviewEntity.getReviewId());
-                
-                reviewEntityToUpdate.setStarRating(reviewEntity.getStarRating()); 
-                reviewEntityToUpdate.setDescription(reviewEntity.getDescription()); 
-                reviewEntityToUpdate.setPicturePaths(reviewEntity.getPicturePaths());
-            }
-            else
-            {
-                throw new ReviewNotFoundException("Review ID not provided for review to be updated");
-            }
-        }
-        else
-        {
-            throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
         }
     }
-    
+
     @Override
-    public void deleteReview(Long reviewId) throws ReviewNotFoundException
-    {
+    public void updateReview(Long reviewId, int starRating, String desc, String pictPath) throws InputDataValidationException, ReviewNotFoundException, UpdateReviewException {
+        try {
+            ReviewEntity reviewEntityToUpdate = retrieveReviewByReviewId(reviewId);
+
+            reviewEntityToUpdate.setStarRating(starRating);
+            reviewEntityToUpdate.setDescription(desc);
+            reviewEntityToUpdate.setPicturePaths(pictPath);
+        } catch (Exception ex) {
+            throw new ReviewNotFoundException("Review ID not provided for review to be updated");
+        }
+    }
+
+    @Override
+    public void deleteReview(Long reviewId) throws ReviewNotFoundException {
         ReviewEntity reviewEntityToRemove = retrieveReviewByReviewId(reviewId);
         UserEntity user = reviewEntityToRemove.getReviewer();
         ListingEntity listing = reviewEntityToRemove.getListing();
@@ -165,18 +143,16 @@ public class ReviewEntitySessionBean implements ReviewEntitySessionBeanLocal {
         entityManager.merge(user);
         entityManager.merge(listing);
         entityManager.remove(reviewEntityToRemove);
-                
+
     }
-    
-    private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<ReviewEntity>>constraintViolations)
-    {
+
+    private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<ReviewEntity>> constraintViolations) {
         String msg = "Input data validation error!:";
-            
-        for(ConstraintViolation constraintViolation:constraintViolations)
-        {
+
+        for (ConstraintViolation constraintViolation : constraintViolations) {
             msg += "\n\t" + constraintViolation.getPropertyPath() + " - " + constraintViolation.getInvalidValue() + "; " + constraintViolation.getMessage();
         }
-        
+
         return msg;
     }
 }

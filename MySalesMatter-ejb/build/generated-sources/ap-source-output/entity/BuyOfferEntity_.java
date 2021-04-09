@@ -3,7 +3,7 @@ package entity;
 import javax.annotation.Generated;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2021-04-08T09:18:59")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2021-04-09T11:53:30")
 @StaticMetamodel(BuyOfferEntity.class)
 public class BuyOfferEntity_ extends OfferEntity_ {
 

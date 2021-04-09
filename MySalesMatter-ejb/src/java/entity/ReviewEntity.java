@@ -56,13 +56,12 @@ public class ReviewEntity implements Serializable {
     
     @NotNull
     @Column(nullable = false)
-    private List<String> picturePaths;
+    private String picturePaths;
     
     public ReviewEntity() {
-        this.picturePaths = new ArrayList<>();
     }
 
-    public ReviewEntity(int starRating, String descripion, List<String> picturePaths) {
+    public ReviewEntity(int starRating, String descripion, String picturePaths) {
         this();
         this.starRating = starRating;
         this.description = descripion;
@@ -135,11 +134,11 @@ public class ReviewEntity implements Serializable {
         this.listing = listing;
     }
     
-    public List<String> getPicturePaths() {
+    public String getPicturePaths() {
         return picturePaths;
     }
 
-    public void setPicturePaths(List<String> picturePaths) {
+    public void setPicturePaths(String picturePaths) {
         this.picturePaths = picturePaths;
     }
 

@@ -25,7 +25,7 @@ public interface ReviewEntitySessionBeanLocal {
     public ReviewEntity createNewReviewEntity(ReviewEntity newReviewEntity, Long reviewerId, Long listingId) throws UnknownPersistenceException, InputDataValidationException, CreateNewReviewException, UserNotFoundException, ListingNotFoundException;
     public List<ReviewEntity> retrieveAllReviews();
     public ReviewEntity retrieveReviewByReviewId(Long reviewId) throws ReviewNotFoundException;
-    public void updateReview(ReviewEntity reviewEntity) throws InputDataValidationException, ReviewNotFoundException, UpdateReviewException;
     public void deleteReview(Long reviewId) throws ReviewNotFoundException;
     public List<ReviewEntity> getReviewsByUserId(Long userId) throws UserNotFoundException;
+    public void updateReview(Long reviewId, int starRating, String desc, String pictPath) throws InputDataValidationException, ReviewNotFoundException, UpdateReviewException;
 }

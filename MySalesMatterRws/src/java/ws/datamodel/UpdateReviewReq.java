@@ -14,12 +14,17 @@ import entity.ReviewEntity;
 public class UpdateReviewReq {
     private String username;
     private String password;
-    private ReviewEntity review;
+    private Long reviewId;
+    private int starRating;
+    private String pictPath = "";
+    private String desc;
 
-    public UpdateReviewReq(String username, String password, ReviewEntity review) {
+    public UpdateReviewReq(String username, String password, Long reviewId, int starRating, String desc) {
         this.username = username;
         this.password = password;
-        this.review = review;
+        this.reviewId = reviewId;
+        this.starRating = starRating;
+        this.desc = desc;
     }
     
     public UpdateReviewReq() {
@@ -42,12 +47,38 @@ public class UpdateReviewReq {
         this.password = password;
     }
 
-    public ReviewEntity getReview() {
-        return review;
+    public Long getReviewId() {
+        return reviewId;
     }
 
-    public void setReview(ReviewEntity review) {
-        this.review = review;
+    public void setReviewId(Long reviewId) {
+        this.reviewId = reviewId;
     }
+
+    public int getStarRating() {
+        return starRating;
+    }
+
+    public void setStarRating(int starRating) {
+        this.starRating = starRating;
+    }
+
+    public String getPictPath() {
+        return pictPath;
+    }
+
+    public void setPictPath(String pictPath) {
+        this.pictPath = pictPath;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+
     
 }
