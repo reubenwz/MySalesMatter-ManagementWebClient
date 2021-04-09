@@ -7,7 +7,9 @@ package entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -20,6 +22,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -71,9 +74,17 @@ public abstract class OfferEntity implements Serializable {
     @NotNull
     @JoinColumn(nullable = false)
     private ListingEntity listing;
+    
+    
+   
+    @OneToMany(mappedBy = "offer", fetch = FetchType.LAZY)
+    @NotNull
+    @JoinColumn(nullable = false)
+    private List<MessageEntity> message;
 
     public OfferEntity() {
         this.accepted = false;
+        message = new ArrayList<>();
     }
 
     public OfferEntity(BigDecimal totalPrice, Date offerDate) {
@@ -82,8 +93,13 @@ public abstract class OfferEntity implements Serializable {
         this.offerDate = offerDate;
     }
     
-    
-
+    public OfferEntity(BigDecimal totalPrice, Date offerDate, List<MessageEntity> message) {
+        this();
+        this.totalPrice = totalPrice;
+        this.offerDate = offerDate;
+        this.message = message;
+    }
+   
     public Long getOfferId() {
         return offerId;
     }
@@ -171,6 +187,14 @@ public abstract class OfferEntity implements Serializable {
 
     public void setSales(SalesTransactionEntity sales) {
         this.sales = sales;
+    }
+
+    public List<MessageEntity> getMessage() {
+        return message;
+    }
+
+    public void setMessage(List<MessageEntity> message) {
+        this.message = message;
     }
     
     

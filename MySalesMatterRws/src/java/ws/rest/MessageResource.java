@@ -21,15 +21,13 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import util.exception.ConversationNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
-import util.exception.MessageNotFoundException;
+import util.exception.UnknownPersistenceException;
 import util.exception.UserNotFoundException;
 import ws.datamodel.CreateMessageReq;
 
@@ -52,25 +50,6 @@ public class MessageResource {
     public MessageResource() {
     }
     
-    @PUT
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response createNewMessage(CreateMessageReq createMessageReq) {
-        if (createMessageReq != null) {
-            try {
-                UserEntity userEntity = userEntitySessionBeanLocal.userLogin(createMessageReq.getUsername(), createMessageReq.getPassword());
-                System.out.println("********** MessageResource.createNewMessage(): User " + userEntity.getUsername() + " login remotely via web service");
-                MessageEntity messageEntity = messageEntitySessionBeanLocal.createNewMessage(createMessageReq.getNewMessageEntity(), createMessageReq.getConversationId());
-                return Response.status(Response.Status.OK).entity(messageEntity.getMessageId()).build();
-            } catch (InputDataValidationException | ConversationNotFoundException  ex) {
-                return Response.status(Response.Status.UNAUTHORIZED).entity(ex.getMessage()).build();
-            } catch (Exception ex) {
-                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
-            }
-        } else {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Invalid create new message request").build();
-        }
-    }
     
     @Path("retrieveAllMessages")
     @GET
@@ -95,28 +74,60 @@ public class MessageResource {
         }
     }
     
-    @Path("retrieveMessageById/{messageId}")
+    @Path("retrieveReceivedMessageSByUserId")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveMessageById(@QueryParam("username") String username,
-            @QueryParam("password") String password,
-            @PathParam("messageId") Long messageId) {
+    public Response retrieveReceivedMessageSByUserId(@QueryParam("username") String username,
+            @QueryParam("password") String password) {
         try {
             UserEntity userEntity = userEntitySessionBeanLocal.userLogin(username, password);
-            System.out.println("********** ListingResource.retrieveListingByListingId(): User " + userEntity.getUsername() + " login remotely via web service");
+            System.out.println("********** MessageResource.retrieveAllMessages(): User " + userEntity.getUsername() + " login remotely via web service");
 
-            MessageEntity m = messageEntitySessionBeanLocal.retrieveMessageById(messageId);
+            List<MessageEntity> messageEntities = messageEntitySessionBeanLocal.retrieveReceivedMessageSByUserId(userEntity.getUserId());
 
-            return Response.status(Response.Status.OK).entity(m).build();
+            GenericEntity<List<MessageEntity>> genericEntity = new GenericEntity<List<MessageEntity>>(messageEntities) {
+            };
+
+            return Response.status(Response.Status.OK).entity(genericEntity).build();
         } catch (InvalidLoginCredentialException ex) {
             return Response.status(Response.Status.UNAUTHORIZED).entity(ex.getMessage()).build();
-        } catch (MessageNotFoundException ex) {
-            return Response.status(Response.Status.BAD_REQUEST).entity(ex.getMessage()).build();
         } catch (Exception ex) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
         }
     }
+    
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response addMessage(CreateMessageReq createMessageReq)
+    {
+        if(createMessageReq != null)
+        {
+            try
+            {
+                UserEntity userEntity = userEntitySessionBeanLocal.userLogin(createMessageReq.getUsername(), createMessageReq.getPassword());
+                System.out.println("********** MessageResource.addMessage(): User " + userEntity.getUsername() + " login remotely via web service");
+                Long m = messageEntitySessionBeanLocal.addMessage(createMessageReq.getMessage(), createMessageReq.getOfferId(), createMessageReq.getSenderId(), createMessageReq.getDate());
+                return Response.status(Response.Status.OK).entity(m).build();
+                
+            }
+            catch(UnknownPersistenceException | InputDataValidationException | UserNotFoundException ex)
+            {
+                return Response.status(Response.Status.UNAUTHORIZED).entity(ex.getMessage()).build();
+            } 
+            catch(Exception ex)
+            {
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
+            }
+        }
+        else
+        {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Invalid send message request").build();
+        }
+    }
+    
+    
     
     private UserEntitySessionBeanLocal lookupUserEntitySessionBeanLocal() {
         try {

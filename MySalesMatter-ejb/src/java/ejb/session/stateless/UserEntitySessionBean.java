@@ -41,35 +41,30 @@ public class UserEntitySessionBean implements UserEntitySessionBeanLocal {
 
     private final ValidatorFactory validatorFactory;
     private final Validator validator;
-    
-    @EJB
-    private ConversationEntitySessionBeanLocal conversationEntitySessionBeanLocal;
-    
+
     @EJB
     private ListingEntitySessionBeanLocal listingEntitySessionBeanLocal;
-    
+
     @EJB
     private SalesTransactionEntitySessionBeanLocal transationEntitySessionBeanLocal;
-    
+
     @EJB
     private OfferEntitySessionBeanLocal offerEntitySessionBeanLocal;
-    
+
     public UserEntitySessionBean() {
         validatorFactory = Validation.buildDefaultValidatorFactory();
         validator = validatorFactory.getValidator();
     }
-    
+
     @Override
-    public UserEntity registerUser(UserEntity newUser) throws InputDataValidationException, UnknownPersistenceException, UserEmailExistsException
-    {
-        try
-        {
+    public UserEntity registerUser(UserEntity newUser) throws InputDataValidationException, UnknownPersistenceException, UserEmailExistsException {
+        try {
             Set<ConstraintViolation<UserEntity>> constraintViolations = validator.validate(newUser);
-            
+
             if (constraintViolations.isEmpty()) {
                 em.persist(newUser);
                 em.flush();
-                
+
                 return newUser;
             } else {
                 throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
@@ -86,12 +81,12 @@ public class UserEntitySessionBean implements UserEntitySessionBeanLocal {
             }
         }
     }
-    
+
     @Override
     public UserEntity userLogin(String email, String password) throws InvalidLoginCredentialException {
         try {
             UserEntity user = retrieveUserByEmail(email);
-            
+
             if (user.getPassword().equals(password)) {
                 user.getTransactions().size();
                 return user;
@@ -107,14 +102,14 @@ public class UserEntitySessionBean implements UserEntitySessionBeanLocal {
     public UserEntity retrieveUserByEmail(String email) throws UserNotFoundException {
         Query query = em.createQuery("SELECT u FROM UserEntity u WHERE u.email =:inEmail");
         query.setParameter("inEmail", email);
-        
+
         try {
             return (UserEntity) query.getSingleResult();
         } catch (NoResultException | NonUniqueResultException ex) {
             throw new UserNotFoundException("User with email:" + email + " does not exist");
         }
     }
-    
+
     @Override
     public UserEntity retrieveUserById(Long id) throws UserNotFoundException {
         UserEntity user = em.find(UserEntity.class, id);
@@ -131,22 +126,22 @@ public class UserEntitySessionBean implements UserEntitySessionBeanLocal {
             throw new UserNotFoundException("User id " + id + " does not exists");
         }
     }
-    
+
     @Override
     public List<UserEntity> retrieveAllUsers() {
         Query query = em.createQuery("SELECT u FROM UserEntity u");
-        
+
         return query.getResultList();
     }
-    
+
     @Override
     public void updateUser(UserEntity userEntity) throws UserNotFoundException, UpdateUserException, InputDataValidationException {
         if (userEntity != null && userEntity.getUserId() != null) {
             Set<ConstraintViolation<UserEntity>> constraintViolations = validator.validate(userEntity);
-            
+
             if (constraintViolations.isEmpty()) {
                 UserEntity generalUserToUpdate = retrieveUserById(userEntity.getUserId());
-                
+
                 if (generalUserToUpdate.getUsername().equals(userEntity.getUsername())) {
                     generalUserToUpdate.setName(userEntity.getName());
                 } else {
@@ -159,25 +154,25 @@ public class UserEntitySessionBean implements UserEntitySessionBeanLocal {
             throw new UserNotFoundException("User ID not provided for user to be updated");
         }
     }
-    
+
     @Override
     public void deleteUser(Long userId) throws UserNotFoundException, DeleteUserException {
         UserEntity userToRemove = retrieveUserById(userId);
-        
+
         if (userToRemove.getTransactions().isEmpty()) {
             em.remove(userToRemove);
         } else {
             throw new DeleteUserException("User ID " + userId + " is associated with existing transaction(s) and cannot be deleted!");
         }
     }
-    
+
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<UserEntity>> constraintViolations) {
         String msg = "Input data validation error!:";
-        
+
         for (ConstraintViolation constraintViolation : constraintViolations) {
             msg += "\n\t" + constraintViolation.getPropertyPath() + " - " + constraintViolation.getInvalidValue() + "; " + constraintViolation.getMessage();
         }
-        
+
         return msg;
-    }   
+    }
 }

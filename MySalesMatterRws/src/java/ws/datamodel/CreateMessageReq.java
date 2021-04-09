@@ -6,6 +6,7 @@
 package ws.datamodel;
 
 import entity.MessageEntity;
+import java.util.Date;
 
 /**
  *
@@ -15,17 +16,55 @@ public class CreateMessageReq {
     
     private String username;
     private String password;
-    private MessageEntity newMessageEntity;
-    private Long conversationId;
+    private String message;
+    private Long offerId;
+    private Long senderId;
+    private Date date;
     
     public CreateMessageReq() {
     }
 
-    public CreateMessageReq(String username, String password, MessageEntity newMessageEntity, Long conversationId) {
+    public CreateMessageReq(String username, String password, String message, Long offerId, Long senderId, Date date) {
         this.username = username;
         this.password = password;
-        this.newMessageEntity = newMessageEntity;
-        this.conversationId = conversationId;
+        this.message = message;
+        this.offerId = offerId;
+        this.senderId = senderId;
+        this.date = date;
+    }
+
+    
+    
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public Long getOfferId() {
+        return offerId;
+    }
+
+    public void setOfferId(Long offerId) {
+        this.offerId = offerId;
+    }
+
+    public Long getSenderId() {
+        return senderId;
+    }
+
+    public void setSenderId(Long senderId) {
+        this.senderId = senderId;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public String getUsername() {
@@ -44,20 +83,5 @@ public class CreateMessageReq {
         this.password = password;
     }
 
-    public MessageEntity getNewMessageEntity() {
-        return newMessageEntity;
-    }
-
-    public void setNewMessageEntity(MessageEntity newMessageEntity) {
-        this.newMessageEntity = newMessageEntity;
-    }
-
-    public Long getConversationId() {
-        return conversationId;
-    }
-
-    public void setConversationId(Long conversationId) {
-        this.conversationId = conversationId;
-    }
-    
+        
 }

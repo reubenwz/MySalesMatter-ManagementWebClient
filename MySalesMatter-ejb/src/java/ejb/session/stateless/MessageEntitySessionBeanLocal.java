@@ -6,11 +6,14 @@
 package ejb.session.stateless;
 
 import entity.MessageEntity;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Local;
-import util.exception.ConversationNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.MessageNotFoundException;
+import util.exception.OfferNotFoundException;
+import util.exception.UnknownPersistenceException;
+import util.exception.UserNotFoundException;
 
 /**
  *
@@ -18,7 +21,10 @@ import util.exception.MessageNotFoundException;
  */
 @Local
 public interface MessageEntitySessionBeanLocal {
-    public MessageEntity createNewMessage(MessageEntity newMessageEntity, Long conversationId) throws InputDataValidationException, ConversationNotFoundException;
+
     List<MessageEntity> retrieveAllMessages();
-    MessageEntity retrieveMessageById(Long messageId) throws MessageNotFoundException;
+
+    public List<MessageEntity> retrieveReceivedMessageSByUserId(Long userId) throws MessageNotFoundException;
+
+    public Long addMessage(String message, Long offerId, Long senderId, Date date) throws UnknownPersistenceException, OfferNotFoundException, UserNotFoundException, InputDataValidationException;
 }

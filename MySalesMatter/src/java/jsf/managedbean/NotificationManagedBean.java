@@ -5,12 +5,17 @@
  */
 package jsf.managedbean;
 
-import ejb.session.stateless.NotificationEntitySessionBeanLocal;
-import entity.NotificationEntity;
+import ejb.session.stateless.MessageEntitySessionBeanLocal;
+import ejb.session.stateless.UserEntitySessionBeanLocal;
+import entity.BuyOfferEntity;
+import entity.MessageEntity;
+import entity.OfferEntity;
+import entity.RentalOfferEntity;
+import entity.UserEntity;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -18,165 +23,95 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
-import util.exception.NotificationAlreadyExpiredException;
-import util.exception.NotificationNotFoundException;
+import util.enumeration.OfferType;
+import util.exception.InputDataValidationException;
+import util.exception.MessageNotFoundException;
+import util.exception.OfferNotFoundException;
+import util.exception.UnknownPersistenceException;
+import util.exception.UserNotFoundException;
 
-/**
- *
- * @author Yuki
- */
 @Named(value = "notificationManagedBean")
 @ViewScoped
-public class NotificationManagedBean implements Serializable{
+public class NotificationManagedBean implements Serializable {
 
-    @EJB(name = "NotificationEntitySessionBeanLocal")
-    private NotificationEntitySessionBeanLocal notificationEntitySessionBeanLocal;
+    @EJB
+    UserEntitySessionBeanLocal userEntitySessionBeanLocal;
 
-    private List<NotificationEntity> ongoingNotifications;
-    private List<NotificationEntity> expiredNotifications;
-    private List<NotificationEntity> filteredNotifications;
-    private List<NotificationEntity> notifications;
+    @EJB
+    MessageEntitySessionBeanLocal messageEntitySessionBeanLocal;
+
+    private UserEntity currentUser;
+
+    private List<MessageEntity> messages;
     
-    private NotificationEntity notificationToView;
-    private NotificationEntity ongoingToUpdate;
+    private String message;
     
-    private NotificationEntity newNotification;
-    private String selectedFilter;
-    
+    private OfferEntity offer;
+
     public NotificationManagedBean() {
-        newNotification = new NotificationEntity();
-        selectedFilter = "Ongoing";
+        currentUser = new UserEntity();
+        messages = new ArrayList<>();
     }
-    
-    @PostConstruct
-    public void postConstruct()
-    {
-        setOngoingNotifications(notificationEntitySessionBeanLocal.retrieveAllActiveNotifications());
-        setExpiredNotifications(notificationEntitySessionBeanLocal.retrieveAllExpiredNotifications());
-        setNotifications(notificationEntitySessionBeanLocal.retrieveAllNotifications());
-    }
-    
-    public void createNewNotification(ActionEvent event)
-    {
-        Long newNotificationId = notificationEntitySessionBeanLocal.createNewNotification(getNewNotification());
-        notifications.add(newNotification);
-        ongoingNotifications.add(newNotification);
-        setNewNotification(new NotificationEntity());
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New notification created successfully (Notification ID: " + newNotificationId + ")", null));
 
-    }
-    
-    public void updateNotifications(ActionEvent event)
-    {
-        try
-        {
-            notificationEntitySessionBeanLocal.updateNotification(getOngoingToUpdate());
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Notification created successfully", null));
-        } catch (NotificationNotFoundException ex) {
-            Logger.getLogger(NotificationManagedBean.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NotificationAlreadyExpiredException ex) {
-            Logger.getLogger(NotificationManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+    @PostConstruct
+    public void postConstruct() {
+        try {
+            setCurrentUser((UserEntity) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser"));
+            setMessages(messageEntitySessionBeanLocal.retrieveReceivedMessageSByUserId(getCurrentUser().getUserId()));
+        } catch (MessageNotFoundException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while loading conversations: " + ex.getMessage(), null));
         }
     }
     
-
-    /**
-     * @return the ongoingNotifications
-     */
-    public List<NotificationEntity> getOngoingNotifications() {
-        return ongoingNotifications;
+    public void doReply(ActionEvent event) {
+        offer = (OfferEntity) event.getComponent().getAttributes().get("offerEntity");            
+        if (offer.getOfferType() == OfferType.RENTAL) {
+            offer = (RentalOfferEntity) offer;
+        } else {
+            offer = (BuyOfferEntity) offer;
+        }
+        System.out.println("******** " + offer.getTotalPrice());
+    }
+    
+    public void addMessage(ActionEvent event) {
+        try {
+            messageEntitySessionBeanLocal.addMessage(getMessage(), offer.getOfferId(), currentUser.getUserId(), new Date());
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Message sent successfully", null));
+        } catch (UserNotFoundException | OfferNotFoundException | InputDataValidationException | UnknownPersistenceException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while making the payment: " + ex.getMessage(), null));
+        }
     }
 
-    /**
-     * @param ongoingNotifications the ongoingNotifications to set
-     */
-    public void setOngoingNotifications(List<NotificationEntity> ongoingNotifications) {
-        this.ongoingNotifications = ongoingNotifications;
+    public UserEntity getCurrentUser() {
+        return currentUser;
     }
 
-    /**
-     * @return the expiredNotifications
-     */
-    public List<NotificationEntity> getExpiredNotifications() {
-        return expiredNotifications;
+    public void setCurrentUser(UserEntity currentUser) {
+        this.currentUser = currentUser;
     }
 
-    /**
-     * @param expiredNotifications the expiredNotifications to set
-     */
-    public void setExpiredNotifications(List<NotificationEntity> expiredNotifications) {
-        this.expiredNotifications = expiredNotifications;
+    public List<MessageEntity> getMessages() {
+        return messages;
     }
 
-    /**
-     * @return the filteredNotifications
-     */
-    public List<NotificationEntity> getFilteredNotifications() {
-        return filteredNotifications;
+    public void setMessages(List<MessageEntity> messages) {
+        this.messages = messages;
     }
 
-    /**
-     * @param filteredNotifications the filteredNotifications to set
-     */
-    public void setFilteredNotifications(List<NotificationEntity> filteredNotifications) {
-        this.filteredNotifications = filteredNotifications;
+    public String getMessage() {
+        return message;
     }
 
-    /**
-     * @return the notifications
-     */
-    public List<NotificationEntity> getNotifications() {
-        return notifications;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
-    /**
-     * @param notifications the notifications to set
-     */
-    public void setNotifications(List<NotificationEntity> notifications) {
-        this.notifications = notifications;
+    public OfferEntity getOffer() {
+        return offer;
     }
 
-    /**
-     * @return the notificationToView
-     */
-    public NotificationEntity getNotificationToView() {
-        return notificationToView;
+    public void setOffer(OfferEntity offer) {
+        this.offer = offer;
     }
 
-    /**
-     * @param notificationToView the notificationToView to set
-     */
-    public void setNotificationToView(NotificationEntity notificationToView) {
-        this.notificationToView = notificationToView;
-    }
-
-    /**
-     * @return the ongoingToUpdate
-     */
-    public NotificationEntity getOngoingToUpdate() {
-        return ongoingToUpdate;
-    }
-
-    /**
-     * @param ongoingToUpdate the ongoingToUpdate to set
-     */
-    public void setOngoingToUpdate(NotificationEntity ongoingToUpdate) {
-        this.ongoingToUpdate = ongoingToUpdate;
-    }
-
-    /**
-     * @return the newNotification
-     */
-    public NotificationEntity getNewNotification() {
-        return newNotification;
-    }
-
-    /**
-     * @param newNotification the newNotification to set
-     */
-    public void setNewNotification(NotificationEntity newNotification) {
-        this.newNotification = newNotification;
-    }
-        
-            
 }

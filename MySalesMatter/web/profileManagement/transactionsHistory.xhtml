@@ -54,6 +54,9 @@
                     </p:commandLink><br></br>
                     <p:commandLink value="Make Payment" oncomplete="PF('dialogMakePayment').show()" actionListener="#{transactionManagedBean.doMakePayment}" update="formMakePayment">
                         <f:attribute name="acceptedOfferToPay" value="#{acceptedOffer}" />
+                    </p:commandLink><br></br>
+                    <p:commandLink value="Arrange Meetup" oncomplete="PF('dialogArrangeMeetup').show()" actionListener="#{transactionManagedBean.doArrangeMeetup}" update="formArrangeMeetup">
+                        <f:attribute name="acceptedOffer" value="#{acceptedOffer}" />
                     </p:commandLink>
                 </p:column>
             </p:dataTable>
@@ -89,7 +92,7 @@
                             <p:message for="offerType" />
                         </p:column>
                     </p:row>
-                    
+
                     <p:row rendered="#{transactionManagedBean.isRentalOffer(transactionManagedBean.acceptedOfferToMakePayment.offerType)}">
                         <p:column>
                             <p:outputLabel for="startDate" value="Start Date: " style="font-weight: bold;" />
@@ -126,12 +129,48 @@
                 </p:panelGrid>
 
             </p:dialog>
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </p:confirmDialog>
+
+        </h:form>
+
+        <h:form id="formArrangeMeetup">
+
+            <p:dialog id="dialogArrangeMeetup" widgetVar="dialogArrangeMeetup" header="Arrange Meetup" closable="true">
+
+                <p:messages id="messages" redisplay="false" />
+
+                <p:panelGrid>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="message" value="Message" style="font-weight: bold;" />
+                        </p:column>
+                        <p:column>
+                            <h:inputText id="message" value="#{transactionManagedBean.message}" />   
+                        </p:column>
+                        <p:column>
+                            <p:message for="message" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column colspan="3">
+                            <p:commandButton type="reset" value="Clear" />&nbsp;
+                            <p:commandButton  value="Add Message" actionListener="#{transactionManagedBean.addMessage}" oncomplete="PF('dialogArrangeMeetup').show();" update="formArrangeMeetup"/>     
+                        </p:column>
+                    </p:row>
+
+                </p:panelGrid>
+
+            </p:dialog>
 
             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
                 <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
                 <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
             </p:confirmDialog>
-            
+
         </h:form>
     </ui:define>
 

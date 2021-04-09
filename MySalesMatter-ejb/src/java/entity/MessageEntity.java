@@ -14,6 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -51,6 +52,11 @@ public class MessageEntity implements Serializable {
     @JoinColumn(nullable = false)
     @NotNull
     private UserEntity recipient;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false)
+    @NotNull
+    private OfferEntity offer;
     
     public MessageEntity() {
         
@@ -126,6 +132,14 @@ public class MessageEntity implements Serializable {
 
     public void setRecipient(UserEntity recipient) {
         this.recipient = recipient;
+    }
+
+    public OfferEntity getOffer() {
+        return offer;
+    }
+
+    public void setOffer(OfferEntity offer) {
+        this.offer = offer;
     }
     
 }

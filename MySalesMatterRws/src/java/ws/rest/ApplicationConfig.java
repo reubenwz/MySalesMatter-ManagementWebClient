@@ -29,7 +29,6 @@ public class ApplicationConfig extends javax.ws.rs.core.Application {
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(ws.rest.CategoryResource.class);
-        resources.add(ws.rest.ConversationResource.class);
         resources.add(ws.rest.LikedItemResource.class);
         resources.add(ws.rest.ListingResource.class);
         resources.add(ws.rest.MessageResource.class);

@@ -100,16 +100,6 @@
                             <p:commandButton value=" View Reviews" icon="pi pi-users" actionListener="#{viewAllReviewsManagedBean.viewReviewDetails}" title="View All Reviews">
                             <f:attribute name="listingId" value="#{listingEntity.listingId}" />
                             </p:commandButton>
-                            <h:panelGroup rendered="#{listingEntity.isRentOut==true}" >
-                                <p:commandButton rendered="#{listingEntity.rentalAvailability}" value=" Reserve" icon="ui-icon-cart" actionListener="#{listingManagementManagedBean.makeRentalOffer}" update="formListingDetails:dataTableListingDetails formListingDetails:messages" title="Make Rent Out (Available)">
-                                    <f:attribute name="listingEntityToMakeOffer" value="#{listingEntity}" />
-                                </p:commandButton>
-                            </h:panelGroup>
-                            <h:panelGroup rendered="#{listingEntity.isRentOut==false}" >
-                                <p:commandButton rendered="#{listingEntity.forSaleAvailability}" value="Reserve" icon="pi pi-star" actionListener="#{listingManagementManagedBean.makeBuyOffer}" update="formListingDetails:dataTableListingDetails formListingDetails:messages" title="Make Rent Out (Unavailable)">
-                                    <f:attribute name="listingEntityToMakeOffer" value="#{listingEntity}" />
-                                </p:commandButton>
-                            </h:panelGroup>
                         </div>
 
                     </p:column>

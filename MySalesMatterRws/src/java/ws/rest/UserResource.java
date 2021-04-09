@@ -6,7 +6,6 @@
 package ws.rest;
 
 import ejb.session.stateless.UserEntitySessionBeanLocal;
-import entity.ConversationEntity;
 import entity.LikedItemEntity;
 import entity.OfferEntity;
 import entity.ReviewEntity;

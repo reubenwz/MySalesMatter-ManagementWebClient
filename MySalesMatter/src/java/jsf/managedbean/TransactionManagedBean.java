@@ -5,6 +5,7 @@
  */
 package jsf.managedbean;
 
+import ejb.session.stateless.MessageEntitySessionBeanLocal;
 import ejb.session.stateless.SalesTransactionEntitySessionBeanLocal;
 import entity.BuyOfferEntity;
 import entity.OfferEntity;
@@ -37,11 +38,14 @@ public class TransactionManagedBean implements Serializable {
 
     @EJB
     private SalesTransactionEntitySessionBeanLocal salesTransactionEntitySessionBeanLocal;
+    @EJB
+    private MessageEntitySessionBeanLocal messageEntitySessionBeanLocal;
 
     private UserEntity currentUser;
     private OfferEntity acceptedOfferToMakePayment;
     private RentalOfferEntity acceptedRentalOffer;
     private BuyOfferEntity acceptedBuyOffer;
+    private String message;
     
     public TransactionManagedBean() {
         currentUser = new UserEntity();
@@ -68,10 +72,29 @@ public class TransactionManagedBean implements Serializable {
         System.out.println("******** " + acceptedOfferToMakePayment.getTotalPrice());
     }
     
+    public void doArrangeMeetup(ActionEvent event) {
+        acceptedOfferToMakePayment = (OfferEntity) event.getComponent().getAttributes().get("acceptedOffer");            
+        if (acceptedOfferToMakePayment.getOfferType() == OfferType.RENTAL) {
+            acceptedRentalOffer = (RentalOfferEntity) acceptedOfferToMakePayment;
+        } else {
+            acceptedBuyOffer = (BuyOfferEntity) acceptedOfferToMakePayment;
+        }
+        System.out.println("******** " + acceptedOfferToMakePayment.getTotalPrice());
+    }
+    
     public void makePayment(ActionEvent event) {
         try {
             salesTransactionEntitySessionBeanLocal.createSalesTransaction(acceptedOfferToMakePayment.getOfferId(), currentUser.getUserId(), "paid", new Date(), acceptedOfferToMakePayment.getTotalPrice());
         } catch (UnknownPersistenceException | InputDataValidationException | UserNotFoundException | CreateNewTransactionException | SalesTransactionExistException | OfferNotFoundException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while making the payment: " + ex.getMessage(), null));
+        }
+    }
+    
+    public void addMessage(ActionEvent event) {
+        try {
+            messageEntitySessionBeanLocal.addMessage(message, acceptedOfferToMakePayment.getOfferId(), currentUser.getUserId(), new Date());
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Message sent successfully", null));
+        } catch (UserNotFoundException | OfferNotFoundException | InputDataValidationException | UnknownPersistenceException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while making the payment: " + ex.getMessage(), null));
         }
     }
@@ -106,6 +129,14 @@ public class TransactionManagedBean implements Serializable {
 
     public void setAcceptedBuyOffer(BuyOfferEntity acceptedBuyOffer) {
         this.acceptedBuyOffer = acceptedBuyOffer;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
     
 }

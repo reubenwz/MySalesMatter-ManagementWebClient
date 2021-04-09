@@ -23,7 +23,6 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-import util.enumeration.Status;
 import util.exception.CreateNewTransactionException;
 import util.exception.InputDataValidationException;
 import util.exception.OfferNotFoundException;
@@ -45,17 +44,15 @@ public class SalesTransactionEntitySessionBean implements SalesTransactionEntity
 
     private final ValidatorFactory validatorFactory;
     private final Validator validator;
-    
+
     @EJB
     UserEntitySessionBeanLocal generalUserEntitySessionBeanLocal;
-    
+
     @EJB
     OfferEntitySessionBeanLocal offerEntitySessionBeanLocal;
-    
+
     @EJB
     UserEntitySessionBeanLocal userEntitySessionBeanLocal;
-
-    
 
     public SalesTransactionEntitySessionBean() {
         validatorFactory = Validation.buildDefaultValidatorFactory();
@@ -71,7 +68,7 @@ public class SalesTransactionEntitySessionBean implements SalesTransactionEntity
             SalesTransactionEntity salesTransactionEntity = new SalesTransactionEntity();
             salesTransactionEntity.setUser(userEntity);
             salesTransactionEntity.setOffer(offerEntity);
-            
+
 //            if (status.toLowerCase().equals("paid")) {
 //                salesTransactionEntity.setStatus(Status.PAID);
 //            } else {
@@ -79,7 +76,7 @@ public class SalesTransactionEntitySessionBean implements SalesTransactionEntity
 //            }
             salesTransactionEntity.setTotalAmt(totalAmt);
             salesTransactionEntity.setTransactionDate(transactionDate);
-            
+
             Set<ConstraintViolation<SalesTransactionEntity>> constraintViolations = validator.validate(salesTransactionEntity);
 
             if (constraintViolations.isEmpty()) {
@@ -90,7 +87,7 @@ public class SalesTransactionEntitySessionBean implements SalesTransactionEntity
                     offerEntity.setSales(salesTransactionEntity);
                     em.merge(offerEntity);
                     em.flush();
-                    
+
                 } catch (PersistenceException ex) {
                     if (ex.getCause() != null && ex.getCause().getClass().getName().equals("org.eclipse.persistence.exceptions.DatabaseException")) {
 
@@ -109,9 +106,9 @@ public class SalesTransactionEntitySessionBean implements SalesTransactionEntity
         } catch (UserNotFoundException ex) {
             throw new CreateNewTransactionException("An error has occurred while creating the new Listing: " + ex.getMessage());
         }
-        
+
     }
-    
+
     @Override
     public List<SalesTransactionEntity> getSalesTransactionByUserId(Long userId) throws UserNotFoundException {
         try {
@@ -155,17 +152,17 @@ public class SalesTransactionEntitySessionBean implements SalesTransactionEntity
 //            if (salesTransactionEntity.getStatus().toString().toLowerCase().equals("PAID")) {
 //                throw new TransactionDeletionException("Transaction with this id, " + transactionId + " cannot be deleted as it has been paid.");
 //            } else {
-                OfferEntity offerEntity = salesTransactionEntity.getOffer();
-                ListingEntity listing = offerEntity.getListing();
-                UserEntity user = salesTransactionEntity.getUser();
-                user.getTransactions().remove(salesTransactionEntity);
-                listing.getOffers().remove(offerEntity);
-                em.merge(user);
-                em.remove(offerEntity);
-                em.merge(listing);
-                em.remove(salesTransactionEntity);
+            OfferEntity offerEntity = salesTransactionEntity.getOffer();
+            ListingEntity listing = offerEntity.getListing();
+            UserEntity user = salesTransactionEntity.getUser();
+            user.getTransactions().remove(salesTransactionEntity);
+            listing.getOffers().remove(offerEntity);
+            em.merge(user);
+            em.remove(offerEntity);
+            em.merge(listing);
+            em.remove(salesTransactionEntity);
             //}
-            
+
         } catch (SalesTransactionNotFoundException ex) {
             throw new SalesTransactionNotFoundException("Transaction with this id, " + transactionId + ", does not exist!");
         }
