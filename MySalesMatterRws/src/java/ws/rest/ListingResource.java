@@ -89,6 +89,7 @@ public class ListingResource {
                 List<OfferEntity> offers = l.getOffers();
                 for (OfferEntity o : offers) {
                     o.setListing(null);
+                    o.getMessage().clear();
                 }
                 List<ReviewEntity> reviews = l.getReviews();
                 for (ReviewEntity r : reviews) {
@@ -129,6 +130,7 @@ public class ListingResource {
             List<OfferEntity> offers = l.getOffers();
             for (OfferEntity o : offers) {
                 o.setListing(null);
+                o.getMessage().clear();
             }
             List<ReviewEntity> reviews = l.getReviews();
             for (ReviewEntity r : reviews) {
@@ -167,6 +169,7 @@ public class ListingResource {
                 List<OfferEntity> offers = l.getOffers();
                 for (OfferEntity o : offers) {
                     o.setListing(null);
+                    o.getMessage().clear();
                 }
                 List<ReviewEntity> reviews = l.getReviews();
                 for (ReviewEntity r : reviews) {
@@ -228,6 +231,7 @@ public class ListingResource {
                 List<OfferEntity> offers = l.getOffers();
                 for (OfferEntity o : offers) {
                     o.setListing(null);
+                    o.getMessage().clear();
                 }
                 List<ReviewEntity> reviews = l.getReviews();
                 for (ReviewEntity r : reviews) {
@@ -269,6 +273,7 @@ public class ListingResource {
                 List<OfferEntity> offers = l.getOffers();
                 for (OfferEntity o : offers) {
                     o.setListing(null);
+                    o.getMessage().clear();
                 }
                 List<ReviewEntity> reviews = l.getReviews();
                 for (ReviewEntity r : reviews) {

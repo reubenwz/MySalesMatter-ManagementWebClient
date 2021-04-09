@@ -83,6 +83,7 @@ public class SalesTransactionResource {
                 s.getUser().getOffers().clear();
                 s.getUser().getReviews().clear();
                 s.getUser().getTransactions().clear();
+                s.getOffer().getMessage().clear();
             }
             
             GenericEntity<List<SalesTransactionEntity>> genericEntity = new GenericEntity<List<SalesTransactionEntity>>(salesTransactionEntities) {
@@ -125,6 +126,7 @@ public class SalesTransactionResource {
                 s.getUser().getOffers().clear();
                 s.getUser().getReviews().clear();
                 s.getUser().getTransactions().clear();
+                s.getOffer().getMessage().clear();
             }
             
             GenericEntity<List<SalesTransactionEntity>> genericEntity = new GenericEntity<List<SalesTransactionEntity>>(salesTransactionEntities) {

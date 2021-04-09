@@ -76,7 +76,8 @@ public class UserResource {
                 o.setListing(null);
                 o.setOfferType(null);
                 o.setSales(null);
-                o.setUser(null);                
+                o.setUser(null);  
+                o.getMessage().clear();
             }
             for(SalesTransactionEntity s: userEntity.getTransactions()) {
                 s.setOffer(null);
@@ -111,7 +112,8 @@ public class UserResource {
                 o.setListing(null);
                 o.setOfferType(null);
                 o.setSales(null);
-                o.setUser(null);                
+                o.setUser(null);   
+                o.getMessage().clear();
             }
             for(SalesTransactionEntity s: userEntity.getTransactions()) {
                 s.setOffer(null);
@@ -144,7 +146,8 @@ public class UserResource {
                 o.setListing(null);
                 o.setOfferType(null);
                 o.setSales(null);
-                o.setUser(null);                
+                o.setUser(null); 
+                o.getMessage().clear();
             }
             for(SalesTransactionEntity s: userEntity.getTransactions()) {
                 s.setOffer(null);
@@ -200,7 +203,8 @@ public class UserResource {
                     o.setListing(null);
                     o.setOfferType(null);
                     o.setSales(null);
-                    o.setUser(null);                
+                    o.setUser(null);   
+                    o.getMessage().clear();
                 }
                 for(SalesTransactionEntity s: userEntity.getTransactions()) {
                     s.setOffer(null);
