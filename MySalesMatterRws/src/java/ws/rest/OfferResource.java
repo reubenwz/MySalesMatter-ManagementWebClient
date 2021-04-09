@@ -7,6 +7,7 @@ package ws.rest;
 
 import ejb.session.stateless.OfferEntitySessionBeanLocal;
 import ejb.session.stateless.UserEntitySessionBeanLocal;
+import entity.MessageEntity;
 import entity.OfferEntity;
 import entity.UserEntity;
 import java.util.List;
@@ -49,30 +50,25 @@ public class OfferResource {
     OfferEntitySessionBeanLocal offerEntitySessionBeanLocal = lookupOfferEntitySessionBeanLocal();
 
     UserEntitySessionBeanLocal userEntitySessionBeanLocal = lookupUserEntitySessionBeanLocal();
-    
-    
+
     @Context
     private UriInfo context;
 
-
     public OfferResource() {
     }
-    
+
     @Path("retrieveAllOffers")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveAllOffers(@QueryParam("username") String username, 
-                                        @QueryParam("password") String password)
-    {
-        try
-        {
+    public Response retrieveAllOffers(@QueryParam("username") String username,
+            @QueryParam("password") String password) {
+        try {
             UserEntity userEntity = userEntitySessionBeanLocal.userLogin(username, password);
             System.out.println("********** OfferResource.retrieveAllOffers(): User " + userEntity.getUsername() + " login remotely via web service");
 
             List<OfferEntity> offerEntities = offerEntitySessionBeanLocal.retrieveAllOffers();
-            for(OfferEntity o: offerEntities)
-            {        
+            for (OfferEntity o : offerEntities) {
                 o.getListing().getOffers().clear();
                 //o.getListing().getReservations().clear();
                 o.getListing().getReviews().clear();
@@ -88,39 +84,48 @@ public class OfferResource {
                 o.getUser().getOffers().clear();
                 o.getUser().getReviews().clear();
                 o.getUser().getTransactions().clear();
+                for (MessageEntity m : o.getMessage()) {
+                    m.getRecipient().getListings().clear();
+                    m.getRecipient().getTransactions().clear();
+                    m.getRecipient().getReviews().clear();
+                    m.getRecipient().getLikedItems().clear();
+                    m.getRecipient().getOffers().clear();
+                    m.getSender().getListings().clear();
+                    m.getSender().getTransactions().clear();
+                    m.getSender().getReviews().clear();
+                    m.getSender().getLikedItems().clear();
+                    m.getSender().getOffers().clear();
+                    m.getOffer().getMessage().clear();
+                    m.getOffer().setSales(null);
+                    m.getOffer().setUser(null);
+                    m.getOffer().setOfferType(null);
+                }
             }
-            
+
             GenericEntity<List<OfferEntity>> genericEntity = new GenericEntity<List<OfferEntity>>(offerEntities) {
             };
-            
+
             return Response.status(Response.Status.OK).entity(genericEntity).build();
-        }
-        catch(InvalidLoginCredentialException ex)
-        {            
+        } catch (InvalidLoginCredentialException ex) {
             return Response.status(Response.Status.UNAUTHORIZED).entity(ex.getMessage()).build();
-        }
-        catch(Exception ex)
-        {
+        } catch (Exception ex) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
         }
     }
-   
-    
+
     @Path("retrieveOffer/{offerId}")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveOfferById(@QueryParam("username") String username, 
-                                        @QueryParam("password") String password,
-                                        @PathParam("offerId") Long offerId)
-    {
-        try
-        {
+    public Response retrieveOfferById(@QueryParam("username") String username,
+            @QueryParam("password") String password,
+            @PathParam("offerId") Long offerId) {
+        try {
             UserEntity userEntity = userEntitySessionBeanLocal.userLogin(username, password);
             System.out.println("********** OfferResource.retrieveOfferById(): User " + userEntity.getUsername() + " login remotely via web service");
 
             OfferEntity o = offerEntitySessionBeanLocal.retrieveOfferById(offerId);
-            
+
             o.getListing().getOffers().clear();
             //o.getListing().getReservations().clear();
             o.getListing().getReviews().clear();
@@ -137,22 +142,34 @@ public class OfferResource {
             o.getUser().getReviews().clear();
             o.getUser().getTransactions().clear();
             
+            for (MessageEntity m : o.getMessage()) {
+                    m.getRecipient().getListings().clear();
+                    m.getRecipient().getTransactions().clear();
+                    m.getRecipient().getReviews().clear();
+                    m.getRecipient().getLikedItems().clear();
+                    m.getRecipient().getOffers().clear();
+                    m.getSender().getListings().clear();
+                    m.getSender().getTransactions().clear();
+                    m.getSender().getReviews().clear();
+                    m.getSender().getLikedItems().clear();
+                    m.getSender().getOffers().clear();
+                    m.getOffer().getMessage().clear();
+                    m.getOffer().setSales(null);
+                    m.getOffer().setUser(null);
+                    m.getOffer().setOfferType(null);
+                }
+            
+
             return Response.status(Response.Status.OK).entity(o).build();
-        }
-        catch(InvalidLoginCredentialException ex)
-        {
+        } catch (InvalidLoginCredentialException ex) {
             return Response.status(Response.Status.UNAUTHORIZED).entity(ex.getMessage()).build();
-        }
-        catch(OfferNotFoundException ex)
-        {
+        } catch (OfferNotFoundException ex) {
             return Response.status(Response.Status.BAD_REQUEST).entity(ex.getMessage()).build();
-        }
-        catch(Exception ex)
-        {
+        } catch (Exception ex) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
         }
     }
-    
+
     @Path("updateOffer/{offerId}")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -175,7 +192,7 @@ public class OfferResource {
             return Response.status(Response.Status.BAD_REQUEST).entity("Invalid update offer request").build();
         }
     }
-    
+
     @Path("accceptOffer")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -183,19 +200,19 @@ public class OfferResource {
     public Response acceptOffer(@QueryParam("username") String username,
             @QueryParam("password") String password,
             @PathParam("offerId") Long offerId) {
-            try {
-                UserEntity userEntity = userEntitySessionBeanLocal.userLogin(username, password);
-                System.out.println("********** OfferResource.acceptOffer(): User " + userEntity.getUsername() + " login remotely via web service");
-                offerEntitySessionBeanLocal.acceptOffer(offerId);
-                return Response.status(Response.Status.OK).build();
-            } catch (InvalidLoginCredentialException ex) {
-                return Response.status(Response.Status.UNAUTHORIZED).entity(ex.getMessage()).build();
-            } catch (OfferNotFoundException ex) {
-                return Response.status(Response.Status.BAD_REQUEST).entity(ex.getMessage()).build();
-            } catch (Exception ex) {
-                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
-            }
-        
+        try {
+            UserEntity userEntity = userEntitySessionBeanLocal.userLogin(username, password);
+            System.out.println("********** OfferResource.acceptOffer(): User " + userEntity.getUsername() + " login remotely via web service");
+            offerEntitySessionBeanLocal.acceptOffer(offerId);
+            return Response.status(Response.Status.OK).build();
+        } catch (InvalidLoginCredentialException ex) {
+            return Response.status(Response.Status.UNAUTHORIZED).entity(ex.getMessage()).build();
+        } catch (OfferNotFoundException ex) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(ex.getMessage()).build();
+        } catch (Exception ex) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
+        }
+
     }
 
     @Path("{offerId}")
@@ -218,51 +235,39 @@ public class OfferResource {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
         }
     }
-    
+
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createNewOffer(CreateOfferReq createOfferReq )
-    {
-        if(createOfferReq != null)
-        {
-            try
-            {
+    public Response createNewOffer(CreateOfferReq createOfferReq) {
+        if (createOfferReq != null) {
+            try {
                 UserEntity userEntity = userEntitySessionBeanLocal.userLogin(createOfferReq.getUsername(), createOfferReq.getPassword());
                 System.out.println("********** OfferResource.createNewOffer(): User " + userEntity.getUsername() + " login remotely via web service");
                 OfferEntity offerEntity = offerEntitySessionBeanLocal.createNewOffer(createOfferReq.getNewOfferEntity(), createOfferReq.getUserId(), createOfferReq.getListingId());
                 return Response.status(Response.Status.OK).entity(offerEntity.getOfferId()).build();
-            }
-            catch(UnknownPersistenceException | InputDataValidationException | CreateNewOfferException | UserNotFoundException ex)
-            {
+            } catch (UnknownPersistenceException | InputDataValidationException | CreateNewOfferException | UserNotFoundException ex) {
                 return Response.status(Response.Status.UNAUTHORIZED).entity(ex.getMessage()).build();
-            } 
-            catch(Exception ex)
-            {
+            } catch (Exception ex) {
                 return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
             }
-        }
-        else
-        {
+        } else {
             return Response.status(Response.Status.BAD_REQUEST).entity("Invalid create new offer request").build();
         }
     }
-    
+
     @Path("retrieveOfferByUserId")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveOffersByUserId(@QueryParam("username") String username, 
-                                        @QueryParam("password") String password)
-    {
-        try
-        {
+    public Response retrieveOffersByUserId(@QueryParam("username") String username,
+            @QueryParam("password") String password) {
+        try {
             UserEntity userEntity = userEntitySessionBeanLocal.userLogin(username, password);
             System.out.println("********** OfferResource.retrieveOffersByUserId(): User " + userEntity.getUsername() + " login remotely via web service");
 
             List<OfferEntity> offerEntities = offerEntitySessionBeanLocal.retrieveOffersByUserId(userEntity.getUserId());
-            for(OfferEntity o: offerEntities)
-            {                
+            for (OfferEntity o : offerEntities) {
                 o.getListing().getOffers().clear();
                 //o.getListing().getReservations().clear();
                 o.getListing().getReviews().clear();
@@ -278,39 +283,49 @@ public class OfferResource {
                 o.getUser().getOffers().clear();
                 o.getUser().getReviews().clear();
                 o.getUser().getTransactions().clear();
+                
+                for (MessageEntity m : o.getMessage()) {
+                    m.getRecipient().getListings().clear();
+                    m.getRecipient().getTransactions().clear();
+                    m.getRecipient().getReviews().clear();
+                    m.getRecipient().getLikedItems().clear();
+                    m.getRecipient().getOffers().clear();
+                    m.getSender().getListings().clear();
+                    m.getSender().getTransactions().clear();
+                    m.getSender().getReviews().clear();
+                    m.getSender().getLikedItems().clear();
+                    m.getSender().getOffers().clear();
+                    m.getOffer().getMessage().clear();
+                    m.getOffer().setSales(null);
+                    m.getOffer().setUser(null);
+                    m.getOffer().setOfferType(null);
+                }
             }
-            
+
             GenericEntity<List<OfferEntity>> genericEntity = new GenericEntity<List<OfferEntity>>(offerEntities) {
             };
-            
+
             return Response.status(Response.Status.OK).entity(genericEntity).build();
-        }
-        catch(InvalidLoginCredentialException ex)
-        {            
+        } catch (InvalidLoginCredentialException ex) {
             return Response.status(Response.Status.UNAUTHORIZED).entity(ex.getMessage()).build();
-        }
-        catch(Exception ex)
-        {
+        } catch (Exception ex) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
         }
     }
-    
+
     @Path("retrieveOfferByListingId")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveOffersByListingId(@QueryParam("username") String username, 
-                                        @QueryParam("password") String password,
-                                        @PathParam("listingId") Long listingId)
-    {
-        try
-        {
+    public Response retrieveOffersByListingId(@QueryParam("username") String username,
+            @QueryParam("password") String password,
+            @PathParam("listingId") Long listingId) {
+        try {
             UserEntity userEntity = userEntitySessionBeanLocal.userLogin(username, password);
             System.out.println("********** OfferResource.retrieveOffersByListingId(): User " + userEntity.getUsername() + " login remotely via web service");
 
             List<OfferEntity> offerEntities = offerEntitySessionBeanLocal.retrieveOffersByListingId(listingId);
-            for(OfferEntity o: offerEntities)
-            {                
+            for (OfferEntity o : offerEntities) {
                 o.getListing().getOffers().clear();
                 //o.getListing().getReservations().clear();
                 o.getListing().getReviews().clear();
@@ -326,19 +341,32 @@ public class OfferResource {
                 o.getUser().getOffers().clear();
                 o.getUser().getReviews().clear();
                 o.getUser().getTransactions().clear();
+                
+                for (MessageEntity m : o.getMessage()) {
+                    m.getRecipient().getListings().clear();
+                    m.getRecipient().getTransactions().clear();
+                    m.getRecipient().getReviews().clear();
+                    m.getRecipient().getLikedItems().clear();
+                    m.getRecipient().getOffers().clear();
+                    m.getSender().getListings().clear();
+                    m.getSender().getTransactions().clear();
+                    m.getSender().getReviews().clear();
+                    m.getSender().getLikedItems().clear();
+                    m.getSender().getOffers().clear();
+                    m.getOffer().getMessage().clear();
+                    m.getOffer().setSales(null);
+                    m.getOffer().setUser(null);
+                    m.getOffer().setOfferType(null);
+                }
             }
-            
+
             GenericEntity<List<OfferEntity>> genericEntity = new GenericEntity<List<OfferEntity>>(offerEntities) {
             };
-            
+
             return Response.status(Response.Status.OK).entity(genericEntity).build();
-        }
-        catch(InvalidLoginCredentialException ex)
-        {            
+        } catch (InvalidLoginCredentialException ex) {
             return Response.status(Response.Status.UNAUTHORIZED).entity(ex.getMessage()).build();
-        }
-        catch(Exception ex)
-        {
+        } catch (Exception ex) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
         }
     }
@@ -363,5 +391,4 @@ public class OfferResource {
         }
     }
 
-    
 }
