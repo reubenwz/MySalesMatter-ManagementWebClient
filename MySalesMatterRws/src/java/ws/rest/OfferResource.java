@@ -285,20 +285,9 @@ public class OfferResource {
                 o.getUser().getTransactions().clear();
                 
                 for (MessageEntity m : o.getMessage()) {
-                    m.getRecipient().getListings().clear();
-                    m.getRecipient().getTransactions().clear();
-                    m.getRecipient().getReviews().clear();
-                    m.getRecipient().getLikedItems().clear();
-                    m.getRecipient().getOffers().clear();
-                    m.getSender().getListings().clear();
-                    m.getSender().getTransactions().clear();
-                    m.getSender().getReviews().clear();
-                    m.getSender().getLikedItems().clear();
-                    m.getSender().getOffers().clear();
-                    m.getOffer().getMessage().clear();
-                    m.getOffer().setSales(null);
-                    m.getOffer().setUser(null);
-                    m.getOffer().setOfferType(null);
+                    m.setRecipient(null);
+                    m.setSender(null);
+                    m.setOffer(null);
                 }
             }
 
@@ -343,20 +332,9 @@ public class OfferResource {
                 o.getUser().getTransactions().clear();
                 
                 for (MessageEntity m : o.getMessage()) {
-                    m.getRecipient().getListings().clear();
-                    m.getRecipient().getTransactions().clear();
-                    m.getRecipient().getReviews().clear();
-                    m.getRecipient().getLikedItems().clear();
-                    m.getRecipient().getOffers().clear();
-                    m.getSender().getListings().clear();
-                    m.getSender().getTransactions().clear();
-                    m.getSender().getReviews().clear();
-                    m.getSender().getLikedItems().clear();
-                    m.getSender().getOffers().clear();
-                    m.getOffer().getMessage().clear();
-                    m.getOffer().setSales(null);
-                    m.getOffer().setUser(null);
-                    m.getOffer().setOfferType(null);
+                    m.setRecipient(null);
+                    m.setSender(null);
+                    m.setOffer(null);
                 }
             }
 

@@ -131,6 +131,8 @@ public class ListingResource {
             for (OfferEntity o : offers) {
                 o.setListing(null);
                 o.getMessage().clear();
+                o.setUser(null);
+                o.setSales(null);
             }
             List<ReviewEntity> reviews = l.getReviews();
             for (ReviewEntity r : reviews) {
@@ -170,6 +172,8 @@ public class ListingResource {
                 for (OfferEntity o : offers) {
                     o.setListing(null);
                     o.getMessage().clear();
+                    o.setUser(null);
+                    o.setSales(null);
                 }
                 List<ReviewEntity> reviews = l.getReviews();
                 for (ReviewEntity r : reviews) {
@@ -232,10 +236,13 @@ public class ListingResource {
                 for (OfferEntity o : offers) {
                     o.setListing(null);
                     o.getMessage().clear();
+                    o.setUser(null);
+                    o.setSales(null);
                 }
                 List<ReviewEntity> reviews = l.getReviews();
                 for (ReviewEntity r : reviews) {
                     r.setListing(null);
+                    r.setReviewId(null);
                 }
                 List<TagEntity> tags = l.getTags();
                 for (TagEntity t : tags) {
@@ -274,10 +281,13 @@ public class ListingResource {
                 for (OfferEntity o : offers) {
                     o.setListing(null);
                     o.getMessage().clear();
+                    o.setUser(null);
+                    o.setSales(null);
                 }
                 List<ReviewEntity> reviews = l.getReviews();
                 for (ReviewEntity r : reviews) {
                     r.setListing(null);
+                    r.setReviewId(null);
                 }
                 List<TagEntity> tags = l.getTags();
                 for (TagEntity t : tags) {
@@ -336,7 +346,6 @@ public class ListingResource {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
         }
     }*/
-
     @Path("updateListing/{listingId}")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -359,7 +368,7 @@ public class ListingResource {
             return Response.status(Response.Status.BAD_REQUEST).entity("Invalid update listing request").build();
         }
     }
-    
+
     @Path("{listingId}")
     @DELETE
     @Consumes(MediaType.TEXT_PLAIN)

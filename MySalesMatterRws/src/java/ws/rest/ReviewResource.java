@@ -78,6 +78,7 @@ public class ReviewResource {
                 //reviewEntity.getListing().getReservations().clear();
                 reviewEntity.getListing().getReviews().clear();
                 reviewEntity.getListing().getTags().clear();
+                reviewEntity.getListing().setCategoryEntity(null);
                 //reviewEntity.getReviewer().getConversationsAsOfferee().clear();
                 //reviewEntity.getReviewer().getConversationsAsOfferer().clear();
                 reviewEntity.getReviewer().getLikedItems().clear();
@@ -122,6 +123,7 @@ public class ReviewResource {
                 //reviewEntity.getListing().getReservations().clear();
                 reviewEntity.getListing().getReviews().clear();
                 reviewEntity.getListing().getTags().clear();
+                reviewEntity.getListing().setCategoryEntity(null);
                 //reviewEntity.getReviewer().getConversationsAsOfferee().clear();
                 //reviewEntity.getReviewer().getConversationsAsOfferer().clear();
                 reviewEntity.getReviewer().getLikedItems().clear();
@@ -165,14 +167,14 @@ public class ReviewResource {
             //reviewEntity.getListing().getReservations().clear();
             reviewEntity.getListing().getReviews().clear();
             reviewEntity.getListing().getTags().clear();
+            reviewEntity.getListing().setCategoryEntity(null);
             //reviewEntity.getReviewer().getConversationsAsOfferee().clear();
             //reviewEntity.getReviewer().getConversationsAsOfferer().clear();
             reviewEntity.getReviewer().getLikedItems().clear();
             reviewEntity.getReviewer().getListings().clear();
             reviewEntity.getReviewer().getOffers().clear();
             reviewEntity.getReviewer().getReviews().clear();
-            reviewEntity.getReviewer().getTransactions().clear();
-            
+            reviewEntity.getReviewer().getTransactions().clear();         
             return Response.status(Response.Status.OK).entity(reviewEntity).build();
         }
         catch(InvalidLoginCredentialException ex)

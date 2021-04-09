@@ -77,7 +77,6 @@ public class MessageResource {
                 m.getOffer().getMessage().clear();
                 m.getOffer().setSales(null);
                 m.getOffer().setUser(null);
-                m.getOffer().setOfferType(null);             
             }
 
             GenericEntity<List<MessageEntity>> genericEntity = new GenericEntity<List<MessageEntity>>(messageEntities) {
@@ -117,7 +116,6 @@ public class MessageResource {
                 m.getOffer().getMessage().clear();
                 m.getOffer().setSales(null);
                 m.getOffer().setUser(null);
-                m.getOffer().setOfferType(null);  
             }
             
             GenericEntity<List<MessageEntity>> genericEntity = new GenericEntity<List<MessageEntity>>(messageEntities) {
