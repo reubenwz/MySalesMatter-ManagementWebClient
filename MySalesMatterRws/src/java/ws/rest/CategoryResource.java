@@ -34,9 +34,7 @@ import util.exception.CreateNewCategoryException;
 import util.exception.DeleteCategoryException;
 import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
-import util.exception.UnknownPersistenceException;
 import util.exception.UpdateCategoryException;
-import util.exception.UserNotFoundException;
 import ws.datamodel.CreateCategoryReq;
 import ws.datamodel.UpdateCategoryReq;
 
@@ -91,6 +89,7 @@ public class CategoryResource {
             List<CategoryEntity> categoryEntities = categoryEntitySessionBeanLocal.retrieveAllCategories();
             for (CategoryEntity c : categoryEntities) {
                 c.getParentCategoryEntity().getSubCategoryEntities().remove(c);
+                c.getParentCategoryEntity().setListings(null);
                 
                 List<CategoryEntity> subcategories = c.getSubCategoryEntities();
                 for (CategoryEntity s : subcategories) {
@@ -127,6 +126,7 @@ public class CategoryResource {
             List<CategoryEntity> categoryEntities = categoryEntitySessionBeanLocal.retrieveAllCategories();
             for (CategoryEntity c : categoryEntities) {
                 c.getParentCategoryEntity().getSubCategoryEntities().remove(c);
+                c.getParentCategoryEntity().setListings(null);
                 
                 List<CategoryEntity> subcategories = c.getSubCategoryEntities();
                 for (CategoryEntity s : subcategories) {
@@ -163,6 +163,7 @@ public class CategoryResource {
             List<CategoryEntity> categoryEntities = categoryEntitySessionBeanLocal.retrieveAllCategories();
             for (CategoryEntity c : categoryEntities) {
                 c.getParentCategoryEntity().getSubCategoryEntities().remove(c);
+                c.getParentCategoryEntity().setListings(null);
                 
                 List<CategoryEntity> subcategories = c.getSubCategoryEntities();
                 for (CategoryEntity s : subcategories) {
@@ -199,6 +200,7 @@ public class CategoryResource {
             List<CategoryEntity> categoryEntities = categoryEntitySessionBeanLocal.retrieveAllCategories();
             for (CategoryEntity c : categoryEntities) {
                 c.getParentCategoryEntity().getSubCategoryEntities().remove(c);
+                c.getParentCategoryEntity().setListings(null);
                 
                 List<CategoryEntity> subcategories = c.getSubCategoryEntities();
                 for (CategoryEntity s : subcategories) {
@@ -236,6 +238,7 @@ public class CategoryResource {
             CategoryEntity c = categoryEntitySessionBeanLocal.retrieveCategoryByCategoryId(categoryId);
 
             c.getParentCategoryEntity().getSubCategoryEntities().remove(c);
+            c.getParentCategoryEntity().setListings(null);
                 
                 List<CategoryEntity> subcategories = c.getSubCategoryEntities();
                 for (CategoryEntity s : subcategories) {

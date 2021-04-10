@@ -33,6 +33,7 @@ import util.exception.ItemNotLikedException;
 import util.exception.LikedItemEntityNotFoundException;
 import util.exception.ListingNotFoundException;
 import util.exception.UserNotFoundException;
+
 /**
  * REST Web Service
  *
@@ -64,6 +65,15 @@ public class LikedItemResource {
             List<LikedItemEntity> likedItemEntities = likedItemEntitySessionBeanLocal.getLikedItems(userEntity.getUserId());
             for (LikedItemEntity l : likedItemEntities) {
                 l.getUser().getLikedItems().remove(l);
+                l.getUser().getListings().clear();
+                l.getUser().getOffers().clear();
+                l.getUser().getReviews().clear();
+                l.getUser().getTransactions().clear();
+                l.getListing().setCategoryEntity(null);
+                l.getListing().getOffers().clear();
+                l.getListing().getReviews().clear();
+                l.getListing().getTags().clear();
+                l.getListing().setUser(null);
             }
 
             GenericEntity<List<LikedItemEntity>> genericEntity = new GenericEntity<List<LikedItemEntity>>(likedItemEntities) {
@@ -105,18 +115,18 @@ public class LikedItemResource {
     public Response unlikeItem(@QueryParam("username") String username,
             @QueryParam("password") String password,
             @PathParam("listingId") Long listingId) {
-            try {
-                UserEntity userEntity = userEntitySessionBeanLocal.userLogin(username, password);
-                System.out.println("********** LikedItemResource.unlikeItem(): User " + userEntity.getUsername() + " login remotely via web service");
-                likedItemEntitySessionBeanLocal.unlikeItem(userEntity.getUserId(), listingId);
-                return Response.status(Response.Status.OK).build();
-            } catch (InvalidLoginCredentialException ex) {
-                return Response.status(Response.Status.UNAUTHORIZED).entity(ex.getMessage()).build();
-            } catch (ListingNotFoundException | ItemNotLikedException ex) {
-                return Response.status(Response.Status.BAD_REQUEST).entity(ex.getMessage()).build();
-            } catch (Exception ex) {
-                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
-            }
+        try {
+            UserEntity userEntity = userEntitySessionBeanLocal.userLogin(username, password);
+            System.out.println("********** LikedItemResource.unlikeItem(): User " + userEntity.getUsername() + " login remotely via web service");
+            likedItemEntitySessionBeanLocal.unlikeItem(userEntity.getUserId(), listingId);
+            return Response.status(Response.Status.OK).build();
+        } catch (InvalidLoginCredentialException ex) {
+            return Response.status(Response.Status.UNAUTHORIZED).entity(ex.getMessage()).build();
+        } catch (ListingNotFoundException | ItemNotLikedException ex) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(ex.getMessage()).build();
+        } catch (Exception ex) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
+        }
     }
 
     @Path("retrieveLikedItemById/{likedItemId}")
@@ -133,6 +143,15 @@ public class LikedItemResource {
             LikedItemEntity l = likedItemEntitySessionBeanLocal.retrieveLikedItemEntityById(likedItemId);
 
             l.getUser().getLikedItems().remove(l);
+            l.getUser().getListings().clear();
+            l.getUser().getOffers().clear();
+            l.getUser().getReviews().clear();
+            l.getUser().getTransactions().clear();
+            l.getListing().setCategoryEntity(null);
+            l.getListing().getOffers().clear();
+            l.getListing().getReviews().clear();
+            l.getListing().getTags().clear();
+            l.getListing().setUser(null);
 
             return Response.status(Response.Status.OK).entity(l).build();
         } catch (InvalidLoginCredentialException ex) {

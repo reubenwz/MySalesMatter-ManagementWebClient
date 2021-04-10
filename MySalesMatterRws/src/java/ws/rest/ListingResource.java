@@ -34,6 +34,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import util.enumeration.OfferType;
 import util.exception.CategoryNotFoundException;
 import util.exception.CreateNewListingException;
 import util.exception.DeleteListingException;
@@ -84,21 +85,42 @@ public class ListingResource {
 
             List<ListingEntity> listingEntities = listingEntitySessionBeanLocal.retrieveAllListings();
             for (ListingEntity l : listingEntities) {
-                l.getUser().getListings().remove(l);
-                l.getCategoryEntity().getListings().remove(l);
-                List<OfferEntity> offers = l.getOffers();
-                for (OfferEntity o : offers) {
+                l.getCategoryEntity().getListings().clear();
+                l.getCategoryEntity().getSubCategoryEntities().clear();
+                l.getUser().getLikedItems().clear();
+                l.getUser().getListings().clear();
+                l.getUser().getOffers().clear();
+                l.getUser().getReviews().clear();
+                l.getUser().getTransactions().clear();
+                for (OfferEntity o: l.getOffers()) {
                     o.setListing(null);
                     o.getMessage().clear();
+                    o.setUser(null);
+                    o.setSales(null);
                 }
-                List<ReviewEntity> reviews = l.getReviews();
-                for (ReviewEntity r : reviews) {
+                for (ReviewEntity r: l.getReviews()) {
+                    r.setReviewer(null);
                     r.setListing(null);
                 }
-                List<TagEntity> tags = l.getTags();
-                for (TagEntity t : tags) {
-                    t.getListings().remove(l);
+                for (TagEntity t: l.getTags()) {
+                    t.getListings().clear();
                 }
+                
+//                l.getUser().getListings().remove(l);
+//                l.getCategoryEntity().getListings().remove(l);
+//                List<OfferEntity> offers = l.getOffers();
+//                for (OfferEntity o : offers) {
+//                    o.setListing(null);
+//                    o.getMessage().clear();
+//                }
+//                List<ReviewEntity> reviews = l.getReviews();
+//                for (ReviewEntity r : reviews) {
+//                    r.setListing(null);
+//                }
+//                List<TagEntity> tags = l.getTags();
+//                for (TagEntity t : tags) {
+//                    t.getListings().remove(l);
+//                }
             }
 
             GenericEntity<List<ListingEntity>> genericEntity = new GenericEntity<List<ListingEntity>>(listingEntities) {
@@ -124,24 +146,46 @@ public class ListingResource {
             System.out.println("********** ListingResource.retrieveListingByListingId(): User " + userEntity.getUsername() + " login remotely via web service");
 
             ListingEntity l = listingEntitySessionBeanLocal.retrieveListingByListingId(listingId);
-
-            l.getUser().getListings().remove(l);
-            l.getCategoryEntity().getListings().remove(l);
-            List<OfferEntity> offers = l.getOffers();
-            for (OfferEntity o : offers) {
+            
+     
+            l.getCategoryEntity().getListings().clear();
+            l.getCategoryEntity().getSubCategoryEntities().clear();
+            l.getUser().getLikedItems().clear();
+            l.getUser().getListings().clear();
+            l.getUser().getOffers().clear();
+            l.getUser().getReviews().clear();
+            l.getUser().getTransactions().clear();
+            for (OfferEntity o: l.getOffers()) {
                 o.setListing(null);
                 o.getMessage().clear();
                 o.setUser(null);
                 o.setSales(null);
             }
-            List<ReviewEntity> reviews = l.getReviews();
-            for (ReviewEntity r : reviews) {
+            for (ReviewEntity r: l.getReviews()) {
+                r.setReviewer(null);
                 r.setListing(null);
             }
-            List<TagEntity> tags = l.getTags();
-            for (TagEntity t : tags) {
-                t.getListings().remove(l);
+            for (TagEntity t: l.getTags()) {
+                t.getListings().clear();
             }
+
+//            l.getUser().getListings().remove(l);
+//            l.getCategoryEntity().getListings().remove(l);
+//            List<OfferEntity> offers = l.getOffers();
+//            for (OfferEntity o : offers) {
+//                o.setListing(null);
+//                o.getMessage().clear();
+//                o.setUser(null);
+//                o.setSales(null);
+//            }
+//            List<ReviewEntity> reviews = l.getReviews();
+//            for (ReviewEntity r : reviews) {
+//                r.setListing(null);
+//            }
+//            List<TagEntity> tags = l.getTags();
+//            for (TagEntity t : tags) {
+//                t.getListings().remove(l);
+//            }
 
             return Response.status(Response.Status.OK).entity(l).build();
         } catch (InvalidLoginCredentialException ex) {
@@ -166,24 +210,46 @@ public class ListingResource {
             List<ListingEntity> listingEntities = listingEntitySessionBeanLocal.retrieveListingsByUser(userEntity.getUserId());
 
             for (ListingEntity l : listingEntities) {
-                l.getUser().getListings().remove(l);
-                l.getCategoryEntity().getListings().remove(l);
-                List<OfferEntity> offers = l.getOffers();
-                for (OfferEntity o : offers) {
+                l.getCategoryEntity().getListings().clear();
+                l.getCategoryEntity().getSubCategoryEntities().clear();
+                l.getUser().getLikedItems().clear();
+                l.getUser().getListings().clear();
+                l.getUser().getOffers().clear();
+                l.getUser().getReviews().clear();
+                l.getUser().getTransactions().clear();
+                for (OfferEntity o: l.getOffers()) {
                     o.setListing(null);
                     o.getMessage().clear();
                     o.setUser(null);
                     o.setSales(null);
                 }
-                List<ReviewEntity> reviews = l.getReviews();
-                for (ReviewEntity r : reviews) {
+                for (ReviewEntity r: l.getReviews()) {
+                    r.setReviewer(null);
                     r.setListing(null);
                 }
-                List<TagEntity> tags = l.getTags();
-                for (TagEntity t : tags) {
-                    t.getListings().remove(l);
+                for (TagEntity t: l.getTags()) {
+                    t.getListings().clear();
                 }
             }
+//            for (ListingEntity l : listingEntities) {
+//                l.getUser().getListings().remove(l);
+//                l.getCategoryEntity().getListings().remove(l);
+//                List<OfferEntity> offers = l.getOffers();
+//                for (OfferEntity o : offers) {
+//                    o.setListing(null);
+//                    o.getMessage().clear();
+//                    o.setUser(null);
+//                    o.setSales(null);
+//                }
+//                List<ReviewEntity> reviews = l.getReviews();
+//                for (ReviewEntity r : reviews) {
+//                    r.setListing(null);
+//                }
+//                List<TagEntity> tags = l.getTags();
+//                for (TagEntity t : tags) {
+//                    t.getListings().remove(l);
+//                }
+//            }
 
             GenericEntity<List<ListingEntity>> genericEntity = new GenericEntity<List<ListingEntity>>(listingEntities) {
             };
@@ -230,25 +296,47 @@ public class ListingResource {
             List<ListingEntity> listingEntities = listingEntitySessionBeanLocal.searchListingsByName(name);
 
             for (ListingEntity l : listingEntities) {
-                l.getUser().getListings().remove(l);
-                l.getCategoryEntity().getListings().remove(l);
-                List<OfferEntity> offers = l.getOffers();
-                for (OfferEntity o : offers) {
+                l.getCategoryEntity().getListings().clear();
+                l.getCategoryEntity().getSubCategoryEntities().clear();
+                l.getUser().getLikedItems().clear();
+                l.getUser().getListings().clear();
+                l.getUser().getOffers().clear();
+                l.getUser().getReviews().clear();
+                l.getUser().getTransactions().clear();
+                for (OfferEntity o: l.getOffers()) {
                     o.setListing(null);
                     o.getMessage().clear();
                     o.setUser(null);
                     o.setSales(null);
                 }
-                List<ReviewEntity> reviews = l.getReviews();
-                for (ReviewEntity r : reviews) {
+                for (ReviewEntity r: l.getReviews()) {
+                    r.setReviewer(null);
                     r.setListing(null);
-                    r.setReviewId(null);
                 }
-                List<TagEntity> tags = l.getTags();
-                for (TagEntity t : tags) {
-                    t.getListings().remove(l);
+                for (TagEntity t: l.getTags()) {
+                    t.getListings().clear();
                 }
             }
+//            for (ListingEntity l : listingEntities) {
+//                l.getUser().getListings().remove(l);
+//                l.getCategoryEntity().getListings().remove(l);
+//                List<OfferEntity> offers = l.getOffers();
+//                for (OfferEntity o : offers) {
+//                    o.setListing(null);
+//                    o.getMessage().clear();
+//                    o.setUser(null);
+//                    o.setSales(null);
+//                }
+//                List<ReviewEntity> reviews = l.getReviews();
+//                for (ReviewEntity r : reviews) {
+//                    r.setListing(null);
+//                    r.setReviewId(null);
+//                }
+//                List<TagEntity> tags = l.getTags();
+//                for (TagEntity t : tags) {
+//                    t.getListings().remove(l);
+//                }
+//            }
 
             GenericEntity<List<ListingEntity>> genericEntity = new GenericEntity<List<ListingEntity>>(listingEntities) {
             };
@@ -275,25 +363,47 @@ public class ListingResource {
             List<ListingEntity> listingEntities = listingEntitySessionBeanLocal.filterListingsByCategory(categoryId);
 
             for (ListingEntity l : listingEntities) {
-                l.getUser().getListings().remove(l);
-                l.getCategoryEntity().getListings().remove(l);
-                List<OfferEntity> offers = l.getOffers();
-                for (OfferEntity o : offers) {
+                l.getCategoryEntity().getListings().clear();
+                l.getCategoryEntity().getSubCategoryEntities().clear();
+                l.getUser().getLikedItems().clear();
+                l.getUser().getListings().clear();
+                l.getUser().getOffers().clear();
+                l.getUser().getReviews().clear();
+                l.getUser().getTransactions().clear();
+                for (OfferEntity o: l.getOffers()) {
                     o.setListing(null);
                     o.getMessage().clear();
                     o.setUser(null);
                     o.setSales(null);
                 }
-                List<ReviewEntity> reviews = l.getReviews();
-                for (ReviewEntity r : reviews) {
+                for (ReviewEntity r: l.getReviews()) {
+                    r.setReviewer(null);
                     r.setListing(null);
-                    r.setReviewId(null);
                 }
-                List<TagEntity> tags = l.getTags();
-                for (TagEntity t : tags) {
-                    t.getListings().remove(l);
+                for (TagEntity t: l.getTags()) {
+                    t.getListings().clear();
                 }
             }
+//            for (ListingEntity l : listingEntities) {
+//                l.getUser().getListings().remove(l);
+//                l.getCategoryEntity().getListings().remove(l);
+//                List<OfferEntity> offers = l.getOffers();
+//                for (OfferEntity o : offers) {
+//                    o.setListing(null);
+//                    o.getMessage().clear();
+//                    o.setUser(null);
+//                    o.setSales(null);
+//                }
+//                List<ReviewEntity> reviews = l.getReviews();
+//                for (ReviewEntity r : reviews) {
+//                    r.setListing(null);
+//                    r.setReviewId(null);
+//                }
+//                List<TagEntity> tags = l.getTags();
+//                for (TagEntity t : tags) {
+//                    t.getListings().remove(l);
+//                }
+//            }
 
             GenericEntity<List<ListingEntity>> genericEntity = new GenericEntity<List<ListingEntity>>(listingEntities) {
             };

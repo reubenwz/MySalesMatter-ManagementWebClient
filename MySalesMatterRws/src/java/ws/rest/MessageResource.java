@@ -62,8 +62,11 @@ public class MessageResource {
             System.out.println("********** MessageResource.retrieveAllMessages(): User " + userEntity.getUsername() + " login remotely via web service");
 
             List<MessageEntity> messageEntities = messageEntitySessionBeanLocal.retrieveAllMessages();
-            
             for (MessageEntity m : messageEntities) {
+                m.getOffer().setListing(null);
+                m.getOffer().getMessage().clear();
+                m.getOffer().setUser(null);
+                m.getOffer().setSales(null);
                 m.getRecipient().getListings().clear();
                 m.getRecipient().getTransactions().clear();
                 m.getRecipient().getReviews().clear();
@@ -74,9 +77,9 @@ public class MessageResource {
                 m.getSender().getReviews().clear();
                 m.getSender().getLikedItems().clear();
                 m.getSender().getOffers().clear();
-                m.getOffer().getMessage().clear();
-                m.getOffer().setSales(null);
-                m.getOffer().setUser(null);
+//                m.getOffer().getMessage().clear();
+//                m.getOffer().setSales(null);
+//                m.getOffer().setUser(null);
             }
 
             GenericEntity<List<MessageEntity>> genericEntity = new GenericEntity<List<MessageEntity>>(messageEntities) {
@@ -103,6 +106,10 @@ public class MessageResource {
             List<MessageEntity> messageEntities = messageEntitySessionBeanLocal.retrieveReceivedMessageSByUserId(userEntity.getUserId());
 
             for (MessageEntity m : messageEntities) {
+                m.getOffer().setListing(null);
+                m.getOffer().getMessage().clear();
+                m.getOffer().setUser(null);
+                m.getOffer().setSales(null);
                 m.getRecipient().getListings().clear();
                 m.getRecipient().getTransactions().clear();
                 m.getRecipient().getReviews().clear();
@@ -113,9 +120,9 @@ public class MessageResource {
                 m.getSender().getReviews().clear();
                 m.getSender().getLikedItems().clear();
                 m.getSender().getOffers().clear();
-                m.getOffer().getMessage().clear();
-                m.getOffer().setSales(null);
-                m.getOffer().setUser(null);
+//                m.getOffer().getMessage().clear();
+//                m.getOffer().setSales(null);
+//                m.getOffer().setUser(null);
             }
             
             GenericEntity<List<MessageEntity>> genericEntity = new GenericEntity<List<MessageEntity>>(messageEntities) {

@@ -85,6 +85,10 @@ public class OfferResource {
                 o.getUser().getReviews().clear();
                 o.getUser().getTransactions().clear();
                 for (MessageEntity m : o.getMessage()) {
+                    m.getOffer().setListing(null);
+                    m.getOffer().getMessage().clear();
+                    m.getOffer().setUser(null);
+                    m.getOffer().setSales(null);
                     m.getRecipient().getListings().clear();
                     m.getRecipient().getTransactions().clear();
                     m.getRecipient().getReviews().clear();
@@ -95,10 +99,6 @@ public class OfferResource {
                     m.getSender().getReviews().clear();
                     m.getSender().getLikedItems().clear();
                     m.getSender().getOffers().clear();
-                    m.getOffer().getMessage().clear();
-                    m.getOffer().setSales(null);
-                    m.getOffer().setUser(null);
-                    m.getOffer().setOfferType(null);
                 }
             }
 
@@ -127,6 +127,7 @@ public class OfferResource {
             OfferEntity o = offerEntitySessionBeanLocal.retrieveOfferById(offerId);
 
             o.getListing().getOffers().clear();
+            
             //o.getListing().getReservations().clear();
             o.getListing().getReviews().clear();
             o.getListing().getTags().clear();
@@ -141,24 +142,24 @@ public class OfferResource {
             o.getUser().getOffers().clear();
             o.getUser().getReviews().clear();
             o.getUser().getTransactions().clear();
-            
+                        
+
             for (MessageEntity m : o.getMessage()) {
-                    m.getRecipient().getListings().clear();
-                    m.getRecipient().getTransactions().clear();
-                    m.getRecipient().getReviews().clear();
-                    m.getRecipient().getLikedItems().clear();
-                    m.getRecipient().getOffers().clear();
-                    m.getSender().getListings().clear();
-                    m.getSender().getTransactions().clear();
-                    m.getSender().getReviews().clear();
-                    m.getSender().getLikedItems().clear();
-                    m.getSender().getOffers().clear();
-                    m.getOffer().getMessage().clear();
-                    m.getOffer().setSales(null);
-                    m.getOffer().setUser(null);
-                    m.getOffer().setOfferType(null);
-                }
-            
+                m.getOffer().setListing(null);
+                m.getOffer().getMessage().clear();
+                m.getOffer().setUser(null);
+                m.getOffer().setSales(null);
+                m.getRecipient().getListings().clear();
+                m.getRecipient().getTransactions().clear();
+                m.getRecipient().getReviews().clear();
+                m.getRecipient().getLikedItems().clear();
+                m.getRecipient().getOffers().clear();
+                m.getSender().getListings().clear();
+                m.getSender().getTransactions().clear();
+                m.getSender().getReviews().clear();
+                m.getSender().getLikedItems().clear();
+                m.getSender().getOffers().clear();
+            }
 
             return Response.status(Response.Status.OK).entity(o).build();
         } catch (InvalidLoginCredentialException ex) {
@@ -283,11 +284,22 @@ public class OfferResource {
                 o.getUser().getOffers().clear();
                 o.getUser().getReviews().clear();
                 o.getUser().getTransactions().clear();
-                
+
                 for (MessageEntity m : o.getMessage()) {
-                    m.setRecipient(null);
-                    m.setSender(null);
-                    m.setOffer(null);
+                    m.getOffer().setListing(null);
+                    m.getOffer().getMessage().clear();
+                    m.getOffer().setUser(null);
+                    m.getOffer().setSales(null);
+                    m.getRecipient().getListings().clear();
+                    m.getRecipient().getTransactions().clear();
+                    m.getRecipient().getReviews().clear();
+                    m.getRecipient().getLikedItems().clear();
+                    m.getRecipient().getOffers().clear();
+                    m.getSender().getListings().clear();
+                    m.getSender().getTransactions().clear();
+                    m.getSender().getReviews().clear();
+                    m.getSender().getLikedItems().clear();
+                    m.getSender().getOffers().clear();
                 }
             }
 
@@ -330,11 +342,22 @@ public class OfferResource {
                 o.getUser().getOffers().clear();
                 o.getUser().getReviews().clear();
                 o.getUser().getTransactions().clear();
-                
+
                 for (MessageEntity m : o.getMessage()) {
-                    m.setRecipient(null);
-                    m.setSender(null);
-                    m.setOffer(null);
+                    m.getOffer().setListing(null);
+                    m.getOffer().getMessage().clear();
+                    m.getOffer().setUser(null);
+                    m.getOffer().setSales(null);
+                    m.getRecipient().getListings().clear();
+                    m.getRecipient().getTransactions().clear();
+                    m.getRecipient().getReviews().clear();
+                    m.getRecipient().getLikedItems().clear();
+                    m.getRecipient().getOffers().clear();
+                    m.getSender().getListings().clear();
+                    m.getSender().getTransactions().clear();
+                    m.getSender().getReviews().clear();
+                    m.getSender().getLikedItems().clear();
+                    m.getSender().getOffers().clear();
                 }
             }
 

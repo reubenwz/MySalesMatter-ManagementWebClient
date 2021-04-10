@@ -73,6 +73,7 @@ public class SalesTransactionResource {
             List<SalesTransactionEntity> salesTransactionEntities = salesTransactionEntitySessionBeanLocal.retrieveAllTransactions();
             for(SalesTransactionEntity s: salesTransactionEntities)
             {    
+                s.getOffer().getMessage().clear();
                 s.getOffer().setListing(null);
                 s.getOffer().setSales(null);
                 s.getOffer().setUser(null);
@@ -83,7 +84,6 @@ public class SalesTransactionResource {
                 s.getUser().getOffers().clear();
                 s.getUser().getReviews().clear();
                 s.getUser().getTransactions().clear();
-                s.getOffer().getMessage().clear();
             }
             
             GenericEntity<List<SalesTransactionEntity>> genericEntity = new GenericEntity<List<SalesTransactionEntity>>(salesTransactionEntities) {
@@ -116,6 +116,7 @@ public class SalesTransactionResource {
             List<SalesTransactionEntity> salesTransactionEntities = salesTransactionEntitySessionBeanLocal.getSalesTransactionByUserId(userEntity.getUserId());
             for(SalesTransactionEntity s: salesTransactionEntities)
             {                
+                s.getOffer().getMessage().clear();
                 s.getOffer().setListing(null);
                 s.getOffer().setSales(null);
                 s.getOffer().setUser(null);
@@ -126,7 +127,6 @@ public class SalesTransactionResource {
                 s.getUser().getOffers().clear();
                 s.getUser().getReviews().clear();
                 s.getUser().getTransactions().clear();
-                s.getOffer().getMessage().clear();
             }
             
             GenericEntity<List<SalesTransactionEntity>> genericEntity = new GenericEntity<List<SalesTransactionEntity>>(salesTransactionEntities) {

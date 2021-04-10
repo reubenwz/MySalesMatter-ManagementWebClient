@@ -6,6 +6,7 @@
             <file>file:/Users/sylvia/Desktop/MySalesMatterPf/MySalesMatterPf/MySalesMatter-ejb/src/java/entity/MessageEntity.java</file>
             <file>file:/Users/sylvia/Desktop/MySalesMatterPf/MySalesMatterPf/MySalesMatter-ejb/src/java/entity/OfferEntity.java</file>
             <file>file:/Users/sylvia/Desktop/MySalesMatterPf/MySalesMatterPf/MySalesMatter-ejb/src/java/entity/ReviewEntity.java</file>
+            <file>file:/Users/sylvia/Desktop/MySalesMatterPf/MySalesMatterPf/MySalesMatter-ejb/src/java/entity/UserEntity.java</file>
             <file>file:/Users/sylvia/Desktop/MySalesMatterPf/MySalesMatterPf/MySalesMatter-ejb/src/java/entity/LikedItemEntity.java</file>
             <file>file:/Users/sylvia/Desktop/MySalesMatterPf/MySalesMatterPf/MySalesMatter-ejb/src/java/ejb/session/stateless/ReviewEntitySessionBean.java</file>
             <file>file:/Users/sylvia/Desktop/MySalesMatterPf/MySalesMatterPf/MySalesMatter-ejb/src/java/ejb/session/stateless/MessageEntitySessionBean.java</file>

@@ -73,7 +73,7 @@ public class ReviewResource {
 
             List<ReviewEntity> reviewEntities = reviewEntitySessionBeanLocal.retrieveAllReviews();
             for(ReviewEntity reviewEntity: reviewEntities)
-            {                
+            {            
                 reviewEntity.getListing().getOffers().clear();
                 //reviewEntity.getListing().getReservations().clear();
                 reviewEntity.getListing().getReviews().clear();
