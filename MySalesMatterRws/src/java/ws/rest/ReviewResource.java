@@ -104,11 +104,11 @@ public class ReviewResource {
         }
     }
     
-    @Path("retrieveReviewByUserId")
+    @Path("retrieveReviewsByUserId")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveReviewByUserId(@QueryParam("username") String username, 
+    public Response retrieveReviewsByUserId(@QueryParam("username") String username, 
                                         @QueryParam("password") String password)
     {
         try

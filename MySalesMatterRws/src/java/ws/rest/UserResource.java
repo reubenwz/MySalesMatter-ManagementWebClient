@@ -65,31 +65,36 @@ public class UserResource {
             UserEntity userEntity = userEntitySessionBeanLocal.userLogin(username, password);
             System.out.println("********** UserResource.userLogin(): User " + userEntity.getUsername() + " login remotely via web service");
 
-            for (ReviewEntity r : userEntity.getReviews()) {
-                r.setListing(null);
-                r.setReviewer(null);
-            }
-            for (LikedItemEntity l : userEntity.getLikedItems()) {
-                l.setUser(null);
-                l.setListing(null);
-            }
-            for (OfferEntity o : userEntity.getOffers()) {
-                o.setListing(null);
-                o.setOfferType(null);
-                o.setSales(null);
-                o.setUser(null);
-                o.getMessage().clear();
-            }
-            for (SalesTransactionEntity s : userEntity.getTransactions()) {
-                s.setOffer(null);
-                s.setUser(null);
-            }
-            for (ListingEntity l : userEntity.getListings()) {
-                l.setCategoryEntity(null);
-                l.getTags().clear();
-                l.getReviews().clear();
-                l.getOffers().clear();
-            }
+            userEntity.setLikedItems(null);
+            userEntity.setTransactions(null);
+            userEntity.setReviews(null);
+            userEntity.setOffers(null);
+            userEntity.setListings(null);
+//            for (ReviewEntity r : userEntity.getReviews()) {
+//                r.setListing(null);
+//                r.setReviewer(null);
+//            }
+//            for (LikedItemEntity l : userEntity.getLikedItems()) {
+//                l.setUser(null);
+//                l.setListing(null);
+//            }
+//            for (OfferEntity o : userEntity.getOffers()) {
+//                o.setListing(null);
+//                o.setOfferType(null);
+//                o.setSales(null);
+//                o.setUser(null);
+//                o.getMessage().clear();
+//            }
+//            for (SalesTransactionEntity s : userEntity.getTransactions()) {
+//                s.setOffer(null);
+//                s.setUser(null);
+//            }
+//            for (ListingEntity l : userEntity.getListings()) {
+//                l.setCategoryEntity(null);
+//                l.getTags().clear();
+//                l.getReviews().clear();
+//                l.getOffers().clear();
+//            }
 
             return Response.status(Status.OK).entity(userEntity).build();
         } catch (InvalidLoginCredentialException ex) {
@@ -106,32 +111,38 @@ public class UserResource {
     public Response retrieveUserById(@PathParam("userId") Long userId) {
         try {
             UserEntity userEntity = userEntitySessionBeanLocal.retrieveUserById(userId);
+            
+            userEntity.setLikedItems(null);
+            userEntity.setTransactions(null);
+            userEntity.setReviews(null);
+            userEntity.setOffers(null);
+            userEntity.setListings(null);
 
-            for (ReviewEntity r : userEntity.getReviews()) {
-                r.setListing(null);
-                r.setReviewer(null);
-            }
-            for (LikedItemEntity l : userEntity.getLikedItems()) {
-                l.setUser(null);
-                l.setListing(null);
-            }
-            for (OfferEntity o : userEntity.getOffers()) {
-                o.setListing(null);
-                o.setOfferType(null);
-                o.setSales(null);
-                o.setUser(null);
-                o.getMessage().clear();
-            }
-            for (SalesTransactionEntity s : userEntity.getTransactions()) {
-                s.setOffer(null);
-                s.setUser(null);
-            }
-            for (ListingEntity l : userEntity.getListings()) {
-                l.setCategoryEntity(null);
-                l.getTags().clear();
-                l.getReviews().clear();
-                l.getOffers().clear();
-            }
+//            for (ReviewEntity r : userEntity.getReviews()) {
+//                r.setListing(null);
+//                r.setReviewer(null);
+//            }
+//            for (LikedItemEntity l : userEntity.getLikedItems()) {
+//                l.setUser(null);
+//                l.setListing(null);
+//            }
+//            for (OfferEntity o : userEntity.getOffers()) {
+//                o.setListing(null);
+//                o.setOfferType(null);
+//                o.setSales(null);
+//                o.setUser(null);
+//                o.getMessage().clear();
+//            }
+//            for (SalesTransactionEntity s : userEntity.getTransactions()) {
+//                s.setOffer(null);
+//                s.setUser(null);
+//            }
+//            for (ListingEntity l : userEntity.getListings()) {
+//                l.setCategoryEntity(null);
+//                l.getTags().clear();
+//                l.getReviews().clear();
+//                l.getOffers().clear();
+//            }
 
             return Response.status(Status.OK).entity(userEntity).build();
         } catch (Exception ex) {
