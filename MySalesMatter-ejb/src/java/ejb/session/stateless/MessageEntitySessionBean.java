@@ -92,6 +92,42 @@ public class MessageEntitySessionBean implements MessageEntitySessionBeanLocal {
         }
 
     }
+    
+    @Override
+    public Long addMessageV2(String message, Long offerId, Long senderId, Long recipientId, Date date) throws UnknownPersistenceException, OfferNotFoundException, UserNotFoundException, InputDataValidationException {
+        try {
+            UserEntity recipient = userEntitySessionBeanLocal.retrieveUserById(recipientId);
+            UserEntity sender = userEntitySessionBeanLocal.retrieveUserById(senderId);
+            OfferEntity o = offerEntitySessionBeanLocal.retrieveOfferById(offerId);
+            MessageEntity m = new MessageEntity();
+            m.setMessage(message);
+            m.setSender(sender);
+            m.setSentDate(date);
+            m.setRecipient(recipient);
+            m.setOffer(o);
+            Set<ConstraintViolation<MessageEntity>> constraintViolations = validator.validate(m);
+            if (constraintViolations.isEmpty()) {
+                try {
+                    em.persist(m);
+                    o.getMessage().add(m);
+                    em.merge(o);
+                    em.flush();
+                    return m.getMessageId();
+                } catch (PersistenceException ex) {
+                    throw new UnknownPersistenceException(ex.getMessage());
+
+                }
+            } else {
+                throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
+            }
+
+        } catch (OfferNotFoundException ex) {
+            throw new OfferNotFoundException("Offer with this id, " + offerId + ", does not exist!");
+        } catch (UserNotFoundException ex) {
+            throw new UserNotFoundException("Sender with this id, " + senderId + ", does not exist!");
+        }
+
+    }
 
     @Override
     public List<MessageEntity> retrieveReceivedMessageSByUserId(Long userId) throws MessageNotFoundException {

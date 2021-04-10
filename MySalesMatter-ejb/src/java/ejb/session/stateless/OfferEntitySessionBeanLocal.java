@@ -37,4 +37,5 @@ public interface OfferEntitySessionBeanLocal {
     public void deleteOffer(Long offerId) throws DeleteOfferException;
     
     public void acceptOffer(Long offerId) throws OfferNotFoundException;
+    public void doSetPaid(Long offerId) throws OfferNotFoundException;
 }

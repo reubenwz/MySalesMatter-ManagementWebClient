@@ -22,10 +22,10 @@
 
                     <p:column>
                         <p:panelGrid>
-                            <p:row>
-                                <p:column><h:outputText style="font-weight: bold; width: 20%;" value="Listing ID"/></p:column>
-                                <p:column><h:outputText style="width: 80%;" value="#{listingEntity.listingId}"/></p:column>
-                            </p:row>
+                            <f:facet name="header">
+                                <p:graphicImage width="30%" value="/uploadedFiles/#{listingEntity.picturePath}"/>
+                            </f:facet>
+
                             <p:row>
                                 <p:column><h:outputText style="font-weight: bold; width: 20%;" value="Owner Name"/></p:column>
                                 <p:column><h:outputText value="#{listingEntity.user.name}"/></p:column>
@@ -34,12 +34,7 @@
                                 <p:column><h:outputText style="font-weight: bold; width: 20%;" value="Name"/></p:column>
                                 <p:column><h:outputText value="#{listingEntity.name}"/></p:column>
                             </p:row>
-                            <p:row>
-                                <p:column><h:outputText style="font-weight: bold; width: 20%;" value="Picture"/></p:column>
-                                <p:column>
-                                    <p:graphicImage width="10%" value="/uploadedFiles/#{listingEntity.picturePath}" />
-                                </p:column> 
-                            </p:row>
+
                             <p:row>
                                 <p:column><h:outputText style="font-weight: bold; width: 20%;" value="Brand"/></p:column>
                                 <p:column><h:outputText value="#{listingEntity.brand}"/></p:column>
@@ -48,25 +43,17 @@
                                 <p:column><h:outputText style="font-weight: bold; width: 20%;" value="Description"/></p:column>
                                 <p:column><h:outputText value="#{listingEntity.description}"/></p:column>
                             </p:row>
-                            <p:row>
+                            <p:row rendered="#{listingEntity.rentalPrice != null}">
                                 <p:column><h:outputText style="font-weight: bold; width: 20%;" value="Rental Price"/></p:column>
                                 <p:column><h:outputText value="#{listingEntity.rentalPrice}"/></p:column>
                             </p:row>
-                            <p:row>
+                            <p:row rendered="#{listingEntity.salePrice != null}">
                                 <p:column><h:outputText style="font-weight: bold; width: 20%;" value="Sale Price"/></p:column>
                                 <p:column><h:outputText value="#{listingEntity.salePrice}"/></p:column>
                             </p:row>
                             <p:row>
                                 <p:column><h:outputText style="font-weight: bold; width: 20%;" value="Location"/></p:column>
                                 <p:column><h:outputText value="#{listingEntity.location}"/></p:column>
-                            </p:row>
-                            <p:row>
-                                <p:column><h:outputText style="font-weight: bold; width: 20%;" value="Rental Availability"/></p:column>
-                                <p:column><h:outputText value="#{listingEntity.rentalAvailability}"/></p:column>
-                            </p:row>
-                            <p:row>
-                                <p:column><h:outputText style="font-weight: bold; width: 20%;" value="Sale Availability"/></p:column>
-                                <p:column><h:outputText value="#{listingEntity.forSaleAvailability}"/></p:column>
                             </p:row>
                             <p:row>
                                 <p:column><h:outputText style="font-weight: bold; width: 20%;" value="Rent Out"/></p:column>
@@ -98,7 +85,7 @@
                                 <f:attribute name="listingEntityToMakeOffer" value="#{listingEntity}" />
                             </p:commandButton>
                             <p:commandButton value=" View Reviews" icon="pi pi-users" actionListener="#{viewAllReviewsManagedBean.viewReviewDetails}" title="View All Reviews">
-                            <f:attribute name="listingId" value="#{listingEntity.listingId}" />
+                                <f:attribute name="listingId" value="#{listingEntity.listingId}" />
                             </p:commandButton>
                         </div>
 
@@ -106,7 +93,6 @@
 
                 </p:dataTable>
             </h:form>
-
             <h:form id="formCreateNewRentOffer">
 
                 <p:dialog id="dialogCreateNewRentOffer" widgetVar="dialogCreateNewRentOffer" header="Create New Rent Offer" closable="true">

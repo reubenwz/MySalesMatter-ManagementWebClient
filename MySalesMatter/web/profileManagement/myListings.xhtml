@@ -66,7 +66,7 @@
                 <p:column headerText="Sale Availability" style="text-align: center;" sortBy="#{listingEntity.forSaleAvailability}" filterBy="#{listingEntity.forSaleAvailability}" filterMatchMode="contains">
                     <h:outputText value="#{listingEntity.forSaleAvailability}" />
                 </p:column>
-                
+
                 <p:column headerText="Rent Out" sortBy="#{listingEntity.isRentOut}" filterBy="#{listingEntity.isRentOut}" filterMatchMode="contains">
                     <h:outputText value="#{listingEntity.isRentOut}" />
                 </p:column>
@@ -98,7 +98,7 @@
                 </p:column>
 
             </p:dataTable>
-            
+
             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
                 <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
                 <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
@@ -186,7 +186,7 @@
                             <p:message for="forSaleAvailability" />
                         </p:column>
                     </p:row>
-                    
+
                     <p:row>
                         <p:column>
                             <p:outputLabel for="isRentOut" value="RentOut " style="font-weight: bold;" />
@@ -198,7 +198,7 @@
                             <p:message for="isRentOut" />
                         </p:column>
                     </p:row>
-                    
+
 
                     <p:row>
                         <p:column>
@@ -272,7 +272,7 @@
                     <p:column headerText="Offer Date" >
                         <h:outputText value="#{offerEntity.offerDate}" />
                     </p:column>      
-                    
+
                     <p:column headerText="Accepted?">
                         <h:outputText value="#{offerEntity.accepted}" />
                     </p:column>  
@@ -281,14 +281,52 @@
                         <p:commandButton rendered="#{!offerEntity.accepted}" actionListener="#{offerManagementManagedBean.acceptOffer}" update="formAllOffers" icon="pi pi-check" title="Accept Offer">
                             <f:attribute name="offerEntityToAccept" value="#{offerEntity}" />
                         </p:commandButton>
-                        <p:commandButton actionListener="#{conversationManagementManagedBean.createConversation}" update="formAllOffers" icon="pi pi-comments" title="Create Conversation">
-                            <f:attribute name="offerEntityToCreateConversation" value="#{offerEntity}" />
+                        <p:commandButton oncomplete="PF('dialogReply').show()" actionListener="#{notificationManagedBean.doReply}" update="formReply" icon="pi pi-comments" title="Create Conversation">
+                            <f:attribute name="offerEntity" value="#{offerEntity}" />
+                            <f:attribute name="sender" value="#{offerEntity.listing.user}" />
+                            <f:attribute name="recipient" value="#{offerEntity.user}" />
                         </p:commandButton>
                     </p:column>
 
                 </p:dataTable>
 
             </p:dialog>
+
+        </h:form>
+        <h:form id="formReply">
+
+            <p:dialog id="dialogReply" widgetVar="dialogReply" header="My Reply" closable="true">
+
+                <p:messages id="messages" redisplay="false" />
+
+                <p:panelGrid>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="message" value="Message" style="font-weight: bold;" />
+                        </p:column>
+                        <p:column>
+                            <h:inputText id="message" value="#{notificationManagedBean.message}" />   
+                        </p:column>
+                        <p:column>
+                            <p:message for="message" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column colspan="3">
+                            <p:commandButton type="reset" value="Clear" />&nbsp;
+                            <p:commandButton  value="Add Message" actionListener="#{notificationManagedBean.addMessageV2}" oncomplete="PF('dialogReply').show();" update="formReply"/>
+                        </p:column>
+                    </p:row>
+
+                </p:panelGrid>
+
+            </p:dialog>
+
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </p:confirmDialog>
 
         </h:form>
 

@@ -12,8 +12,8 @@
         <div>
             <h3>Listing Management</h3>
             <div align="right">      
-                    <p:growl id="messages" showDetail="true"/>
-                    <p:commandButton type="button" value="Create New Listing" onclick="PF('dialogCreateNewListing').show()" icon ="pi pi-file" styleClass="p-mr-2" />
+                <p:growl id="messages" showDetail="true"/>
+                <p:commandButton type="button" value="Create New Listing" onclick="PF('dialogCreateNewListing').show()" icon ="pi pi-file" styleClass="p-mr-2" />
             </div>
             <h:form id="formAllListings">
 
@@ -65,13 +65,15 @@
                         <h:outputText value="#{listingEntity.location}" />
                     </p:column>
 
-                    <p:column headerText="Rental Availability" style="text-align: center;" sortBy="#{listingEntity.rentalAvailability}" filterBy="#{listingEntity.rentalAvailability}" filterMatchMode="contains">
-                        <h:outputText value="#{listingEntity.rentalAvailability}" />
+                    -->                    <p:column headerText="Rental Availability" style="text-align: center;" sortBy="#{listingEntity.rentalAvailability}" filterBy="#{listingEntity.rentalAvailability}" filterMatchMode="contains">
+                        <h:outputText value="For Rent" rendered="#{listingEntity.rentalAvailability}" />
+                        <h:outputText value="NOT for Rent" rendered="#{!listingEntity.rentalAvailability}" />
                     </p:column>
 
                     <p:column headerText="Sale Availability" style="text-align: center;" sortBy="#{listingEntity.forSaleAvailability}" filterBy="#{listingEntity.forSaleAvailability}" filterMatchMode="contains">
-                        <h:outputText value="#{listingEntity.forSaleAvailability}" />
-                    </p:column>
+                        <h:outputText value="For Sale" rendered="#{listingEntity.forSaleAvailability}" />
+                        <h:outputText value="NOT for Sale" rendered="#{!listingEntity.forSaleAvailability}" />
+                    </p:column><!--
 
                     <p:column headerText="Rent Out" style="text-align: center;" sortBy="#{listingEntity.isRentOut}" filterBy="#{listingEntity.isRentOut}" filterMatchMode="contains">
                         <h:outputText value="#{listingEntity.isRentOut}" />
@@ -155,9 +157,23 @@
                             </p:column>
                         </p:row>
 
+
                         <p:row>
                             <p:column>
-                                <p:outputLabel for="rentalPrice" value="Rental Price " style="font-weight: bold;" />
+                                <p:outputLabel for="rentalAvailability" value="RentalAvailability " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:selectBooleanCheckbox id="rentalAvailability" value="#{listingManagementManagedBean.newListingEntity.rentalAvailability}" itemLabel="For Rent" requiredMessage="RentalAvailability is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="rentalAvailability" />
+                            </p:column>
+                        </p:row>
+
+
+                        <p:row rendered="#{listingManagementManagedBean.newListingEntity.rentalAvailability}">
+                            <p:column>
+                                <p:outputLabel for="rentalPrice" value="Rental Price (Blank if Not For Rent)" style="font-weight: bold;" />
                             </p:column>
                             <p:column>                            
                                 <p:spinner id="rentalPrice" value="#{listingManagementManagedBean.newListingEntity.rentalPrice}" placeholder="10.00" min="0" max="1000000" stepFactor="0.01" required="true" requiredMessage="Rental Price is required" />
@@ -169,7 +185,19 @@
 
                         <p:row>
                             <p:column>
-                                <p:outputLabel for="salePrice" value="Sale Price " style="font-weight: bold;" />
+                                <p:outputLabel for="forSaleAvailability" value="SaleAvailability " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:selectBooleanCheckbox id="forSaleAvailability" value="#{listingManagementManagedBean.newListingEntity.forSaleAvailability}" itemLabel="For Sale" requiredMessage="SaleAvailability is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="forSaleAvailability" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row rendered="#{listingManagementManagedBean.newListingEntity.forSaleAvailability}">
+                            <p:column>
+                                <p:outputLabel for="salePrice" value="Sale Price (Blank if Not For Sale)" style="font-weight: bold;" />
                             </p:column>
                             <p:column>                            
                                 <p:spinner id="salePrice" value="#{listingManagementManagedBean.newListingEntity.salePrice}" placeholder="10.00" min="0" max="1000000" stepFactor="0.01" required="true" requiredMessage="Sale Price is required" />
@@ -191,29 +219,7 @@
                             </p:column>
                         </p:row>
 
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel for="rentalAvailability" value="RentalAvailability " style="font-weight: bold;" />
-                            </p:column>
-                            <p:column>
-                                <p:selectBooleanCheckbox id="rentalAvailability" value="#{listingManagementManagedBean.newListingEntity.rentalAvailability}" itemLabel="For Rent" requiredMessage="RentalAvailability is required" />
-                            </p:column>
-                            <p:column>
-                                <p:message for="rentalAvailability" />
-                            </p:column>
-                        </p:row>
 
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel for="forSaleAvailability" value="SaleAvailability " style="font-weight: bold;" />
-                            </p:column>
-                            <p:column>
-                                <p:selectBooleanCheckbox id="forSaleAvailability" value="#{listingManagementManagedBean.newListingEntity.forSaleAvailability}" itemLabel="For Sale" requiredMessage="SaleAvailability is required" />
-                            </p:column>
-                            <p:column>
-                                <p:message for="forSaleAvailability" />
-                            </p:column>
-                        </p:row>
 
                         <p:row>
                             <p:column>

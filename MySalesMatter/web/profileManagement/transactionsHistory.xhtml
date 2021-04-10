@@ -52,7 +52,7 @@
                     <p:commandLink value="View" actionListener="#{viewListingManagedBean.viewListingDetails}">
                         <f:attribute name="listingId" value="#{acceptedOffer.listing.listingId}" />
                     </p:commandLink><br></br>
-                    <p:commandLink value="Make Payment" oncomplete="PF('dialogMakePayment').show()" actionListener="#{transactionManagedBean.doMakePayment}" update="formMakePayment">
+                    <p:commandLink rendered="#{!acceptedOffer.paid}" value="Make Payment" oncomplete="PF('dialogMakePayment').show()" actionListener="#{transactionManagedBean.doMakePayment}" update="formAcceptedOffer">
                         <f:attribute name="acceptedOfferToPay" value="#{acceptedOffer}" />
                     </p:commandLink><br></br>
                     <p:commandLink value="Arrange Meetup" oncomplete="PF('dialogArrangeMeetup').show()" actionListener="#{transactionManagedBean.doArrangeMeetup}" update="formArrangeMeetup">

@@ -27,12 +27,12 @@
                             </p:row>
                             <p:row>
                                 <p:column><h:outputText style="font-weight: bold; width: 20%;" value="Star Rating"/></p:column>
-                                <p:column><h:outputText value="#{reviewEntity.starRating}"/></p:column>
+                                <p:column><p:rating value="#{reviewEntity.starRating}" readonly="true"></p:rating></p:column>
                             </p:row>
                             <p:row>
                                 <p:column><h:outputText style="font-weight: bold; width: 20%;" value="Picture"/></p:column>
                                 <p:column>
-                                    <p:graphicImage width="10%" value="/uploadedFiles/#{listingEntity.picturePath}" />
+                                    <p:graphicImage width="20%" value="/uploadedFiles/#{reviewEntity.picturePaths}" />
                                 </p:column> 
                             </p:row>
                             <p:row>

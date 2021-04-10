@@ -41,6 +41,9 @@ public class NotificationManagedBean implements Serializable {
     MessageEntitySessionBeanLocal messageEntitySessionBeanLocal;
 
     private UserEntity currentUser;
+    
+    private UserEntity sender;
+    private UserEntity recipient;
 
     private List<MessageEntity> messages;
     
@@ -50,6 +53,8 @@ public class NotificationManagedBean implements Serializable {
 
     public NotificationManagedBean() {
         currentUser = new UserEntity();
+        sender = new UserEntity();
+        recipient = new UserEntity();
         messages = new ArrayList<>();
     }
 
@@ -64,7 +69,9 @@ public class NotificationManagedBean implements Serializable {
     }
     
     public void doReply(ActionEvent event) {
-        offer = (OfferEntity) event.getComponent().getAttributes().get("offerEntity");            
+        offer = (OfferEntity) event.getComponent().getAttributes().get("offerEntity");
+        sender = (UserEntity) event.getComponent().getAttributes().get("sender");
+        recipient = (UserEntity) event.getComponent().getAttributes().get("recipient");
         if (offer.getOfferType() == OfferType.RENTAL) {
             offer = (RentalOfferEntity) offer;
         } else {
@@ -76,6 +83,15 @@ public class NotificationManagedBean implements Serializable {
     public void addMessage(ActionEvent event) {
         try {
             messageEntitySessionBeanLocal.addMessage(getMessage(), offer.getOfferId(), currentUser.getUserId(), new Date());
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Message sent successfully", null));
+        } catch (UserNotFoundException | OfferNotFoundException | InputDataValidationException | UnknownPersistenceException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while making the payment: " + ex.getMessage(), null));
+        }
+    }
+    
+    public void addMessageV2(ActionEvent event) {
+        try {
+            messageEntitySessionBeanLocal.addMessageV2(getMessage(), offer.getOfferId(), sender.getUserId(), recipient.getUserId(), new Date());
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Message sent successfully", null));
         } catch (UserNotFoundException | OfferNotFoundException | InputDataValidationException | UnknownPersistenceException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while making the payment: " + ex.getMessage(), null));

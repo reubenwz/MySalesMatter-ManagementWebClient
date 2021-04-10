@@ -180,6 +180,13 @@ public class OfferEntitySessionBean implements OfferEntitySessionBeanLocal {
         em.flush();
     }
     
+    @Override
+    public void doSetPaid(Long offerId) throws OfferNotFoundException {
+        OfferEntity offerEntityToSetPaid = retrieveOfferById(offerId);
+        offerEntityToSetPaid.setPaid(true);
+        em.merge(offerEntityToSetPaid);
+        em.flush();
+    }
     
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<OfferEntity>>constraintViolations)
     {

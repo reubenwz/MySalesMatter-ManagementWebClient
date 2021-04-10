@@ -9,7 +9,7 @@
 
     <ui:define name="content">
         
-        <h4> My Notifications </h4>
+        <h4> My Chats </h4>
         <h:form id="formNotifications">
             <p:dataTable id="dataTableNotifications" value="#{notificationManagedBean.messages}" var="message" style="width: 100%;">
                 <p:column headerText="Listing Name" style="text-align: center">
@@ -31,6 +31,8 @@
                 <p:column headerText="Action" style="text-align: center">
                     <p:commandLink value="Reply" oncomplete="PF('dialogReply').show()" actionListener="#{notificationManagedBean.doReply}" update="formReply">
                         <f:attribute name="offerEntity" value="#{message.offer}" />
+                        <f:attribute name="sender" value="#{message.recipient}" />
+                        <f:attribute name="recipient" value="#{message.sender}" />
                     </p:commandLink>                    
                 </p:column>
             </p:dataTable>
@@ -58,7 +60,7 @@
                     <p:row>
                         <p:column colspan="3">
                             <p:commandButton type="reset" value="Clear" />&nbsp;
-                            <p:commandButton  value="Add Message" actionListener="#{notificationManagedBean.addMessage}" oncomplete="PF('dialogReply').show();" update="formReply"/>     
+                            <p:commandButton  value="Add Message" actionListener="#{notificationManagedBean.addMessageV2}" oncomplete="PF('dialogReply').show();" update="formReply"/>     
                         </p:column>
                     </p:row>
 

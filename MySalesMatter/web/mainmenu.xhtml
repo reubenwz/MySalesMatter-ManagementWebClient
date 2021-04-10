@@ -15,7 +15,7 @@
                     <p:submenu label="General">
                         <p:menuitem value="Home" outcome="/index" icon="pi pi-home" />
                         <p:menuitem rendered ="#{sessionScope.isLogin == false}" value="Register" outcome="/index.xhtml" icon="pi pi-user"/>
-                        <p:menuitem rendered ="#{sessionScope.isLogin == true}" value="Notifications" outcome="/profileManagement/notifications.xhtml" icon="pi pi-bell"/>
+                        <p:menuitem rendered ="#{sessionScope.isLogin == true}" value="Chat" outcome="/profileManagement/notifications.xhtml" icon="pi pi-comments"/>
                     </p:submenu>
                     
                     <p:submenu label="Buy/Rent" rendered="#{sessionScope.isLogin == true}">

@@ -11,9 +11,7 @@
 
         <div>
             <h2>All Reviews</h2>
-            
-            
-            
+                       
             <h:form id="formAllReviews">
             <p:dataTable id="dataTableAllReviews" value="#{viewAllReviewsManagedBean.reviewEntities}" var="reviewEntity" style="width: 100%;">
                 <p:column headerText="Reviewed By" style="text-align: center">
@@ -21,7 +19,7 @@
                 </p:column>
 
                 <p:column headerText="Star Rating" style="text-align: center">
-                    <h:outputText value="#{reviewEntity.starRating}" />
+                    <p:rating value="#{reviewEntity.starRating}" readonly="true"></p:rating>
                 </p:column>
                 
                 <p:column headerText="Description" style="text-align: center">

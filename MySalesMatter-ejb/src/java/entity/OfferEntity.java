@@ -49,6 +49,10 @@ public abstract class OfferEntity implements Serializable {
     
     @Column(nullable = false)
     @NotNull
+    private boolean paid;
+    
+    @Column(nullable = false)
+    @NotNull
     @DecimalMin("0.00")
     protected BigDecimal totalPrice;
     
@@ -84,6 +88,7 @@ public abstract class OfferEntity implements Serializable {
 
     public OfferEntity() {
         this.accepted = false;
+        this.paid = false;
         message = new ArrayList<>();
     }
 
@@ -195,6 +200,14 @@ public abstract class OfferEntity implements Serializable {
 
     public void setMessage(List<MessageEntity> message) {
         this.message = message;
+    }
+
+    public boolean isPaid() {
+        return paid;
+    }
+
+    public void setPaid(boolean paid) {
+        this.paid = paid;
     }
     
     
