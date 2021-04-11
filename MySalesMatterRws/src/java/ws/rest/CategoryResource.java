@@ -160,22 +160,19 @@ public class CategoryResource {
             UserEntity userEntity = userEntitySessionBeanLocal.userLogin(username, password);
             System.out.println("********** CategoryResource.retrieveAllLeafCategories(): User " + userEntity.getUsername() + " login remotely via web service");
 
-            List<CategoryEntity> categoryEntities = categoryEntitySessionBeanLocal.retrieveAllCategories();
-            for (CategoryEntity c : categoryEntities) {
-                c.getParentCategoryEntity().getSubCategoryEntities().remove(c);
-                c.getParentCategoryEntity().setListings(null);
-                
-                List<CategoryEntity> subcategories = c.getSubCategoryEntities();
-                for (CategoryEntity s : subcategories) {
-                    s.setParentCategoryEntity(null);
+            List<CategoryEntity> categoryEntities = categoryEntitySessionBeanLocal.retrieveAllLeafCategories();
+            
+            for(CategoryEntity categoryEntity:categoryEntities)
+            {
+                if(categoryEntity.getParentCategoryEntity() != null)
+                {
+                    categoryEntity.getParentCategoryEntity().getSubCategoryEntities().clear();
                 }
                 
-                List<ListingEntity> listings = c.getListings();
-                for (ListingEntity l : listings) {
-                    l.setCategoryEntity(null);
-                }
+                categoryEntity.getSubCategoryEntities().clear();
+                categoryEntity.getListings().clear();
             }
-
+            
             GenericEntity<List<CategoryEntity>> genericEntity = new GenericEntity<List<CategoryEntity>>(categoryEntities) {
             };
 
