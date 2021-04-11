@@ -149,6 +149,51 @@ public class ReviewResource {
         }
     }
     
+    @Path("getReviewsReceivedByUserId")
+    @GET
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getReviewsReceivedByUserId(@QueryParam("username") String username, 
+                                        @QueryParam("password") String password)
+    {
+        try
+        {
+            UserEntity userEntity = userEntitySessionBeanLocal.userLogin(username, password);
+            System.out.println("********** ReviewResource.getReviewsReceivedByUserId(): User " + userEntity.getUsername() + " login remotely via web service");
+
+            List<ReviewEntity> reviewEntities = reviewEntitySessionBeanLocal.getReviewsReceivedByUserId(userEntity.getUserId());
+            for(ReviewEntity reviewEntity: reviewEntities)
+            {                
+                reviewEntity.getListing().getOffers().clear();
+                //reviewEntity.getListing().getReservations().clear();
+                reviewEntity.getListing().getReviews().clear();
+                reviewEntity.getListing().getTags().clear();
+                reviewEntity.getListing().setCategoryEntity(null);
+                //reviewEntity.getReviewer().getConversationsAsOfferee().clear();
+                //reviewEntity.getReviewer().getConversationsAsOfferer().clear();
+                reviewEntity.getReviewer().getLikedItems().clear();
+                reviewEntity.getReviewer().getListings().clear();
+                reviewEntity.getReviewer().getOffers().clear();
+                reviewEntity.getReviewer().getReviews().clear();
+                reviewEntity.getReviewer().getTransactions().clear();
+            
+            }
+            
+            GenericEntity<List<ReviewEntity>> genericEntity = new GenericEntity<List<ReviewEntity>>(reviewEntities) {
+            };
+            
+            return Response.status(Response.Status.OK).entity(genericEntity).build();
+        }
+        catch(InvalidLoginCredentialException ex)
+        {            
+            return Response.status(Response.Status.UNAUTHORIZED).entity(ex.getMessage()).build();
+        }
+        catch(Exception ex)
+        {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
+        }
+    }
+    
     @Path("retrieveReview/{reviewId}")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)

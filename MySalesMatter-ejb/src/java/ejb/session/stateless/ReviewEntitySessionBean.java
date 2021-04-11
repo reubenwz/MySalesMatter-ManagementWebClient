@@ -8,6 +8,7 @@ package ejb.session.stateless;
 import entity.ListingEntity;
 import entity.ReviewEntity;
 import entity.UserEntity;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import javax.ejb.EJB;
@@ -82,6 +83,7 @@ public class ReviewEntitySessionBean implements ReviewEntitySessionBeanLocal {
         }
     }
 
+    // For getting reviews written
     @Override
     public List<ReviewEntity> getReviewsByUserId(Long userId) throws UserNotFoundException {
         try {
@@ -95,6 +97,32 @@ public class ReviewEntitySessionBean implements ReviewEntitySessionBeanLocal {
                 l.getReviewer();
             }
             return list;
+        } catch (UserNotFoundException ex) {
+            throw new UserNotFoundException("User with this id, " + userId + ", does not exist!");
+        }
+
+    }
+
+    // For getting reviews received
+    @Override
+    public List<ReviewEntity> getReviewsReceivedByUserId(Long userId) throws UserNotFoundException {
+        try {
+            UserEntity userEntity = userEntitySessionBeanLocal.retrieveUserById(userId);
+
+            List<ListingEntity> listings = listingEntitySessionBeanLocal.retrieveListingsByUser(userId);
+            List<ReviewEntity> reviews = new ArrayList<>();
+
+            if (!listings.isEmpty()) {
+                for (ListingEntity l : listings) {
+                    for (ReviewEntity r: l.getReviews()) {
+                        r.getListing();
+                        r.getReviewer();
+                        reviews.add(r);
+                    }
+                }
+                return reviews;
+            }
+            return reviews;
         } catch (UserNotFoundException ex) {
             throw new UserNotFoundException("User with this id, " + userId + ", does not exist!");
         }
