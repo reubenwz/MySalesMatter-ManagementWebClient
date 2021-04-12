@@ -154,7 +154,7 @@ public class MessageResource {
             {
                 UserEntity userEntity = userEntitySessionBeanLocal.userLogin(createMessageReq.getUsername(), createMessageReq.getPassword());
                 System.out.println("********** MessageResource.addMessage(): User " + userEntity.getUsername() + " login remotely via web service");
-                MessageEntity m = messageEntitySessionBeanLocal.addMessage(createMessageReq.getMessage(), createMessageReq.getOfferId(), createMessageReq.getSenderId(), createMessageReq.getDate());
+                MessageEntity m = messageEntitySessionBeanLocal.addMessageV2(createMessageReq.getMessage(), createMessageReq.getOfferId(), createMessageReq.getSenderId(), createMessageReq.getRecipientId(), createMessageReq.getDate());
                 return Response.status(Response.Status.OK).entity(m.getMessageId()).build();
                 
             }
@@ -173,7 +173,7 @@ public class MessageResource {
         }
     }
     
-    
+ 
     
     private UserEntitySessionBeanLocal lookupUserEntitySessionBeanLocal() {
         try {
