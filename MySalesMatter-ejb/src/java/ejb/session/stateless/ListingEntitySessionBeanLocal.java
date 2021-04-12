@@ -35,4 +35,6 @@ public interface ListingEntitySessionBeanLocal {
     public void deleteListing(Long listingId) throws ListingNotFoundException, DeleteListingException;
     public void addOffer(Long listingId, Long offerId) throws ListingNotFoundException, OfferNotFoundException;
     public List<ListingEntity> retrieveListingsByUser(Long userId);
+
+    public ListingEntity retrieveListingByOfferId(Long offerId) throws OfferNotFoundException;
 }

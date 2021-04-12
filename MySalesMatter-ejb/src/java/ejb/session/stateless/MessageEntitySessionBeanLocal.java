@@ -24,8 +24,8 @@ public interface MessageEntitySessionBeanLocal {
 
     List<MessageEntity> retrieveAllMessages();
 
-    public List<MessageEntity> retrieveReceivedMessageSByUserId(Long userId) throws MessageNotFoundException;
+    public List<MessageEntity> retrieveReceivedMessagesByUserId(Long userId) throws MessageNotFoundException;
 
-    public Long addMessage(String message, Long offerId, Long senderId, Date date) throws UnknownPersistenceException, OfferNotFoundException, UserNotFoundException, InputDataValidationException;
-    public Long addMessageV2(String message, Long offerId, Long senderId, Long recipientId, Date date) throws UnknownPersistenceException, OfferNotFoundException, UserNotFoundException, InputDataValidationException;
+    public MessageEntity addMessage(String message, Long offerId, Long senderId, Date date) throws UnknownPersistenceException, OfferNotFoundException, UserNotFoundException, InputDataValidationException;
+    public MessageEntity addMessageV2(String message, Long offerId, Long senderId, Long recipientId, Date date) throws UnknownPersistenceException, OfferNotFoundException, UserNotFoundException, InputDataValidationException;
 }

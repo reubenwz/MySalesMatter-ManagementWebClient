@@ -59,7 +59,7 @@ public class MessageEntitySessionBean implements MessageEntitySessionBeanLocal {
     }
 
     @Override
-    public Long addMessage(String message, Long offerId, Long senderId, Date date) throws UnknownPersistenceException, OfferNotFoundException, UserNotFoundException, InputDataValidationException {
+    public MessageEntity addMessage(String message, Long offerId, Long senderId, Date date) throws UnknownPersistenceException, OfferNotFoundException, UserNotFoundException, InputDataValidationException {
         try {
             UserEntity send = userEntitySessionBeanLocal.retrieveUserById(senderId);
             OfferEntity o = offerEntitySessionBeanLocal.retrieveOfferById(offerId);
@@ -76,7 +76,7 @@ public class MessageEntitySessionBean implements MessageEntitySessionBeanLocal {
                     o.getMessage().add(m);
                     em.merge(o);
                     em.flush();
-                    return m.getMessageId();
+                    return m;
                 } catch (PersistenceException ex) {
                     throw new UnknownPersistenceException(ex.getMessage());
 
@@ -94,7 +94,7 @@ public class MessageEntitySessionBean implements MessageEntitySessionBeanLocal {
     }
     
     @Override
-    public Long addMessageV2(String message, Long offerId, Long senderId, Long recipientId, Date date) throws UnknownPersistenceException, OfferNotFoundException, UserNotFoundException, InputDataValidationException {
+    public MessageEntity addMessageV2(String message, Long offerId, Long senderId, Long recipientId, Date date) throws UnknownPersistenceException, OfferNotFoundException, UserNotFoundException, InputDataValidationException {
         try {
             UserEntity recipient = userEntitySessionBeanLocal.retrieveUserById(recipientId);
             UserEntity sender = userEntitySessionBeanLocal.retrieveUserById(senderId);
@@ -112,7 +112,7 @@ public class MessageEntitySessionBean implements MessageEntitySessionBeanLocal {
                     o.getMessage().add(m);
                     em.merge(o);
                     em.flush();
-                    return m.getMessageId();
+                    return m;
                 } catch (PersistenceException ex) {
                     throw new UnknownPersistenceException(ex.getMessage());
 
@@ -130,7 +130,7 @@ public class MessageEntitySessionBean implements MessageEntitySessionBeanLocal {
     }
 
     @Override
-    public List<MessageEntity> retrieveReceivedMessageSByUserId(Long userId) throws MessageNotFoundException {
+    public List<MessageEntity> retrieveReceivedMessagesByUserId(Long userId) throws MessageNotFoundException {
         Query query = em.createQuery("SELECT m FROM MessageEntity m WHERE m.recipient.userId =:inUserId");
         query.setParameter("inUserId", userId);
         return query.getResultList();
