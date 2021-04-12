@@ -78,7 +78,7 @@
                         </p:panelGrid>
                         <br/>
                         <div align="center">                        
-                            <p:commandButton  rendered="#{!listingEntity.isRentOut}" value=" Rent" icon="pi pi-shopping-cart" oncomplete="PF('dialogCreateNewRentOffer').show()" actionListener="#{listingManagementManagedBean.doMakeRentalOffer}" update="formListingDetails:dataTableListingDetails formListingDetails:messages" title="Make Rental Offer">
+                            <p:commandButton rendered="#{!listingEntity.isRentOut or listingEntity.user.name == userEntity.user.name}" value=" Rent" icon="pi pi-shopping-cart" oncomplete="PF('dialogCreateNewRentOffer').show()" actionListener="#{listingManagementManagedBean.doMakeRentalOffer}" update="formListingDetails:dataTableListingDetails formListingDetails:messages" title="Make Rental Offer">
                                 <f:attribute name="listingEntityToMakeOffer" value="#{listingEntity}" />
                             </p:commandButton>
                             <p:commandButton rendered="#{listingEntity.forSaleAvailability}" value=" Buy" icon="pi pi-tags" actionListener="#{listingManagementManagedBean.makeBuyOffer}" update="formListingDetails:dataTableListingDetails formListingDetails:messages" title="Make Buy Offer">
