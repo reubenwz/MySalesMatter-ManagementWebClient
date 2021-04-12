@@ -271,6 +271,7 @@ public class ListingResource {
             try {
                 System.out.println("HIIII IM IN");
                 UserEntity userEntity = userEntitySessionBeanLocal.userLogin(createListingReq.getUsername(), createListingReq.getPassword());
+                Long userId = userEntity.getUserId();
                 System.out.println("********** ListingResource.createNewListing(): User " + userEntity.getUsername() + " login remotely via web service");
                 ListingEntity l = new ListingEntity();
                 l.setBrand(createListingReq.getBrand());
@@ -281,7 +282,7 @@ public class ListingResource {
                 l.setName(createListingReq.getName());
                 l.setRentalPrice(createListingReq.getRentalPrice());
                 l.setSalePrice(createListingReq.getSalePrice());
-                l = listingEntitySessionBeanLocal.createNewListing(l, createListingReq.getCategoryId(), createListingReq.getTagIds(), createListingReq.getUserId());
+                l = listingEntitySessionBeanLocal.createNewListing(l, createListingReq.getCategoryId(), createListingReq.getTagIds(), userId);
                 return Response.status(Response.Status.OK).entity(l.getListingId()).build();
             } catch (UnknownPersistenceException | InputDataValidationException | CreateNewListingException | UserNotFoundException ex) {
                 return Response.status(Response.Status.UNAUTHORIZED).entity(ex.getMessage()).build();
@@ -467,7 +468,7 @@ public class ListingResource {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
         }
     }*/
-    @Path("updateListing/{listingId}")
+    @Path("updateListing")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -476,7 +477,17 @@ public class ListingResource {
             try {
                 UserEntity userEntity = userEntitySessionBeanLocal.userLogin(updateListingReq.getUsername(), updateListingReq.getPassword());
                 System.out.println("********** ListingResource.updateListing(): User " + userEntity.getUsername() + " login remotely via web service");
-                listingEntitySessionBeanLocal.updateListing(updateListingReq.getListingEntity(), updateListingReq.getCategoryId(), updateListingReq.getTagIds());
+                Long listingId = updateListingReq.getListingId();
+                ListingEntity l = listingEntitySessionBeanLocal.retrieveListingByListingId(listingId);
+                System.out.println("Retrieved listing:" + l);
+                l.setBrand(updateListingReq.getBrand());
+                l.setCategoryEntity(categoryEntitySessionBeanLocal.retrieveCategoryByCategoryId(updateListingReq.getCategoryId()));
+                l.setDescription(updateListingReq.getDescription());
+                l.setLocation(updateListingReq.getLocation());
+                l.setName(updateListingReq.getName());
+                l.setRentalPrice(updateListingReq.getRentalPrice());
+                l.setSalePrice(updateListingReq.getSalePrice());
+                listingEntitySessionBeanLocal.updateListing(l, updateListingReq.getCategoryId(), updateListingReq.getTagIds());
                 return Response.status(Response.Status.OK).build();
             } catch (InvalidLoginCredentialException ex) {
                 return Response.status(Response.Status.UNAUTHORIZED).entity(ex.getMessage()).build();
