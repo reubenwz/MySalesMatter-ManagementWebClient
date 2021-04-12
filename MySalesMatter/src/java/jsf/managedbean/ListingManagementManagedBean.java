@@ -250,6 +250,8 @@ public class ListingManagementManagedBean implements Serializable {
         try {
             ListingEntity listingEntityToMakeOffer = (ListingEntity) event.getComponent().getAttributes().get("listingEntityToMakeOffer");
             OfferEntity newOfferEntity = new BuyOfferEntity(listingEntityToMakeOffer.getSalePrice(), new Date(), OfferType.BUY);
+            // need solve user cannot purchase its own product
+            
             newOfferEntity.setUser(currentUser);
             newOfferEntity.setListing(listingEntityToMakeOffer);
             newOfferEntity.setOfferDate(new Date());

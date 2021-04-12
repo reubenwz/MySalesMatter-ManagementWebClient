@@ -10,44 +10,66 @@
     <ui:define name="content">
 
         <div>
-            <h3>Listing Management</h3>
+            <h2>Browse All Listings</h2>
             <div align="right">      
                 <p:growl id="messages" showDetail="true"/>
                 <p:commandButton type="button" value="Create New Listing" onclick="PF('dialogCreateNewListing').show()" icon ="pi pi-file" styleClass="p-mr-2" />
             </div>
-            <h:form id="formAllListings">
 
-                <p:messages id="messages" redisplay="false" closable="true" />
-                <p:dataTable id="dataTableAllListings" widgetVar="dataTableAllListings" value="#{listingManagementManagedBean.listingEntities}" var="listingEntity" rowKey="#{listingEntity.listingId}" rowIndexVar="row"
-                             filteredValue="#{listingManagementManagedBean.filteredListingEntities}"
-                             rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
+            <div class="card product">
+                <h:form id="formAllListings">
 
-                    <f:facet name="header">
-                        <p:outputPanel style="text-align: right;">
-                            <h:outputText value="Search all fields: " />
-                            <p:inputText id="globalFilter" onkeyup="PF('dataTableAllListings').filter()" style="width:300px" placeholder="Enter keyword"/>
-                        </p:outputPanel>
-                    </f:facet>
+                    <p:messages id="messages" redisplay="false" closable="true" />
+                    <p:dataView id="dataTableAllListings" rows="12" value="#{listingManagementManagedBean.listingEntities}" var="listingEntity" 
+                                rowsPerPageTemplate="6,12,16" gridIcon="pi pi-th-large"
+                                paginator="true" >
 
-                    <p:column headerText="Listing ID" style="text-align: center;" sortBy="#{listingEntity.listingId}" filterBy="#{listingEntity.listingId}" filterMatchMode="contains">
-                        <h:outputText value="#{listingEntity.listingId}" />
-                    </p:column>
+                        <f:facet name="header">
+                            <p:outputPanel style="text-align: right;">
+                                <h:outputText value="Search all fields: " />
+                                <p:inputText id="globalFilter" onkeyup="PF('dataTableAllListings').filter()" style="width:300px" placeholder="Enter keyword"/>
+                            </p:outputPanel>
+                        </f:facet>
 
-                    <p:column headerText="User Name" sortBy="#{listingEntity.user.name}" filterBy="#{listingEntity.user.name}" filterMatchMode="contains">
-                        <h:outputText value="#{listingEntity.user.name}" />
-                    </p:column>
+                        <p:dataViewGridItem>
+                            <div class="product-grid-item card border-1">
+                                <div class="product-grid-item-top">
+                                    <div>
+                                        <i class="pi pi-tag product-category-icon"/>
+                                        <span class="product-category">#{listingEntity.categoryEntity.name}</span>
+                                    </div>
+                                    
+                                </div>
+                                <div class="product-grid-item-content">
+                                    <p:graphicImage width="100%" value="/uploadedFiles/#{listingEntity.picturePath}" />
+                                    <div class="product-name" style="font-weight:bold">#{listingEntity.name}</div>
+                                    <div class="product-name">#{listingEntity.user.name}</div>
+                                </div>
+                                <div class="product-grid-item-bottom">
+                                    <p:column headerText="Rental Availability" style="text-align: center;" sortBy="#{listingEntity.rentalAvailability}" filterBy="#{listingEntity.rentalAvailability}" filterMatchMode="contains">
+                                        <h:outputText value="For Rent" rendered="#{listingEntity.rentalAvailability}" />
+                                        <h:outputText value="NOT for Rent" rendered="#{!listingEntity.rentalAvailability}" />
+                                    </p:column>
+                                    <br/>
+                                    <p:column headerText="Sale Availability" style="text-align: center;" sortBy="#{listingEntity.forSaleAvailability}" filterBy="#{listingEntity.forSaleAvailability}" filterMatchMode="contains">
+                                        <h:outputText value="For Sale" rendered="#{listingEntity.forSaleAvailability}" />
+                                        <h:outputText value="NOT for Sale" rendered="#{!listingEntity.forSaleAvailability}" />
+                                    </p:column>
+                                    <div align="center"> 
+                                    <p:commandButton style="text-align:right" value="View" icon="pi pi-folder-open" actionListener="#{viewListingManagedBean.viewListingDetails}">
+                                        <f:attribute name="listingId" value="#{listingEntity.listingId}" />
+                                    </p:commandButton>
+                                    
+                                    <p:commandButton rendered="#{!viewLikedItemManagedBean.alreadyLiked(listingEntity.listingId)}" value="Like" icon="pi pi-heart" actionListener="#{listingManagementManagedBean.likeItem}" update="formAllListings:dataTableAllListings formAllListings:messages" title="Like">
+                                        <f:attribute name="listingEntityToLike" value="#{listingEntity}" />
+                                    </p:commandButton>
+                                    <p:commandButton rendered="#{viewLikedItemManagedBean.alreadyLiked(listingEntity.listingId)}" value="Unlike" icon="pi pi-ban" actionListener="#{listingManagementManagedBean.unlikeItem}" update="formAllListings:dataTableAllListings formAllListings:messages" title="Unlike">
+                                        <f:attribute name="listingEntityToUnlike" value="#{listingEntity}" />
+                                    </p:commandButton>
+                                    </div>
 
-                    <p:column headerText="Picture" style="text-align: center;">
-                        <p:graphicImage width="100%" value="/uploadedFiles/#{listingEntity.picturePath}" />
-                    </p:column>  
-
-                    <p:column headerText="Name" style="text-align: center;" sortBy="#{listingEntity.name}" filterBy="#{listingEntity.name}" filterMatchMode="contains">
-                        <h:outputText value="#{listingEntity.name}" />
-                    </p:column>
-
-<!--                    <p:column headerText="Description" style="text-align: center;" sortBy="#{listingEntity.description}" filterBy="#{listingEntity.description}" filterMatchMode="contains">
-                        <h:outputText value="#{listingEntity.description}" />
-                    </p:column>
+                                </div>
+    <!--                          
 
                     <p:column headerText="Rental Price" sortBy="#{listingEntity.rentalPrice}" filterBy="#{listingEntity.rentalPrice}" filterMatchMode="contains" style="text-align: center;">
                         <h:outputText value="#{listingEntity.rentalPrice}">
@@ -65,51 +87,19 @@
                         <h:outputText value="#{listingEntity.location}" />
                     </p:column>
 
-                    -->                    <p:column headerText="Rental Availability" style="text-align: center;" sortBy="#{listingEntity.rentalAvailability}" filterBy="#{listingEntity.rentalAvailability}" filterMatchMode="contains">
-                        <h:outputText value="For Rent" rendered="#{listingEntity.rentalAvailability}" />
-                        <h:outputText value="NOT for Rent" rendered="#{!listingEntity.rentalAvailability}" />
-                    </p:column>
+                                -->
 
-                    <p:column headerText="Sale Availability" style="text-align: center;" sortBy="#{listingEntity.forSaleAvailability}" filterBy="#{listingEntity.forSaleAvailability}" filterMatchMode="contains">
-                        <h:outputText value="For Sale" rendered="#{listingEntity.forSaleAvailability}" />
-                        <h:outputText value="NOT for Sale" rendered="#{!listingEntity.forSaleAvailability}" />
-                    </p:column><!--
+                            </div>
+                        </p:dataViewGridItem>
+                    </p:dataView>
 
-                    <p:column headerText="Rent Out" style="text-align: center;" sortBy="#{listingEntity.isRentOut}" filterBy="#{listingEntity.isRentOut}" filterMatchMode="contains">
-                        <h:outputText value="#{listingEntity.isRentOut}" />
-                    </p:column>
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                    </p:confirmDialog>
 
-                    <p:column headerText="Category" style="text-align: center;" sortBy="#{listingEntity.categoryEntity.name}" filterBy="#{listingEntity.categoryEntity.name}" filterMatchMode="exact">
-                        <f:facet name="filter">
-                            <p:selectOneMenu id="selCategory" onchange="PF('dataTableAllListings').filter()">
-                                <f:selectItem itemValue="#{null}" itemLabel="[Select One]" noSelectionOption="true" />
-                                <f:selectItems value="#{listingManagementManagedBean.categoryEntities}" var="categoryEntity" itemValue="#{categoryEntity.name}" itemLabel="#{categoryEntity.name}" />
-                            </p:selectOneMenu>
-                        </f:facet>
-                        <h:outputText value="#{listingEntity.categoryEntity.name}" />
-                    </p:column>-->
-
-                    <p:column headerText="Action" style="text-align: center;" >
-                        <p:commandButton value="View" icon="pi pi-folder-open" actionListener="#{viewListingManagedBean.viewListingDetails}">
-                            <f:attribute name="listingId" value="#{listingEntity.listingId}" />
-                        </p:commandButton>
-
-                        <p:commandButton rendered="#{!viewLikedItemManagedBean.alreadyLiked(listingEntity.listingId)}" value="Like" icon="pi pi-heart" actionListener="#{listingManagementManagedBean.likeItem}" update="formAllListings:dataTableAllListings formAllListings:messages" title="Like">
-                            <f:attribute name="listingEntityToLike" value="#{listingEntity}" />
-                        </p:commandButton>
-                        <p:commandButton rendered="#{viewLikedItemManagedBean.alreadyLiked(listingEntity.listingId)}" value="Unlike" icon="pi pi-ban" actionListener="#{listingManagementManagedBean.unlikeItem}" update="formAllListings:dataTableAllListings formAllListings:messages" title="Unlike">
-                            <f:attribute name="listingEntityToUnlike" value="#{listingEntity}" />
-                        </p:commandButton>
-                    </p:column>
-
-                </p:dataTable>
-
-                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-                </p:confirmDialog>
-
-            </h:form>
+                </h:form>
+            </div>
 
             <ez:ViewListing id="ccViewListing" />
 
