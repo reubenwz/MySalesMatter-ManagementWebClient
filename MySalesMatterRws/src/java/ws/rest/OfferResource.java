@@ -314,7 +314,7 @@ public class OfferResource {
         }
     }
 
-    @Path("retrieveOfferByListingId")
+    @Path("retrieveOfferByListingId/{listingId}")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
