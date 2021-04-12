@@ -262,16 +262,27 @@ public class ListingResource {
         }
     }
 
+    @Path("createNewListing")
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createNewListing(CreateListingReq createListingReq) {
-        if (createListingReq != null) {
+        if (createListingReq.getName()!= null) {
             try {
+                System.out.println("HIIII IM IN");
                 UserEntity userEntity = userEntitySessionBeanLocal.userLogin(createListingReq.getUsername(), createListingReq.getPassword());
                 System.out.println("********** ListingResource.createNewListing(): User " + userEntity.getUsername() + " login remotely via web service");
-                ListingEntity listingEntity = listingEntitySessionBeanLocal.createNewListing(createListingReq.getNewListingEntity(), createListingReq.getCategoryId(), createListingReq.getTagIds(), createListingReq.getUserId());
-                return Response.status(Response.Status.OK).entity(listingEntity.getListingId()).build();
+                ListingEntity l = new ListingEntity();
+                l.setBrand(createListingReq.getBrand());
+                l.setCategoryEntity(categoryEntitySessionBeanLocal.retrieveCategoryByCategoryId(createListingReq.getCategoryId()));
+                l.setDateListed(createListingReq.getDate());
+                l.setDescription(createListingReq.getDescription());
+                l.setLocation(createListingReq.getLocation());
+                l.setName(createListingReq.getName());
+                l.setRentalPrice(createListingReq.getRentalPrice());
+                l.setSalePrice(createListingReq.getSalePrice());
+                l = listingEntitySessionBeanLocal.createNewListing(l, createListingReq.getCategoryId(), createListingReq.getTagIds(), createListingReq.getUserId());
+                return Response.status(Response.Status.OK).entity(l.getListingId()).build();
             } catch (UnknownPersistenceException | InputDataValidationException | CreateNewListingException | UserNotFoundException ex) {
                 return Response.status(Response.Status.UNAUTHORIZED).entity(ex.getMessage()).build();
             } catch (Exception ex) {
