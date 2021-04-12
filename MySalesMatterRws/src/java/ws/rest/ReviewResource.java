@@ -104,19 +104,20 @@ public class ReviewResource {
         }
     }
     
-    @Path("retrieveReviewsByUserId")
+    @Path("retrieveReviewsByUserId/{userId}")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
     public Response retrieveReviewsByUserId(@QueryParam("username") String username, 
-                                        @QueryParam("password") String password)
+                                        @QueryParam("password") String password,
+                                        @PathParam("userId") Long userId)
     {
         try
         {
             UserEntity userEntity = userEntitySessionBeanLocal.userLogin(username, password);
             System.out.println("********** ReviewResource.retrieveReviewByReviewId(): User " + userEntity.getUsername() + " login remotely via web service");
 
-            List<ReviewEntity> reviewEntities = reviewEntitySessionBeanLocal.getReviewsByUserId(userEntity.getUserId());
+            List<ReviewEntity> reviewEntities = reviewEntitySessionBeanLocal.getReviewsByUserId(userId);
             for(ReviewEntity reviewEntity: reviewEntities)
             {                
                 reviewEntity.getListing().getOffers().clear();
@@ -149,19 +150,20 @@ public class ReviewResource {
         }
     }
     
-    @Path("getReviewsReceivedByUserId")
+    @Path("getReviewsReceivedByUserId/{userId}")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getReviewsReceivedByUserId(@QueryParam("username") String username, 
-                                        @QueryParam("password") String password)
+                                        @QueryParam("password") String password,
+                                        @PathParam("userId") Long userId)
     {
         try
         {
             UserEntity userEntity = userEntitySessionBeanLocal.userLogin(username, password);
             System.out.println("********** ReviewResource.getReviewsReceivedByUserId(): User " + userEntity.getUsername() + " login remotely via web service");
 
-            List<ReviewEntity> reviewEntities = reviewEntitySessionBeanLocal.getReviewsReceivedByUserId(userEntity.getUserId());
+            List<ReviewEntity> reviewEntities = reviewEntitySessionBeanLocal.getReviewsReceivedByUserId(userId);
             for(ReviewEntity reviewEntity: reviewEntities)
             {                
                 reviewEntity.getListing().getOffers().clear();
@@ -194,7 +196,7 @@ public class ReviewResource {
         }
     }
     
-    @Path("retrieveReview/{reviewId}")
+    @Path("retrieveReviewByReviewId/{reviewId}")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
@@ -260,7 +262,7 @@ public class ReviewResource {
         }
     }
 
-    @Path("{reviewnId}")
+    @Path("{reviewId}")
     @DELETE
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
