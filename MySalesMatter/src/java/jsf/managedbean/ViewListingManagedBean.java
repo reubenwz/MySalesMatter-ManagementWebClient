@@ -7,6 +7,7 @@ package jsf.managedbean;
 
 import ejb.session.stateless.ListingEntitySessionBeanLocal;
 import entity.ListingEntity;
+import entity.UserEntity;
 import java.io.IOException;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
@@ -28,6 +29,7 @@ public class ViewListingManagedBean implements Serializable{
 
     private ListingEntity listingEntityToView;
     private Long listingIdToView;
+    private UserEntity currentUser;
     
     @EJB
     ListingEntitySessionBeanLocal listingEntitySessionBeanLocal;
@@ -45,12 +47,13 @@ public class ViewListingManagedBean implements Serializable{
     public void postConstruct()
     {        
         setListingIdEntityToView((Long)FacesContext.getCurrentInstance().getExternalContext().getFlash().get("listingIdToView"));
+        setCurrentUser((UserEntity) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser"));
         
         try
         {
-            if(listingIdToView != null)
+            if(getListingIdToView() != null)
             {
-                listingEntityToView = listingEntitySessionBeanLocal.retrieveListingByListingId(listingIdToView);
+                listingEntityToView = listingEntitySessionBeanLocal.retrieveListingByListingId(getListingIdToView());
             }
             else
             {
@@ -65,6 +68,20 @@ public class ViewListingManagedBean implements Serializable{
         {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An unexpected error has occurred: " + ex.getMessage(), null));
         }
+    }
+    
+    public boolean checkRentAvailability(boolean isRentOut, Long listerId) {
+        if (isRentOut == false || currentUser.getUserId().equals(listerId)) {
+            return false;
+        }
+        return true;
+    }
+    
+    public boolean checkSaleAvailability(boolean isSoldOut, Long listerId) {
+        if (isSoldOut == false || currentUser.getUserId().equals(listerId)) {
+            return false;
+        }
+        return true;
     }
     
     public void foo()
@@ -89,11 +106,27 @@ public class ViewListingManagedBean implements Serializable{
     }    
 
     public Long getListingIdEntityToView() {
-        return listingIdToView;
+        return getListingIdToView();
     }
 
     public void setListingIdEntityToView(Long listingIdEntityToView) {
-        this.listingIdToView = listingIdEntityToView;
+        this.setListingIdToView(listingIdEntityToView);
+    }
+
+    public Long getListingIdToView() {
+        return listingIdToView;
+    }
+
+    public void setListingIdToView(Long listingIdToView) {
+        this.listingIdToView = listingIdToView;
+    }
+
+    public UserEntity getCurrentUser() {
+        return currentUser;
+    }
+
+    public void setCurrentUser(UserEntity currentUser) {
+        this.currentUser = currentUser;
     }
 
 }
