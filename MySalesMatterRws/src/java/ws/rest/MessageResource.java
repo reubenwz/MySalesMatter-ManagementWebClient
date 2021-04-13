@@ -21,6 +21,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
@@ -93,20 +94,25 @@ public class MessageResource {
         }
     }
     
-    @Path("retrieveReceivedMessageSByUserId")
+    @Path("retrieveReceivedMessagesByUserId/{userId}")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveReceivedMessageSByUserId(@QueryParam("username") String username,
-            @QueryParam("password") String password) {
+    public Response retrieveReceivedMessagesByUserId(@QueryParam("username") String username,
+            @QueryParam("password") String password,
+            @PathParam("userId") Long userId) {
         try {
             UserEntity userEntity = userEntitySessionBeanLocal.userLogin(username, password);
-            System.out.println("********** MessageResource.retrieveAllMessages(): User " + userEntity.getUsername() + " login remotely via web service");
+            System.out.println("********** MessageResource.retrieveReceivedMessagesByUserId(): User " + userEntity.getUsername() + " login remotely via web service");
 
-            List<MessageEntity> messageEntities = messageEntitySessionBeanLocal.retrieveReceivedMessageSByUserId(userEntity.getUserId());
+            List<MessageEntity> messageEntities = messageEntitySessionBeanLocal.retrieveReceivedMessagesByUserId(userId);
 
             for (MessageEntity m : messageEntities) {
-                m.getOffer().setListing(null);
+                m.getOffer().getListing().setCategoryEntity(null);
+                m.getOffer().getListing().getOffers().clear();
+                m.getOffer().getListing().getReviews().clear();
+                m.getOffer().getListing().getTags().clear();
+//                m.getOffer().setListing(null);
                 m.getOffer().getMessage().clear();
                 m.getOffer().setUser(null);
                 m.getOffer().setSales(null);
@@ -136,6 +142,7 @@ public class MessageResource {
         }
     }
     
+    @Path("addMessage")
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -147,8 +154,8 @@ public class MessageResource {
             {
                 UserEntity userEntity = userEntitySessionBeanLocal.userLogin(createMessageReq.getUsername(), createMessageReq.getPassword());
                 System.out.println("********** MessageResource.addMessage(): User " + userEntity.getUsername() + " login remotely via web service");
-                Long m = messageEntitySessionBeanLocal.addMessage(createMessageReq.getMessage(), createMessageReq.getOfferId(), createMessageReq.getSenderId(), createMessageReq.getDate());
-                return Response.status(Response.Status.OK).entity(m).build();
+                MessageEntity m = messageEntitySessionBeanLocal.addMessageV2(createMessageReq.getMessage(), createMessageReq.getOfferId(), createMessageReq.getSenderId(), createMessageReq.getRecipientId(), createMessageReq.getDate());
+                return Response.status(Response.Status.OK).entity(m.getMessageId()).build();
                 
             }
             catch(UnknownPersistenceException | InputDataValidationException | UserNotFoundException ex)
@@ -166,7 +173,7 @@ public class MessageResource {
         }
     }
     
-    
+ 
     
     private UserEntitySessionBeanLocal lookupUserEntitySessionBeanLocal() {
         try {

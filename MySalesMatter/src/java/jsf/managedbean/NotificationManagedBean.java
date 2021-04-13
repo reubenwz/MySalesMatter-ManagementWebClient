@@ -62,7 +62,7 @@ public class NotificationManagedBean implements Serializable {
     public void postConstruct() {
         try {
             setCurrentUser((UserEntity) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser"));
-            setMessages(messageEntitySessionBeanLocal.retrieveReceivedMessageSByUserId(getCurrentUser().getUserId()));
+            setMessages(messageEntitySessionBeanLocal.retrieveReceivedMessagesByUserId(getCurrentUser().getUserId()));
         } catch (MessageNotFoundException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while loading conversations: " + ex.getMessage(), null));
         }

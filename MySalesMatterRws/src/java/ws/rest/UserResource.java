@@ -190,13 +190,25 @@ public class UserResource {
         }
     }
 
+    @Path("registerUser")
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response registerUser(CreateUserReq createUserReq) {
-        if (createUserReq != null) {
+        System.out.println("HI");
+        if (createUserReq.getName() != null) {
             try {
-                UserEntity userEntity = userEntitySessionBeanLocal.registerUser(createUserReq.getUserEntity());
+                System.out.println("IN");
+                UserEntity user = new UserEntity();
+                user.setBankAccountNumber(createUserReq.getBankAccountNumber());
+                user.setPhoneNumber(createUserReq.getPhoneNumber());
+                user.setEmail(createUserReq.getEmail());
+                user.setBio(createUserReq.getBio());
+                user.setName(createUserReq.getName());
+                user.setUsername(createUserReq.getUsername());
+                user.setPassword(createUserReq.getPassword());
+                
+                UserEntity userEntity = userEntitySessionBeanLocal.registerUser(user);
                 return Response.status(Response.Status.OK).entity(userEntity.getUserId()).build();
             } catch (UserEmailExistsException ex) {
                 return Response.status(Status.UNAUTHORIZED).entity(ex.getMessage()).build();

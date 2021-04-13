@@ -7,6 +7,8 @@ package ws.datamodel;
 
 import entity.ListingEntity;
 import entity.TagEntity;
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -17,7 +19,13 @@ public class CreateListingReq {
     
     private String username;
     private String password;
-    private ListingEntity newListingEntity;
+    private String name;
+    private String description;
+    private Date date;
+    private String brand;
+    private BigDecimal rentalPrice;
+    private BigDecimal salePrice;
+    private String location;
     private Long userId;
     private Long categoryId;
     private List<Long> tagIds;
@@ -25,10 +33,16 @@ public class CreateListingReq {
     public CreateListingReq() {
     }
 
-    public CreateListingReq(String username, String password, ListingEntity newListingEntity, Long userId, Long categoryId, List<Long> tagIds) {
+    public CreateListingReq(String name, String description, String brand, BigDecimal rentalPrice, BigDecimal salePrice, String location, String username, String password, Long userId, Long categoryId, List<Long> tagIds) {
+        this.description = description;
+        this.name = name;
+        this.date = new Date();
+        this.brand = brand;
+        this.rentalPrice = rentalPrice;
+        this.salePrice = salePrice;
+        this.location = location;
         this.username = username;
         this.password = password;
-        this.newListingEntity = newListingEntity;
         this.userId = userId;
         this.categoryId = categoryId;
         this.tagIds = tagIds;
@@ -48,14 +62,6 @@ public class CreateListingReq {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public ListingEntity getNewListingEntity() {
-        return newListingEntity;
-    }
-
-    public void setNewListingEntity(ListingEntity newListingEntity) {
-        this.newListingEntity = newListingEntity;
     }
 
     public Long getUserId() {
@@ -80,6 +86,62 @@ public class CreateListingReq {
 
     public void setTagIds(List<Long> tagIds) {
         this.tagIds = tagIds;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public BigDecimal getRentalPrice() {
+        return rentalPrice;
+    }
+
+    public void setRentalPrice(BigDecimal rentalPrice) {
+        this.rentalPrice = rentalPrice;
+    }
+
+    public BigDecimal getSalePrice() {
+        return salePrice;
+    }
+
+    public void setSalePrice(BigDecimal salePrice) {
+        this.salePrice = salePrice;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     

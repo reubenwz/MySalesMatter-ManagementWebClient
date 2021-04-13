@@ -52,7 +52,7 @@ public class ListingEntitySessionBean implements ListingEntitySessionBeanLocal {
 
     @EJB
     private UserEntitySessionBeanLocal userEntitySessionBeanLocal;
-    
+
     @EJB
     private OfferEntitySessionBeanLocal offerEntitySessionBeanLocal;
 
@@ -165,60 +165,48 @@ public class ListingEntitySessionBean implements ListingEntitySessionBeanLocal {
 
         return listingEntities;
     }
-    
+
     @Override
-    public List<ListingEntity> filterListingsByTags(List<Long> tagIds, String condition)
-    {
+    public List<ListingEntity> filterListingsByTags(List<Long> tagIds, String condition) {
         List<ListingEntity> listingEntities = new ArrayList<>();
-        
-        if(tagIds == null || tagIds.isEmpty() || (!condition.equals("AND") && !condition.equals("OR")))
-        {
+
+        if (tagIds == null || tagIds.isEmpty() || (!condition.equals("AND") && !condition.equals("OR"))) {
             return listingEntities;
-        }
-        else
-        {
-            if(condition.equals("OR"))
-            {
+        } else {
+            if (condition.equals("OR")) {
                 Query query = entityManager.createQuery("SELECT DISTINCT l FROM ListingEntity l, IN (l.tagEntities) te WHERE te.tagId IN :inTagIds ORDER BY l.listingId ASC");
                 query.setParameter("inTagIds", tagIds);
-                listingEntities = query.getResultList();                                                          
-            }
-            else // AND
+                listingEntities = query.getResultList();
+            } else // AND
             {
                 String selectClause = "SELECT l FROM ListingEntity l";
                 String whereClause = "";
                 Boolean firstTag = true;
                 Integer tagCount = 1;
 
-                for(Long tagId:tagIds)
-                {
+                for (Long tagId : tagIds) {
                     selectClause += ", IN (l.tagEntities) te" + tagCount;
 
-                    if(firstTag)
-                    {
+                    if (firstTag) {
                         whereClause = "WHERE te1.tagId = " + tagId;
                         firstTag = false;
+                    } else {
+                        whereClause += " AND te" + tagCount + ".tagId = " + tagId;
                     }
-                    else
-                    {
-                        whereClause += " AND te" + tagCount + ".tagId = " + tagId; 
-                    }
-                    
+
                     tagCount++;
                 }
-                
+
                 String jpql = selectClause + " " + whereClause + " ORDER BY l.listingId ASC";
                 Query query = entityManager.createQuery(jpql);
-                listingEntities = query.getResultList();                                
+                listingEntities = query.getResultList();
             }
-            
-            for(ListingEntity listingEntity:listingEntities)
-            {
+
+            for (ListingEntity listingEntity : listingEntities) {
                 listingEntity.getCategoryEntity();
                 listingEntity.getTags().size();
             }
-           
-            
+
             return listingEntities;
         }
     }
@@ -236,7 +224,22 @@ public class ListingEntitySessionBean implements ListingEntitySessionBeanLocal {
             throw new ListingNotFoundException("Listing ID " + listingId + " does not exist!");
         }
     }
-    
+
+    @Override
+    public ListingEntity retrieveListingByOfferId(Long offerId) throws OfferNotFoundException {
+        try {
+            OfferEntity o = offerEntitySessionBeanLocal.retrieveOfferById(offerId);
+            o.getListing();
+            o.getMessage().size();
+            o.getSales();
+            o.getUser();
+            return o.getListing();
+        } catch (OfferNotFoundException ex) {
+            throw new OfferNotFoundException("Offer ID " + offerId + " does not exist!");
+        }
+
+    }
+
     public List<ListingEntity> retrieveListingsByUser(Long userId) {
         Query query = entityManager.createQuery("SELECT l FROM ListingEntity l WHERE l.user.userId = :inUserId");
         query.setParameter("inUserId", userId);
@@ -312,7 +315,6 @@ public class ListingEntitySessionBean implements ListingEntitySessionBeanLocal {
         }
     }
 
-
     @Override
     public void deleteListing(Long listingId) throws ListingNotFoundException, DeleteListingException {
         ListingEntity listingEntityToRemove = retrieveListingByListingId(listingId);
@@ -327,7 +329,7 @@ public class ListingEntitySessionBean implements ListingEntitySessionBeanLocal {
                 t.getListings().remove(listingEntityToRemove);
                 entityManager.merge(t);
             }
-            
+
             for (OfferEntity o : listingEntityToRemove.getOffers()) {
                 entityManager.remove(o);
             }
@@ -352,7 +354,7 @@ public class ListingEntitySessionBean implements ListingEntitySessionBeanLocal {
             return listingEntities;
         }
     }
-    
+
     @Override
     public void addOffer(Long listingId, Long offerId) throws ListingNotFoundException, OfferNotFoundException {
         ListingEntity listingEntityToAddOffer = retrieveListingByListingId(listingId);

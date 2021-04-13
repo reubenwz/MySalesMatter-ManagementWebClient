@@ -77,11 +77,11 @@
                             </p:row>
                         </p:panelGrid>
                         <br/>
-                        <div align="center">                        
-                            <p:commandButton  rendered="#{listingEntity.rentalAvailability}" value=" Rent" icon="pi pi-shopping-cart" oncomplete="PF('dialogCreateNewRentOffer').show()" actionListener="#{listingManagementManagedBean.doMakeRentalOffer}" update="formListingDetails:dataTableListingDetails formListingDetails:messages" title="Make Rental Offer">
+                        <div align="center">   
+                            <p:commandButton rendered="#{viewListingManagedBean.checkRentAvailability(listingEntity.rentalAvailability, listingEntity.user.userId)}" value=" Rent" icon="pi pi-shopping-cart" oncomplete="PF('dialogCreateNewRentOffer').show()" actionListener="#{listingManagementManagedBean.doMakeRentalOffer}" update="formListingDetails:dataTableListingDetails formListingDetails:messages" title="Make Rental Offer">
                                 <f:attribute name="listingEntityToMakeOffer" value="#{listingEntity}" />
                             </p:commandButton>
-                            <p:commandButton rendered="#{listingEntity.forSaleAvailability}" value=" Buy" icon="pi pi-tags" actionListener="#{listingManagementManagedBean.makeBuyOffer}" update="formListingDetails:dataTableListingDetails formListingDetails:messages" title="Make Buy Offer">
+                            <p:commandButton rendered="#{viewListingManagedBean.checkSaleAvailability(listingEntity.forSaleAvailability, listingEntity.user.userId)}" value=" Buy" icon="pi pi-tags" actionListener="#{listingManagementManagedBean.makeBuyOffer}" update="formListingDetails:dataTableListingDetails formListingDetails:messages" title="Make Buy Offer">
                                 <f:attribute name="listingEntityToMakeOffer" value="#{listingEntity}" />
                             </p:commandButton>
                             <p:commandButton value=" View Reviews" icon="pi pi-users" actionListener="#{viewAllReviewsManagedBean.viewReviewDetails}" title="View All Reviews">

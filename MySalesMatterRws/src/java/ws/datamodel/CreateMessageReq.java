@@ -19,20 +19,23 @@ public class CreateMessageReq {
     private String message;
     private Long offerId;
     private Long senderId;
+    private Long recipientId;
     private Date date;
     
     public CreateMessageReq() {
     }
 
-    public CreateMessageReq(String username, String password, String message, Long offerId, Long senderId, Date date) {
+    public CreateMessageReq(String username, String password, String message, Long offerId, Long senderId, Long recipientId, Date date) {
         this.username = username;
         this.password = password;
         this.message = message;
         this.offerId = offerId;
         this.senderId = senderId;
+        this.recipientId = recipientId;
         this.date = date;
     }
 
+      
     
     
     public String getMessage() {
@@ -81,6 +84,14 @@ public class CreateMessageReq {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Long getRecipientId() {
+        return recipientId;
+    }
+
+    public void setRecipientId(Long recipientId) {
+        this.recipientId = recipientId;
     }
 
         
