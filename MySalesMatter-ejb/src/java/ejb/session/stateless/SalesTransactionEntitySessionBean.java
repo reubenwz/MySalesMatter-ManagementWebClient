@@ -85,6 +85,7 @@ public class SalesTransactionEntitySessionBean implements SalesTransactionEntity
                     userEntity.getTransactions().add(salesTransactionEntity);
                     em.merge(userEntity);
                     offerEntity.setSales(salesTransactionEntity);
+                    offerEntity.setPaid(true);
                     em.merge(offerEntity);
                     em.flush();
 

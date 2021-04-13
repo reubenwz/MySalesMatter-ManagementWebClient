@@ -61,6 +61,8 @@ public class ReviewEntitySessionBean implements ReviewEntitySessionBeanLocal {
             try {
                 ListingEntity lisitng = listingEntitySessionBeanLocal.retrieveListingByListingId(listingId);
                 UserEntity user = userEntitySessionBeanLocal.retrieveUserById(reviewerId);
+                newReviewEntity.setReviewer(user);
+                newReviewEntity.setListing(lisitng);
                 user.getReviews().add(newReviewEntity);
                 lisitng.getReviews().add(newReviewEntity);
                 entityManager.persist(newReviewEntity);

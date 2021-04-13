@@ -284,7 +284,7 @@ public class ReviewResource {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
         }
     }
-    
+
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -297,7 +297,13 @@ public class ReviewResource {
                 UserEntity userEntity = userEntitySessionBeanLocal.userLogin(createReviewReq.getUsername(), createReviewReq.getPassword());
                 System.out.println("********** ReviewResource.createNewReviewEntity(): User " + userEntity.getUsername() + " login remotely via web service");
                 
-                ReviewEntity reviewEntity = reviewEntitySessionBeanLocal.createNewReviewEntity(createReviewReq.getReviewEntity(), createReviewReq.getReviewerId(), createReviewReq.getListingId());
+                ReviewEntity r = new ReviewEntity();
+                r.setDescription(createReviewReq.getDescription());
+                r.setStarRating(createReviewReq.getStarRating());
+                r.setPicturePaths("");
+                System.out.println(createReviewReq.getListingId());
+                System.out.println(createReviewReq.getReviewerId());
+                ReviewEntity reviewEntity = reviewEntitySessionBeanLocal.createNewReviewEntity(r, createReviewReq.getReviewerId(), createReviewReq.getListingId());
                 return Response.status(Response.Status.OK).entity(reviewEntity.getReviewId()).build();
             }
             catch(UnknownPersistenceException | InputDataValidationException | CreateNewReviewException | UserNotFoundException | ListingNotFoundException ex)

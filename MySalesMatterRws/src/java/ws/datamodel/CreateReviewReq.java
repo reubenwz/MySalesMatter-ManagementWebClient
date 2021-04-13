@@ -15,12 +15,14 @@ public class CreateReviewReq {
     
     private String username;
     private String password;
-    private ReviewEntity reviewEntity;
+    private String description;
+    private int starRating;
     private Long reviewerId;
     private Long listingId;
 
-    public CreateReviewReq(ReviewEntity reviewEntity, String username, String password, Long reviewerId, Long listingId) {
-        this.reviewEntity = reviewEntity;
+    public CreateReviewReq(String description, int starRating, String username, String password, Long reviewerId, Long listingId) {
+        this.starRating = starRating;
+        this.description = description;
         this.username = username;
         this.password = password;
         this.reviewerId = reviewerId;
@@ -63,12 +65,20 @@ public class CreateReviewReq {
         this.listingId = listingId;
     }
 
-    public ReviewEntity getReviewEntity() {
-        return reviewEntity;
+    public String getDescription() {
+        return description;
     }
 
-    public void setReviewEntity(ReviewEntity reviewEntity) {
-        this.reviewEntity = reviewEntity;
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getStarRating() {
+        return starRating;
+    }
+
+    public void setStarRating(int starRating) {
+        this.starRating = starRating;
     }
     
     

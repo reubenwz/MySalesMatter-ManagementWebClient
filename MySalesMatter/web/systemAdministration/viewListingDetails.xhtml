@@ -44,12 +44,12 @@
                                 <p:column><h:outputText value="#{listingEntity.description}"/></p:column>
                             </p:row>
                             <p:row rendered="#{listingEntity.rentalPrice != null}">
-                                <p:column><h:outputText style="font-weight: bold; width: 20%;" value="Rental Price"/></p:column>
-                                <p:column><h:outputText value="#{listingEntity.rentalPrice}"/></p:column>
+                                <p:column><h:outputText style="font-weight: bold; width: 20%;" value="Rental Price Per Day"/></p:column>
+                                <p:column><h:outputText value="$ #{listingEntity.rentalPrice}"/></p:column>
                             </p:row>
                             <p:row rendered="#{listingEntity.salePrice != null}">
                                 <p:column><h:outputText style="font-weight: bold; width: 20%;" value="Sale Price"/></p:column>
-                                <p:column><h:outputText value="#{listingEntity.salePrice}"/></p:column>
+                                <p:column><h:outputText value="$ #{listingEntity.salePrice}"/></p:column>
                             </p:row>
                             <p:row>
                                 <p:column><h:outputText style="font-weight: bold; width: 20%;" value="Location"/></p:column>
@@ -129,10 +129,10 @@
                         
                         <p:row>
                             <p:column>
-                                <p:outputLabel for="rentalPrice" value="Rental Price " style="font-weight: bold;" />
+                                <p:outputLabel for="rentalPrice" value="Total Rental Price" style="font-weight: bold;" />
                             </p:column>
                             <p:column>                            
-                                <h:outputText id="rentalPrice" value="#{listingManagementManagedBean.rentalOfferEntity.totalPrice}" />
+                                <h:outputText id="rentalPrice" value="$ #{listingManagementManagedBean.rentalOfferEntity.totalPrice}" />
                             </p:column>
                             <p:column>
                                 <p:commandButton  value="Calculate" actionListener="#{listingManagementManagedBean.calculateRentalPrice()}" update="panelGridcreateNewOffer"/>     

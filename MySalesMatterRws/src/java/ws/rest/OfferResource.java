@@ -202,9 +202,9 @@ public class OfferResource {
         }
     }
 
-    @Path("accceptOffer/{offerId}")
+    @Path("acceptOffer/{offerId}")
     @POST
-    @Consumes(MediaType.TEXT_PLAIN)
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response acceptOffer(@QueryParam("username") String username,
             @QueryParam("password") String password,
@@ -212,6 +212,7 @@ public class OfferResource {
         try {
             UserEntity userEntity = userEntitySessionBeanLocal.userLogin(username, password);
             System.out.println("********** OfferResource.acceptOffer(): User " + userEntity.getUsername() + " login remotely via web service");
+            System.out.println("OfferID" + offerId);
             offerEntitySessionBeanLocal.acceptOffer(offerId);
             return Response.status(Response.Status.OK).build();
         } catch (InvalidLoginCredentialException ex) {

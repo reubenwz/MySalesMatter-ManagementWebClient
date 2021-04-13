@@ -163,7 +163,7 @@
 
                         <p:row rendered="#{listingManagementManagedBean.newListingEntity.rentalAvailability}">
                             <p:column>
-                                <p:outputLabel for="rentalPrice" value="Rental Price (Blank if Not For Rent)" style="font-weight: bold;" />
+                                <p:outputLabel for="rentalPrice" value="Rental Price Per Day (Blank if Not For Rent)" style="font-weight: bold;" />
                             </p:column>
                             <p:column>                            
                                 <p:spinner id="rentalPrice" value="#{listingManagementManagedBean.newListingEntity.rentalPrice}" placeholder="10.00" min="0" max="1000000" stepFactor="0.01" required="true" requiredMessage="Rental Price is required" />
