@@ -354,6 +354,28 @@ public class OfferResource {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
         }
     }
+    
+    @Path("proceedToBuy/{offerId}")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response proceedToBuy(@QueryParam("username") String username,
+            @QueryParam("password") String password,
+            @PathParam("offerId") Long offerId) {
+        try {
+            UserEntity userEntity = userEntitySessionBeanLocal.userLogin(username, password);
+            System.out.println("********** OfferResource.proceedToBuy(): User " + userEntity.getUsername() + " login remotely via web service");
+            offerEntitySessionBeanLocal.doSetPaid(offerId);
+            return Response.status(Response.Status.OK).build();
+        } catch (InvalidLoginCredentialException ex) {
+            return Response.status(Response.Status.UNAUTHORIZED).entity(ex.getMessage()).build();
+        } catch (OfferNotFoundException ex) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(ex.getMessage()).build();
+        } catch (Exception ex) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
+        }
+
+    }
 
 
     @Path("retrieveOfferByListingId/{listingId}")

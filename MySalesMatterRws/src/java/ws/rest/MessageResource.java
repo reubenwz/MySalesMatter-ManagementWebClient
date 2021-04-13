@@ -108,27 +108,37 @@ public class MessageResource {
             List<MessageEntity> messageEntities = messageEntitySessionBeanLocal.retrieveReceivedMessagesByUserId(userId);
 
             for (MessageEntity m : messageEntities) {
-                m.getOffer().getListing().setCategoryEntity(null);
+//                m.getOffer().getListing().setCategoryEntity(null);
+//                m.getOffer().getListing().getOffers().clear();
+//                m.getOffer().getListing().getReviews().clear();
+//                m.getOffer().getListing().getTags().clear();
+//                m.getOffer().getMessage().clear();
+//                m.getOffer().setUser(null);
+//                m.getOffer().setSales(null);
+//                m.getRecipient().getListings().clear();
+//                m.getRecipient().getTransactions().clear();
+//                m.getRecipient().getReviews().clear();
+//                m.getRecipient().getLikedItems().clear();
+//                m.getRecipient().getOffers().clear();
+//                m.getSender().getListings().clear();
+//                m.getSender().getTransactions().clear();
+//                m.getSender().getReviews().clear();
+//                m.getSender().getLikedItems().clear();
+//                m.getSender().getOffers().clear();
                 m.getOffer().getListing().getOffers().clear();
                 m.getOffer().getListing().getReviews().clear();
+                m.getOffer().getListing().setUser(null);
+                m.getOffer().getListing().setCategoryEntity(null);
                 m.getOffer().getListing().getTags().clear();
-//                m.getOffer().setListing(null);
                 m.getOffer().getMessage().clear();
-                m.getOffer().setUser(null);
                 m.getOffer().setSales(null);
-                m.getRecipient().getListings().clear();
-                m.getRecipient().getTransactions().clear();
-                m.getRecipient().getReviews().clear();
-                m.getRecipient().getLikedItems().clear();
-                m.getRecipient().getOffers().clear();
-                m.getSender().getListings().clear();
-                m.getSender().getTransactions().clear();
-                m.getSender().getReviews().clear();
+                m.getOffer().setUser(null);
+                m.setRecipient(null);
                 m.getSender().getLikedItems().clear();
+                m.getSender().getListings().clear();
                 m.getSender().getOffers().clear();
-//                m.getOffer().getMessage().clear();
-//                m.getOffer().setSales(null);
-//                m.getOffer().setUser(null);
+                m.getSender().getReviews().clear();
+                m.getSender().getTransactions().clear();
             }
             
             GenericEntity<List<MessageEntity>> genericEntity = new GenericEntity<List<MessageEntity>>(messageEntities) {
