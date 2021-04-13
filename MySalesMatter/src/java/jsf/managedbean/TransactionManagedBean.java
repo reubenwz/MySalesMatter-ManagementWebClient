@@ -13,7 +13,10 @@ import entity.OfferEntity;
 import entity.RentalOfferEntity;
 import entity.UserEntity;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
@@ -50,6 +53,11 @@ public class TransactionManagedBean implements Serializable {
     private RentalOfferEntity acceptedRentalOffer;
     private BuyOfferEntity acceptedBuyOffer;
     private String message;
+    private String ccName;
+    private String ccNum;
+    private String cvv;
+    private String expiry;
+    private BigDecimal totalAmt;
 
     public TransactionManagedBean() {
         currentUser = new UserEntity();
@@ -70,15 +78,11 @@ public class TransactionManagedBean implements Serializable {
     public void doMakePayment(ActionEvent event) {
         
         acceptedOfferToMakePayment = (OfferEntity) event.getComponent().getAttributes().get("acceptedOfferToPay");
+        totalAmt = acceptedOfferToMakePayment.getTotalPrice().divide(acceptedOfferToMakePayment.getListing().getRentalPrice()).multiply(new BigDecimal(5));
         if (acceptedOfferToMakePayment.getOfferType() == OfferType.RENTAL) {
             acceptedRentalOffer = (RentalOfferEntity) acceptedOfferToMakePayment;
         } else {
             acceptedBuyOffer = (BuyOfferEntity) acceptedOfferToMakePayment;
-        }
-        try {
-            offerEntitySessionBeanLocal.doSetPaid(acceptedOfferToMakePayment.getOfferId());
-        } catch (OfferNotFoundException ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while accepting the offer: " + ex.getMessage(), null));
         }
     }
 
@@ -94,11 +98,36 @@ public class TransactionManagedBean implements Serializable {
 
     public void makePayment(ActionEvent event) {
         try {
-            salesTransactionEntitySessionBeanLocal.createSalesTransaction(acceptedOfferToMakePayment.getOfferId(), currentUser.getUserId(), "paid", new Date(), acceptedOfferToMakePayment.getTotalPrice());
+            salesTransactionEntitySessionBeanLocal.createSalesTransaction(acceptedOfferToMakePayment.getOfferId(), currentUser.getUserId(), new Date(), this.totalAmt, this.ccName, this.ccNum, this.cvv, this.expiry);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Payment made successfully", null));
+            offerEntitySessionBeanLocal.doSetPaid(acceptedOfferToMakePayment.getOfferId());
         } catch (UnknownPersistenceException | InputDataValidationException | UserNotFoundException | CreateNewTransactionException | SalesTransactionExistException | OfferNotFoundException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while making the payment: " + ex.getMessage(), null));
         }
+    }
+    
+    public boolean paidDeposit(OfferEntity offer) {
+        if (offer.getOfferType() == OfferType.BUY) {
+            return true;
+        } else if (offer.isPaid()) {
+            return true;
+        } return false;
+    }
+    
+    public void doMakePurchase(ActionEvent event) {
+        OfferEntity offerPurchase = (OfferEntity) event.getComponent().getAttributes().get("acceptedOfferToBuy");     
+        try {
+            offerEntitySessionBeanLocal.doSetPaid(offerPurchase.getOfferId());
+        } catch (OfferNotFoundException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while making the payment: " + ex.getMessage(), null));
+        }
+
+    }
+    
+    public boolean toBuy(OfferEntity offer) {
+        if (offer.getOfferType() == OfferType.BUY && !offer.isPaid()) {
+            return true;
+        } return false;
     }
 
     public void addMessage(ActionEvent event) {
@@ -148,6 +177,46 @@ public class TransactionManagedBean implements Serializable {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public String getCcName() {
+        return ccName;
+    }
+
+    public void setCcName(String ccName) {
+        this.ccName = ccName;
+    }
+
+    public String getCcNum() {
+        return ccNum;
+    }
+
+    public void setCcNum(String ccNum) {
+        this.ccNum = ccNum;
+    }
+
+    public String getCvv() {
+        return cvv;
+    }
+
+    public void setCvv(String cvv) {
+        this.cvv = cvv;
+    }
+
+    public String getExpiry() {
+        return expiry;
+    }
+
+    public void setExpiry(String expiry) {
+        this.expiry = expiry;
+    }
+
+    public BigDecimal getTotalAmt() {
+        return totalAmt;
+    }
+
+    public void setTotalAmt(BigDecimal totalAmt) {
+        this.totalAmt = totalAmt;
     }
 
 }

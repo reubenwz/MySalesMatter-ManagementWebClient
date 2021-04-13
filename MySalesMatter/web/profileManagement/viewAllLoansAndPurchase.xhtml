@@ -9,7 +9,7 @@
     <ui:define name="content">
 
         <h:form>
-            <h4>Loans and Purchase</h4>
+            <h4>Loans</h4>
         </h:form>
 
         <h:form id="formSalesTransactionsCompleted">
@@ -28,6 +28,34 @@
                 <p:column headerText="Action" style="text-align: center">
                     <p:commandButton value="View" icon="pi pi-folder-open" actionListener="#{viewListingManagedBean.viewListingDetails}">
                         <f:attribute name="listingId" value="#{salesTransactionCompleted.offer.listing.listingId}" />
+                    </p:commandButton>
+                    
+                    &nbsp;
+
+                    <p:commandButton rendered="#{addReviewManagedBean.reviewDoesNotExist(salesTransactionCompleted.offer.listing.listingId)}" value="Add Review" oncomplete="PF('dialogAddReview').show()" actionListener="#{addReviewManagedBean.setId}" update="formAddReview">
+                        <f:attribute name="listingId" value="#{salesTransactionCompleted.offer.listing.listingId}" />
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+        
+        <h:form>
+            <h4>Purchases</h4>
+        </h:form>
+
+        <h:form id="formPurchases">
+            <p:dataTable id="dataTablePurchases" value="#{viewAllSalesTransactionManagedBean.retrievePurchases()}" var="offer" style="width: 100%">
+                <p:column headerText="Transaction Type" style="text-align: center" >
+                    <h:outputText value="#{offer.offerType}" />
+                </p:column>
+
+                <p:column headerText="Total Amount ($)" style="text-align: center">
+                    <h:outputText value="#{offer.totalPrice}" />
+                </p:column>
+
+                <p:column headerText="Action" style="text-align: center">
+                    <p:commandButton value="View" icon="pi pi-folder-open" actionListener="#{viewListingManagedBean.viewListingDetails}">
+                        <f:attribute name="listingId" value="#{offer.listing.listingId}" />
                     </p:commandButton>
                     
                     &nbsp;

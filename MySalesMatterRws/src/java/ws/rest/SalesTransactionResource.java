@@ -237,7 +237,7 @@ public class SalesTransactionResource {
                 UserEntity userEntity = userEntitySessionBeanLocal.userLogin(createSalesTransactionReq.getUsername(), createSalesTransactionReq.getPassword());
                 System.out.println("********** SalesTransactionResource.createSalesTransaction(): User " + userEntity.getUsername() + " login remotely via web service");
                 
-                SalesTransactionEntity salesTransactionEntity  = salesTransactionEntitySessionBeanLocal.createSalesTransaction(createSalesTransactionReq.getOfferId(), createSalesTransactionReq.getUserId(), createSalesTransactionReq.getStatus(), createSalesTransactionReq.getTransactionDate(), createSalesTransactionReq.getTotalAmt());                
+                SalesTransactionEntity salesTransactionEntity  = salesTransactionEntitySessionBeanLocal.createSalesTransaction(createSalesTransactionReq.getOfferId(), createSalesTransactionReq.getUserId(), createSalesTransactionReq.getTransactionDate(), createSalesTransactionReq.getTotalAmt(), createSalesTransactionReq.getCcName(), createSalesTransactionReq.getCcNum(), createSalesTransactionReq.getCvv(), createSalesTransactionReq.getExpiry());                
                 
                 return Response.status(Response.Status.OK).entity(salesTransactionEntity.getSalesTransactionId()).build();
             }

@@ -135,39 +135,14 @@ public class OfferResource {
             OfferEntity o = offerEntitySessionBeanLocal.retrieveOfferById(offerId);
 
             o.getListing().getOffers().clear();
-            
-            //o.getListing().getReservations().clear();
             o.getListing().getReviews().clear();
             o.getListing().getTags().clear();
             o.getListing().setUser(null);
             o.getListing().setCategoryEntity(null);
-            o.getSales().setOffer(null);
-            o.getSales().setUser(null);
-            //o.getUser().getConversationsAsOfferee().clear();
-            //o.getUser().getConversationsAsOfferer().clear();
-            o.getUser().getLikedItems().clear();
-            o.getUser().getListings().clear();
-            o.getUser().getOffers().clear();
-            o.getUser().getReviews().clear();
-            o.getUser().getTransactions().clear();
-                        
+            o.setSales(null);
+            o.getMessage().clear();
+            o.setUser(null);
 
-            for (MessageEntity m : o.getMessage()) {
-                m.getOffer().setListing(null);
-                m.getOffer().getMessage().clear();
-                m.getOffer().setUser(null);
-                m.getOffer().setSales(null);
-                m.getRecipient().getListings().clear();
-                m.getRecipient().getTransactions().clear();
-                m.getRecipient().getReviews().clear();
-                m.getRecipient().getLikedItems().clear();
-                m.getRecipient().getOffers().clear();
-                m.getSender().getListings().clear();
-                m.getSender().getTransactions().clear();
-                m.getSender().getReviews().clear();
-                m.getSender().getLikedItems().clear();
-                m.getSender().getOffers().clear();
-            }
 
             return Response.status(Response.Status.OK).entity(o).build();
         } catch (InvalidLoginCredentialException ex) {

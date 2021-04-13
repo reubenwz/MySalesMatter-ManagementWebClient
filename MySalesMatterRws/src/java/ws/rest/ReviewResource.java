@@ -5,8 +5,10 @@
  */
 package ws.rest;
 
+import ejb.session.stateless.ListingEntitySessionBeanLocal;
 import ejb.session.stateless.ReviewEntitySessionBeanLocal;
 import ejb.session.stateless.UserEntitySessionBeanLocal;
+import entity.ListingEntity;
 import entity.ReviewEntity;
 import entity.UserEntity;
 import java.util.List;
@@ -50,30 +52,27 @@ public class ReviewResource {
     ReviewEntitySessionBeanLocal reviewEntitySessionBeanLocal = lookupReviewEntitySessionBeanLocal();
 
     UserEntitySessionBeanLocal userEntitySessionBeanLocal = lookupUserEntitySessionBeanLocal();
-    
+
+    ListingEntitySessionBeanLocal listingEntitySessionBeanLocal = lookupListingEntitySessionBeanLocal();
 
     @Context
     private UriInfo context;
 
-    
     public ReviewResource() {
     }
-    
+
     @Path("retrieveAllReviews")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveAllReviews(@QueryParam("username") String username, 
-                                        @QueryParam("password") String password)
-    {
-        try
-        {
+    public Response retrieveAllReviews(@QueryParam("username") String username,
+            @QueryParam("password") String password) {
+        try {
             UserEntity userEntity = userEntitySessionBeanLocal.userLogin(username, password);
             System.out.println("********** ReviewResource.retrieveAllReviews(): User " + userEntity.getUsername() + " login remotely via web service");
 
             List<ReviewEntity> reviewEntities = reviewEntitySessionBeanLocal.retrieveAllReviews();
-            for(ReviewEntity reviewEntity: reviewEntities)
-            {            
+            for (ReviewEntity reviewEntity : reviewEntities) {
                 reviewEntity.getListing().getOffers().clear();
                 //reviewEntity.getListing().getReservations().clear();
                 reviewEntity.getListing().getReviews().clear();
@@ -86,158 +85,125 @@ public class ReviewResource {
                 reviewEntity.getReviewer().getOffers().clear();
                 reviewEntity.getReviewer().getReviews().clear();
                 reviewEntity.getReviewer().getTransactions().clear();
-            
+
             }
-            
+
             GenericEntity<List<ReviewEntity>> genericEntity = new GenericEntity<List<ReviewEntity>>(reviewEntities) {
             };
-            
+
             return Response.status(Response.Status.OK).entity(genericEntity).build();
-        }
-        catch(InvalidLoginCredentialException ex)
-        {            
+        } catch (InvalidLoginCredentialException ex) {
             return Response.status(Response.Status.UNAUTHORIZED).entity(ex.getMessage()).build();
-        }
-        catch(Exception ex)
-        {
+        } catch (Exception ex) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
         }
     }
-    
+
     @Path("retrieveReviewsByUserId/{userId}")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveReviewsByUserId(@QueryParam("username") String username, 
-                                        @QueryParam("password") String password,
-                                        @PathParam("userId") Long userId)
-    {
-        try
-        {
+    public Response retrieveReviewsByUserId(@QueryParam("username") String username,
+            @QueryParam("password") String password,
+            @PathParam("userId") Long userId) {
+        try {
             UserEntity userEntity = userEntitySessionBeanLocal.userLogin(username, password);
             System.out.println("********** ReviewResource.retrieveReviewByReviewId(): User " + userEntity.getUsername() + " login remotely via web service");
 
             List<ReviewEntity> reviewEntities = reviewEntitySessionBeanLocal.getReviewsByUserId(userId);
-            for(ReviewEntity reviewEntity: reviewEntities)
-            {                
+            for (ReviewEntity reviewEntity : reviewEntities) {
                 reviewEntity.getListing().getOffers().clear();
-                //reviewEntity.getListing().getReservations().clear();
                 reviewEntity.getListing().getReviews().clear();
                 reviewEntity.getListing().getTags().clear();
                 reviewEntity.getListing().setCategoryEntity(null);
-                //reviewEntity.getReviewer().getConversationsAsOfferee().clear();
-                //reviewEntity.getReviewer().getConversationsAsOfferer().clear();
+                reviewEntity.getListing().setUser(null);
                 reviewEntity.getReviewer().getLikedItems().clear();
                 reviewEntity.getReviewer().getListings().clear();
                 reviewEntity.getReviewer().getOffers().clear();
                 reviewEntity.getReviewer().getReviews().clear();
                 reviewEntity.getReviewer().getTransactions().clear();
-            
             }
-            
+
             GenericEntity<List<ReviewEntity>> genericEntity = new GenericEntity<List<ReviewEntity>>(reviewEntities) {
             };
-            
+
             return Response.status(Response.Status.OK).entity(genericEntity).build();
-        }
-        catch(InvalidLoginCredentialException ex)
-        {            
+        } catch (InvalidLoginCredentialException ex) {
             return Response.status(Response.Status.UNAUTHORIZED).entity(ex.getMessage()).build();
-        }
-        catch(Exception ex)
-        {
+        } catch (Exception ex) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
         }
     }
-    
+
     @Path("getReviewsReceivedByUserId/{userId}")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getReviewsReceivedByUserId(@QueryParam("username") String username, 
-                                        @QueryParam("password") String password,
-                                        @PathParam("userId") Long userId)
-    {
-        try
-        {
+    public Response getReviewsReceivedByUserId(@QueryParam("username") String username,
+            @QueryParam("password") String password,
+            @PathParam("userId") Long userId) {
+        try {
             UserEntity userEntity = userEntitySessionBeanLocal.userLogin(username, password);
             System.out.println("********** ReviewResource.getReviewsReceivedByUserId(): User " + userEntity.getUsername() + " login remotely via web service");
 
             List<ReviewEntity> reviewEntities = reviewEntitySessionBeanLocal.getReviewsReceivedByUserId(userId);
-            for(ReviewEntity reviewEntity: reviewEntities)
-            {                
+            for (ReviewEntity reviewEntity : reviewEntities) {
                 reviewEntity.getListing().getOffers().clear();
-                //reviewEntity.getListing().getReservations().clear();
                 reviewEntity.getListing().getReviews().clear();
                 reviewEntity.getListing().getTags().clear();
                 reviewEntity.getListing().setCategoryEntity(null);
-                //reviewEntity.getReviewer().getConversationsAsOfferee().clear();
-                //reviewEntity.getReviewer().getConversationsAsOfferer().clear();
+                reviewEntity.getListing().setUser(null);
                 reviewEntity.getReviewer().getLikedItems().clear();
                 reviewEntity.getReviewer().getListings().clear();
                 reviewEntity.getReviewer().getOffers().clear();
                 reviewEntity.getReviewer().getReviews().clear();
                 reviewEntity.getReviewer().getTransactions().clear();
-            
+
             }
-            
+
             GenericEntity<List<ReviewEntity>> genericEntity = new GenericEntity<List<ReviewEntity>>(reviewEntities) {
             };
-            
+
             return Response.status(Response.Status.OK).entity(genericEntity).build();
-        }
-        catch(InvalidLoginCredentialException ex)
-        {            
+        } catch (InvalidLoginCredentialException ex) {
             return Response.status(Response.Status.UNAUTHORIZED).entity(ex.getMessage()).build();
-        }
-        catch(Exception ex)
-        {
+        } catch (Exception ex) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
         }
     }
-    
+
     @Path("retrieveReviewByReviewId/{reviewId}")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveReviewByReviewId(@QueryParam("username") String username, 
-                                        @QueryParam("password") String password,
-                                        @PathParam("reviewId") Long reviewId)
-    {
-        try
-        {
+    public Response retrieveReviewByReviewId(@QueryParam("username") String username,
+            @QueryParam("password") String password,
+            @PathParam("reviewId") Long reviewId) {
+        try {
             UserEntity userEntity = userEntitySessionBeanLocal.userLogin(username, password);
             System.out.println("********** ReviewResource.retrieveReviewByReviewId(): User " + userEntity.getUsername() + " login remotely via web service");
 
             ReviewEntity reviewEntity = reviewEntitySessionBeanLocal.retrieveReviewByReviewId(reviewId);
             reviewEntity.getListing().getOffers().clear();
-            //reviewEntity.getListing().getReservations().clear();
             reviewEntity.getListing().getReviews().clear();
             reviewEntity.getListing().getTags().clear();
             reviewEntity.getListing().setCategoryEntity(null);
-            //reviewEntity.getReviewer().getConversationsAsOfferee().clear();
-            //reviewEntity.getReviewer().getConversationsAsOfferer().clear();
+            reviewEntity.getListing().setUser(null);
             reviewEntity.getReviewer().getLikedItems().clear();
             reviewEntity.getReviewer().getListings().clear();
             reviewEntity.getReviewer().getOffers().clear();
             reviewEntity.getReviewer().getReviews().clear();
-            reviewEntity.getReviewer().getTransactions().clear();         
+            reviewEntity.getReviewer().getTransactions().clear();
             return Response.status(Response.Status.OK).entity(reviewEntity).build();
-        }
-        catch(InvalidLoginCredentialException ex)
-        {
+        } catch (InvalidLoginCredentialException ex) {
             return Response.status(Response.Status.UNAUTHORIZED).entity(ex.getMessage()).build();
-        }
-        catch(ReviewNotFoundException ex)
-        {
+        } catch (ReviewNotFoundException ex) {
             return Response.status(Response.Status.BAD_REQUEST).entity(ex.getMessage()).build();
-        }
-        catch(Exception ex)
-        {
+        } catch (Exception ex) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
         }
     }
-    
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -288,35 +254,29 @@ public class ReviewResource {
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createNewReviewEntity(CreateReviewReq createReviewReq)
-    {
-        if(createReviewReq != null)
-        {
-            try
-            {
+    public Response createNewReviewEntity(CreateReviewReq createReviewReq) {
+        if (createReviewReq != null) {
+            try {
                 UserEntity userEntity = userEntitySessionBeanLocal.userLogin(createReviewReq.getUsername(), createReviewReq.getPassword());
                 System.out.println("********** ReviewResource.createNewReviewEntity(): User " + userEntity.getUsername() + " login remotely via web service");
-                
+
                 ReviewEntity r = new ReviewEntity();
                 r.setDescription(createReviewReq.getDescription());
                 r.setStarRating(createReviewReq.getStarRating());
                 r.setPicturePaths("");
+                r.setReviewer(userEntity);
+                ListingEntity listing = listingEntitySessionBeanLocal.retrieveListingByListingId(createReviewReq.getListingId());
+                r.setListing(listing);
                 System.out.println(createReviewReq.getListingId());
                 System.out.println(createReviewReq.getReviewerId());
                 ReviewEntity reviewEntity = reviewEntitySessionBeanLocal.createNewReviewEntity(r, createReviewReq.getReviewerId(), createReviewReq.getListingId());
                 return Response.status(Response.Status.OK).entity(reviewEntity.getReviewId()).build();
-            }
-            catch(UnknownPersistenceException | InputDataValidationException | CreateNewReviewException | UserNotFoundException | ListingNotFoundException ex)
-            {
+            } catch (UnknownPersistenceException | InputDataValidationException | CreateNewReviewException | UserNotFoundException | ListingNotFoundException ex) {
                 return Response.status(Response.Status.UNAUTHORIZED).entity(ex.getMessage()).build();
-            } 
-            catch(Exception ex)
-            {
+            } catch (Exception ex) {
                 return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
             }
-        }
-        else
-        {
+        } else {
             return Response.status(Response.Status.BAD_REQUEST).entity("Invalid create new review request").build();
         }
     }
@@ -341,5 +301,14 @@ public class ReviewResource {
         }
     }
 
-    
+    private ListingEntitySessionBeanLocal lookupListingEntitySessionBeanLocal() {
+        try {
+            javax.naming.Context c = new InitialContext();
+            return (ListingEntitySessionBeanLocal) c.lookup("java:global/MySalesMatter/MySalesMatter-ejb/ListingEntitySessionBean!ejb.session.stateless.ListingEntitySessionBeanLocal");
+        } catch (NamingException ne) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
+            throw new RuntimeException(ne);
+        }
+    }
+
 }

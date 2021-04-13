@@ -34,7 +34,7 @@ public interface SalesTransactionEntitySessionBeanLocal {
 
     public void updateStatus(Long transactionId, String status) throws SalesTransactionNotFoundException;
 
-    public SalesTransactionEntity createSalesTransaction(Long offerId, Long userId, String status, Date transactionDate, BigDecimal totalAmt) throws UnknownPersistenceException, InputDataValidationException, UserNotFoundException, CreateNewTransactionException, SalesTransactionExistException, OfferNotFoundException;
+    public SalesTransactionEntity createSalesTransaction(Long offerId, Long userId, Date transactionDate, BigDecimal totalAmt, String ccName, String ccNum, String cvv, String expiry) throws UnknownPersistenceException, InputDataValidationException, UserNotFoundException, CreateNewTransactionException, SalesTransactionExistException, OfferNotFoundException;
 
     public List<SalesTransactionEntity> getSalesTransactionByUserId(Long userId) throws UserNotFoundException;
     

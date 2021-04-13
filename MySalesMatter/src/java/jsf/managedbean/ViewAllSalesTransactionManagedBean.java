@@ -5,7 +5,9 @@
  */
 package jsf.managedbean;
 
+import ejb.session.stateless.OfferEntitySessionBeanLocal;
 import ejb.session.stateless.SalesTransactionEntitySessionBeanLocal;
+import entity.OfferEntity;
 import entity.SalesTransactionEntity;
 import entity.UserEntity;
 import java.io.Serializable;
@@ -18,7 +20,9 @@ import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+import util.enumeration.OfferType;
 import util.exception.SalesTransactionNotFoundException;
 import util.exception.UserNotFoundException;
 
@@ -27,8 +31,11 @@ import util.exception.UserNotFoundException;
  * @author sylvia
  */
 @Named(value = "viewAllSalesTransactionManagedBean")
-@SessionScoped
+@ViewScoped
 public class ViewAllSalesTransactionManagedBean implements Serializable {
+
+    @EJB
+    private OfferEntitySessionBeanLocal offerEntitySessionBeanLocal;
 
     private List<SalesTransactionEntity> salesTransactionNotCompleted;
     private List<SalesTransactionEntity> salesTransactionCompleted;
@@ -51,16 +58,6 @@ public class ViewAllSalesTransactionManagedBean implements Serializable {
             List<SalesTransactionEntity> newSalesTransactionCompleted = new ArrayList<>();
             List<SalesTransactionEntity> newSalesTransactionNotCompleted = new ArrayList<>();
 
-//            if (!transactions.isEmpty()) {
-//                for (SalesTransactionEntity s : transactions) {
-//                    if (s.getStatus().toString().toLowerCase().equals("paid")) {
-//                        newSalesTransactionCompleted.add(s);
-//                    } else {
-//                        newSalesTransactionNotCompleted.add(s);
-//                    }
-//                }
-//            }
-
             for (SalesTransactionEntity s : newSalesTransactionCompleted) {
                 salesTransactionCompleted.add(salesTransactionEntitySessionBeanLocal.retrieveTransactionById(s.getSalesTransactionId()));
             }
@@ -77,12 +74,24 @@ public class ViewAllSalesTransactionManagedBean implements Serializable {
         List<SalesTransactionEntity> transactions = new ArrayList<>();
         try {
             transactions = salesTransactionEntitySessionBeanLocal.getSalesTransactionByUserId(currentUser.getUserId());
- 
+
         } catch (UserNotFoundException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while loading conversations: " + ex.getMessage(), null));
         }
         return transactions;
     }
+
+    public List<OfferEntity> retrievePurchases() {
+        List<OfferEntity> purchase = offerEntitySessionBeanLocal.retrieveOffersByUserId(currentUser.getUserId());
+        List<OfferEntity> allPurchases = new ArrayList<>();
+        for (OfferEntity o : purchase) {
+            if (o.getOfferType() == OfferType.BUY && o.isPaid()) {
+                allPurchases.add(o);
+            }
+        }
+        return allPurchases;
+    }
+
     public List<SalesTransactionEntity> getSalesTransactionNotCompleted() {
         return salesTransactionNotCompleted;
     }

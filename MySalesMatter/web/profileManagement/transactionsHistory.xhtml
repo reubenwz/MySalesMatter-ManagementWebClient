@@ -62,8 +62,11 @@
                     <p:commandLink value="View" actionListener="#{viewListingManagedBean.viewListingDetails}">
                         <f:attribute name="listingId" value="#{acceptedOffer.listing.listingId}" />
                     </p:commandLink><br></br>
-                    <p:commandLink rendered="#{!acceptedOffer.paid}" value="Make Payment" oncomplete="PF('dialogMakePayment').show()" actionListener="#{transactionManagedBean.doMakePayment}" update="formAcceptedOffer">
+                    <p:commandLink rendered="#{!transactionManagedBean.paidDeposit(acceptedOffer)}" value="Make Deposit" oncomplete="PF('dialogMakePayment').show()" actionListener="#{transactionManagedBean.doMakePayment}" update="formAcceptedOffer formMakePayment">
                         <f:attribute name="acceptedOfferToPay" value="#{acceptedOffer}" />
+                    </p:commandLink><br></br>
+                    <p:commandLink rendered="#{transactionManagedBean.toBuy(acceptedOffer)}" value="Proceed To Buy" actionListener="#{transactionManagedBean.doMakePurchase}" update="formAcceptedOffer">
+                        <f:attribute name="acceptedOfferToBuy" value="#{acceptedOffer}" />
                     </p:commandLink><br></br>
                     <p:commandLink value="Arrange Meetup" oncomplete="PF('dialogArrangeMeetup').show()" actionListener="#{transactionManagedBean.doArrangeMeetup}" update="formArrangeMeetup">
                         <f:attribute name="acceptedOffer" value="#{acceptedOffer}" />
@@ -81,49 +84,61 @@
                 <p:panelGrid>
                     <p:row>
                         <p:column>
-                            <p:outputLabel for="totalPrice" value="Total Price " style="font-weight: bold;" />
+                            <p:outputLabel for="totalAmt" value="Total Amount " style="font-weight: bold;" />
                         </p:column>
                         <p:column>
-                            <h:outputText id="totalPrice" value="#{transactionManagedBean.acceptedOfferToMakePayment.totalPrice}" />   
+                            <h:outputText id="totalAmt" value="#{transactionManagedBean.totalAmt}" />   
                         </p:column>
                         <p:column>
-                            <p:message for="totalPrice" />
+                            <p:message for="totalAmt" />
                         </p:column>
                     </p:row>
 
                     <p:row>
                         <p:column>
-                            <p:outputLabel for="offerType" value="Offer Type: " style="font-weight: bold;" />
+                            <p:outputLabel for="ccName" value="Credit Card Name" style="font-weight: bold;" />
                         </p:column>
                         <p:column>
-                            <h:outputText id="offerType" value="#{transactionManagedBean.acceptedOfferToMakePayment.offerType}" />   
+                            <h:inputText id="ccName" value="#{transactionManagedBean.ccName}" />   
                         </p:column>
                         <p:column>
-                            <p:message for="offerType" />
-                        </p:column>
-                    </p:row>
-
-                    <p:row rendered="#{transactionManagedBean.isRentalOffer(transactionManagedBean.acceptedOfferToMakePayment.offerType)}">
-                        <p:column>
-                            <p:outputLabel for="startDate" value="Start Date: " style="font-weight: bold;" />
-                        </p:column>
-                        <p:column>
-                            <h:outputText id="startDate" value="#{transactionManagedBean.acceptedRentalOffer.startDate}" />   
-                        </p:column>
-                        <p:column>
-                            <p:message for="startDate" />
+                            <p:message for="ccName" />
                         </p:column>
                     </p:row>
 
-                    <p:row rendered="#{transactionManagedBean.isRentalOffer(transactionManagedBean.acceptedOfferToMakePayment.offerType)}">
+                    <p:row>
                         <p:column>
-                            <p:outputLabel for="endDate" value="End Date: " style="font-weight: bold;" />
+                            <p:outputLabel for="ccNum" value="Credit Card Number" style="font-weight: bold;" />
                         </p:column>
                         <p:column>
-                            <h:outputText id="endDate" value="#{transactionManagedBean.acceptedRentalOffer.endDate}" />   
+                            <h:inputText id="ccNum" value="#{transactionManagedBean.ccNum}" />   
                         </p:column>
                         <p:column>
-                            <p:message for="endDate" />
+                            <p:message for="ccNum" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="cvv" value="CVV" style="font-weight: bold;" />
+                        </p:column>
+                        <p:column>
+                            <h:inputText id="cvv" value="#{transactionManagedBean.cvv}" />   
+                        </p:column>
+                        <p:column>
+                            <p:message for="cvv" />
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="expiry" value="Expiry Date" style="font-weight: bold;" />
+                        </p:column>
+                        <p:column>
+                            <h:inputText id="expiry" value="#{transactionManagedBean.expiry}" />   
+                        </p:column>
+                        <p:column>
+                            <p:message for="expiry" />
                         </p:column>
                     </p:row>
 

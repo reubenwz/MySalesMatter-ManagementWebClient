@@ -23,6 +23,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import util.enumeration.Status;
 
 /**
@@ -37,11 +38,6 @@ public class SalesTransactionEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long salesTransactionId;
     
-//    @NotNull
-//    @Column(nullable = false)
-//    @Enumerated(EnumType.STRING)
-//    private Status status;
-    
     @Column(nullable = false)
     @NotNull
     @DecimalMin("0.00")
@@ -51,6 +47,26 @@ public class SalesTransactionEntity implements Serializable {
     @Column(nullable = false)
     @NotNull
     private Date transactionDate;
+    
+    @Column(nullable = false)
+    @NotNull
+    @Size(min = 1, max = 100)
+    private String ccName;
+    
+    @Column(nullable = false)
+    @NotNull
+    @Size(min = 16, max = 16)
+    private String ccNum;
+    
+    @Column(nullable = false)
+    @NotNull
+    @Size(min = 3, max = 3)
+    private String cvv;
+    
+    @Column(nullable = false)
+    @NotNull
+    @Size(min = 5, max = 5)
+    private String expiry;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @NotNull
@@ -136,6 +152,38 @@ public class SalesTransactionEntity implements Serializable {
 
     public void setOffer(OfferEntity offer) {
         this.offer = offer;
+    }
+
+    public String getCcName() {
+        return ccName;
+    }
+
+    public void setCcName(String ccName) {
+        this.ccName = ccName;
+    }
+
+    public String getCcNum() {
+        return ccNum;
+    }
+
+    public void setCcNum(String ccNum) {
+        this.ccNum = ccNum;
+    }
+
+    public String getCvv() {
+        return cvv;
+    }
+
+    public void setCvv(String cvv) {
+        this.cvv = cvv;
+    }
+
+    public String getExpiry() {
+        return expiry;
+    }
+
+    public void setExpiry(String expiry) {
+        this.expiry = expiry;
     }
     
 }

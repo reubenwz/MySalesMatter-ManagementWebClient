@@ -60,7 +60,7 @@ public class SalesTransactionEntitySessionBean implements SalesTransactionEntity
     }
 
     @Override
-    public SalesTransactionEntity createSalesTransaction(Long offerId, Long userId, String status, Date transactionDate, BigDecimal totalAmt) throws UnknownPersistenceException, InputDataValidationException, UserNotFoundException, CreateNewTransactionException, SalesTransactionExistException, OfferNotFoundException {
+    public SalesTransactionEntity createSalesTransaction(Long offerId, Long userId, Date transactionDate, BigDecimal totalAmt, String ccName, String ccNum, String cvv, String expiry) throws UnknownPersistenceException, InputDataValidationException, UserNotFoundException, CreateNewTransactionException, SalesTransactionExistException, OfferNotFoundException {
 
         try {
             UserEntity userEntity = generalUserEntitySessionBeanLocal.retrieveUserById(userId);
@@ -68,14 +68,12 @@ public class SalesTransactionEntitySessionBean implements SalesTransactionEntity
             SalesTransactionEntity salesTransactionEntity = new SalesTransactionEntity();
             salesTransactionEntity.setUser(userEntity);
             salesTransactionEntity.setOffer(offerEntity);
-
-//            if (status.toLowerCase().equals("paid")) {
-//                salesTransactionEntity.setStatus(Status.PAID);
-//            } else {
-//                salesTransactionEntity.setStatus(Status.NOT_PAID);
-//            }
             salesTransactionEntity.setTotalAmt(totalAmt);
             salesTransactionEntity.setTransactionDate(transactionDate);
+            salesTransactionEntity.setCcName(ccName);
+            salesTransactionEntity.setCcNum(ccNum);
+            salesTransactionEntity.setCvv(cvv);
+            salesTransactionEntity.setExpiry(expiry);
 
             Set<ConstraintViolation<SalesTransactionEntity>> constraintViolations = validator.validate(salesTransactionEntity);
 
@@ -150,9 +148,6 @@ public class SalesTransactionEntitySessionBean implements SalesTransactionEntity
     public void deleteTransaction(Long transactionId) throws SalesTransactionNotFoundException, TransactionDeletionException {
         try {
             SalesTransactionEntity salesTransactionEntity = retrieveTransactionById(transactionId);
-//            if (salesTransactionEntity.getStatus().toString().toLowerCase().equals("PAID")) {
-//                throw new TransactionDeletionException("Transaction with this id, " + transactionId + " cannot be deleted as it has been paid.");
-//            } else {
             OfferEntity offerEntity = salesTransactionEntity.getOffer();
             ListingEntity listing = offerEntity.getListing();
             UserEntity user = salesTransactionEntity.getUser();

@@ -18,23 +18,31 @@ public class CreateSalesTransactionReq {
     private String password;
     private Long offerId;
     private Long userId;
-    private String status;
     private Date transactionDate;
     private BigDecimal totalAmt;
+    private String ccName;
+    private String ccNum;
+    private String cvv;
+    private String expiry;
  
     public CreateSalesTransactionReq() {   
         
     }
 
-    public CreateSalesTransactionReq(String username, String password, Long offerId, Long userId, String status, Date transactionDate, BigDecimal totalAmt) {
+    public CreateSalesTransactionReq(String username, String password, Long offerId, Long userId, Date transactionDate, BigDecimal totalAmt, String ccName, String ccNum, String cvv, String expiry) {
         this.username = username;
         this.password = password;
         this.offerId = offerId;
         this.userId = userId;
-        this.status = status;
         this.transactionDate = transactionDate;
         this.totalAmt = totalAmt;
+        this.ccName = ccName;
+        this.ccNum = ccNum;
+        this.cvv = cvv;
+        this.expiry = expiry;
     }
+
+    
     
 
     public String getUsername() {
@@ -69,14 +77,6 @@ public class CreateSalesTransactionReq {
         this.userId = userId;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public Date getTransactionDate() {
         return transactionDate;
     }
@@ -91,6 +91,38 @@ public class CreateSalesTransactionReq {
 
     public void setTotalAmt(BigDecimal totalAmt) {
         this.totalAmt = totalAmt;
+    }
+
+    public String getCcName() {
+        return ccName;
+    }
+
+    public void setCcName(String ccName) {
+        this.ccName = ccName;
+    }
+
+    public String getCcNum() {
+        return ccNum;
+    }
+
+    public void setCcNum(String ccNum) {
+        this.ccNum = ccNum;
+    }
+
+    public String getCvv() {
+        return cvv;
+    }
+
+    public void setCvv(String cvv) {
+        this.cvv = cvv;
+    }
+
+    public String getExpiry() {
+        return expiry;
+    }
+
+    public void setExpiry(String expiry) {
+        this.expiry = expiry;
     }
     
     
