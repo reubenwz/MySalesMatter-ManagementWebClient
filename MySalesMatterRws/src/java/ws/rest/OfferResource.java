@@ -15,6 +15,7 @@ import entity.OfferEntity;
 import entity.RentalOfferEntity;
 import entity.UserEntity;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -318,6 +319,42 @@ public class OfferResource {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
         }
     }
+    
+    @Path("retrievePurchaseOfferByUserId")
+    @GET
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response retrievePurchaseOffersByUserId(@QueryParam("username") String username,
+            @QueryParam("password") String password) {
+        try {
+            UserEntity userEntity = userEntitySessionBeanLocal.userLogin(username, password);
+            System.out.println("********** OfferResource.retrieveOffersByUserId(): User " + userEntity.getUsername() + " login remotely via web service");
+
+            List<OfferEntity> offerEntities = offerEntitySessionBeanLocal.retrieveOffersByUserId(userEntity.getUserId());
+            List<OfferEntity> allPurchases = new ArrayList<>();
+            for (OfferEntity o : offerEntities) {
+                if (o.getOfferType() == OfferType.BUY && o.isPaid()) {
+                    allPurchases.add(o);
+                }
+            }
+            for (OfferEntity o : allPurchases) {
+                o.setListing(null);
+                o.getMessage().clear();
+                o.setSales(null);
+                o.setUser(null);
+            }
+
+            GenericEntity<List<OfferEntity>> genericEntity = new GenericEntity<List<OfferEntity>>(allPurchases) {
+            };
+
+            return Response.status(Response.Status.OK).entity(genericEntity).build();
+        } catch (InvalidLoginCredentialException ex) {
+            return Response.status(Response.Status.UNAUTHORIZED).entity(ex.getMessage()).build();
+        } catch (Exception ex) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
+        }
+    }
+
 
     @Path("retrieveOfferByListingId/{listingId}")
     @GET
