@@ -24,9 +24,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -87,7 +90,8 @@ public class ListingManagementManagedBean implements Serializable {
 
     private UserEntity currentUser;
     private OfferEntity rentalOfferEntity;
-    private ListingEntity selectedListingEntityToMakeRentalOffer;
+    private OfferEntity buyOfferEntity;
+    private ListingEntity selectedListingEntityToMakeOffer;
 
     public ListingManagementManagedBean() {
         newListingEntity = new ListingEntity();
@@ -226,7 +230,15 @@ public class ListingManagementManagedBean implements Serializable {
    public void doMakeRentalOffer(ActionEvent event) {
        rentalOfferEntity = new RentalOfferEntity();
        rentalOfferEntity.setOfferType(OfferType.RENTAL);
-       selectedListingEntityToMakeRentalOffer = (ListingEntity) event.getComponent().getAttributes().get("listingEntityToMakeOffer");
+       selectedListingEntityToMakeOffer = (ListingEntity) event.getComponent().getAttributes().get("listingEntityToMakeOffer");
+   }
+   
+   public BigDecimal calculateRentalPrice() {
+       RentalOfferEntity rentalOffer = (RentalOfferEntity) rentalOfferEntity;
+       Long diff = rentalOffer.getEndDate().getTime() - rentalOffer.getStartDate().getTime();
+       BigDecimal days = new BigDecimal(TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS));
+       rentalOfferEntity.setTotalPrice(days.multiply(selectedListingEntityToMakeOffer.getRentalPrice()));
+       return days.multiply(selectedListingEntityToMakeOffer.getRentalPrice());
    }
     
     public void makeRentalOffer(ActionEvent event) {
@@ -235,9 +247,9 @@ public class ListingManagementManagedBean implements Serializable {
             System.out.println("setting user below");
             rentalOfferEntity.setUser(currentUser);
             rentalOfferEntity.setOfferDate(new Date());
-            rentalOfferEntity.setListing(selectedListingEntityToMakeRentalOffer);
+            rentalOfferEntity.setListing(selectedListingEntityToMakeOffer);
             System.out.println("end date below");
-            rentalOfferEntity = (RentalOfferEntity) offerEntitySessionBeanLocal.createNewOffer((OfferEntity) rentalOfferEntity, currentUser.getUserId(), selectedListingEntityToMakeRentalOffer.getListingId());
+            rentalOfferEntity = (RentalOfferEntity) offerEntitySessionBeanLocal.createNewOffer((OfferEntity) rentalOfferEntity, currentUser.getUserId(), selectedListingEntityToMakeOffer.getListingId());
             System.out.println("total: " + rentalOfferEntity.getTotalPrice());
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Rental Offer made successfully", null));
@@ -246,9 +258,15 @@ public class ListingManagementManagedBean implements Serializable {
         }
     }
     
+    public void doMakeBuyOffer(ActionEvent event) {
+        selectedListingEntityToMakeOffer = (ListingEntity) event.getComponent().getAttributes().get("listingEntityToMakeOffer");
+        buyOfferEntity = new BuyOfferEntity();
+        buyOfferEntity.setTotalPrice(selectedListingEntityToMakeOffer.getSalePrice());
+    }
+    
     public void makeBuyOffer(ActionEvent event) {
         try {
-            ListingEntity listingEntityToMakeOffer = (ListingEntity) event.getComponent().getAttributes().get("listingEntityToMakeOffer");
+            ListingEntity listingEntityToMakeOffer = selectedListingEntityToMakeOffer;
             OfferEntity newOfferEntity = new BuyOfferEntity(listingEntityToMakeOffer.getSalePrice(), new Date(), OfferType.BUY);
             // need solve user cannot purchase its own product
             
@@ -436,6 +454,14 @@ public class ListingManagementManagedBean implements Serializable {
 
     public void setRentalOfferEntity(RentalOfferEntity rentalOfferEntity) {
         this.rentalOfferEntity = rentalOfferEntity;
+    }
+
+    public OfferEntity getBuyOfferEntity() {
+        return buyOfferEntity;
+    }
+
+    public void setBuyOfferEntity(OfferEntity buyOfferEntity) {
+        this.buyOfferEntity = buyOfferEntity;
     }
 
 }

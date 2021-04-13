@@ -281,7 +281,7 @@
                         <p:commandButton rendered="#{!offerEntity.accepted}" actionListener="#{offerManagementManagedBean.acceptOffer}" update="formAllOffers" icon="pi pi-check" title="Accept Offer">
                             <f:attribute name="offerEntityToAccept" value="#{offerEntity}" />
                         </p:commandButton>
-                        <p:commandButton oncomplete="PF('dialogReply').show()" actionListener="#{notificationManagedBean.doReply}" update="formReply" icon="pi pi-comments" title="Create Conversation">
+                        <p:commandButton oncomplete="PF('dialogReply').show()" actionListener="#{notificationManagedBean.doReply}" update="formReply" icon="pi pi-comments" title="Send Message">
                             <f:attribute name="offerEntity" value="#{offerEntity}" />
                             <f:attribute name="sender" value="#{offerEntity.listing.user}" />
                             <f:attribute name="recipient" value="#{offerEntity.user}" />

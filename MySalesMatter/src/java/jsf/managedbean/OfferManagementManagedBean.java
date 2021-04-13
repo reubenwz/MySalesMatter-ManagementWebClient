@@ -52,15 +52,14 @@ public class OfferManagementManagedBean implements Serializable {
     public void retrieveOffers(ActionEvent event) {
         listingEntity = (ListingEntity) event.getComponent().getAttributes().get("listingEntityToRetrieveOffers");
         offerEntities = listingEntity.getOffers();
-        System.out.println("****** retrieving offers - SIZE OF OFFERENTITIES: " + offerEntities.size());
     }
     
     public void acceptOffer(ActionEvent event) {
-        System.out.println("ACCEPTING OFFER");
         offerEntityToAccept = (OfferEntity) event.getComponent().getAttributes().get("offerEntityToAccept");
         System.out.println(offerEntityToAccept.getOfferId());
         try {
             offerEntitySessionBeanLocal.acceptOffer(offerEntityToAccept.getOfferId());
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Offer accepted successfully", null));            
         } catch (OfferNotFoundException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while accepting the offer: " + ex.getMessage(), null));
         }

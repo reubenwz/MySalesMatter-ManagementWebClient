@@ -81,7 +81,7 @@
                             <p:commandButton rendered="#{viewListingManagedBean.checkRentAvailability(listingEntity.rentalAvailability, listingEntity.user.userId)}" value=" Rent" icon="pi pi-shopping-cart" oncomplete="PF('dialogCreateNewRentOffer').show()" actionListener="#{listingManagementManagedBean.doMakeRentalOffer}" update="formListingDetails:dataTableListingDetails formListingDetails:messages" title="Make Rental Offer">
                                 <f:attribute name="listingEntityToMakeOffer" value="#{listingEntity}" />
                             </p:commandButton>
-                            <p:commandButton rendered="#{viewListingManagedBean.checkSaleAvailability(listingEntity.forSaleAvailability, listingEntity.user.userId)}" value=" Buy" icon="pi pi-tags" actionListener="#{listingManagementManagedBean.makeBuyOffer}" update="formListingDetails:dataTableListingDetails formListingDetails:messages" title="Make Buy Offer">
+                            <p:commandButton rendered="#{viewListingManagedBean.checkSaleAvailability(listingEntity.forSaleAvailability, listingEntity.user.userId)}" value=" Buy" icon="pi pi-tags" oncomplete="PF('dialogCreateNewBuyOffer').show()" actionListener="#{listingManagementManagedBean.doMakeBuyOffer}" update="formListingDetails:dataTableListingDetails formListingDetails:messages formCreateNewBuyOffer" title="Make Buy Offer">
                                 <f:attribute name="listingEntityToMakeOffer" value="#{listingEntity}" />
                             </p:commandButton>
                             <p:commandButton value=" View Reviews" icon="pi pi-users" actionListener="#{viewAllReviewsManagedBean.viewReviewDetails}" title="View All Reviews">
@@ -99,25 +99,15 @@
 
                     <p:messages id="messagesCreateNewRentOffer" redisplay="false" />
 
-                    <p:panelGrid>
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel for="rentalPrice" value="Rental Price " style="font-weight: bold;" />
-                            </p:column>
-                            <p:column>                            
-                                <p:spinner id="rentalPrice" value="#{listingManagementManagedBean.rentalOfferEntity.totalPrice}" placeholder="10.00" min="0" max="1000000" stepFactor="0.01" required="true" requiredMessage="Total Price is required" />
-                            </p:column>
-                            <p:column>
-                                <p:message for="rentalPrice" />
-                            </p:column>
-                        </p:row>
+                    <p:panelGrid id="panelGridcreateNewOffer">
 
                         <p:row>
                             <p:column>
                                 <p:outputLabel for="startDate" value="Start Date: " style="font-weight: bold;" />
                             </p:column>
                             <p:column>
-                                <p:datePicker id="startDate" value="#{listingManagementManagedBean.rentalOfferEntity.startDate}" showButtonBar="true" required="true" requiredMessage="Start Date is required"/>
+                                <p:datePicker id="startDate" value="#{listingManagementManagedBean.rentalOfferEntity.startDate}" showButtonBar="true" required="true" requiredMessage="Start Date is required">
+                                </p:datePicker>
                             </p:column>
                             <p:column>
                                 <p:message for="startDate" />
@@ -129,18 +119,61 @@
                                 <p:outputLabel for="endDate" value="End Date: " style="font-weight: bold;" />
                             </p:column>
                             <p:column>
-                                <p:datePicker id="endDate" value="#{listingManagementManagedBean.rentalOfferEntity.endDate}" showButtonBar="true" required="true" requiredMessage="Start Date is required"/>
+                                <p:datePicker id="endDate" value="#{listingManagementManagedBean.rentalOfferEntity.endDate}" showButtonBar="true" required="true" requiredMessage="Start Date is required">
+                                </p:datePicker>
                             </p:column>
                             <p:column>
                                 <p:message for="endDate" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="rentalPrice" value="Rental Price " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>                            
+                                <h:outputText id="rentalPrice" value="#{listingManagementManagedBean.rentalOfferEntity.totalPrice}" />
+                            </p:column>
+                            <p:column>
+                                <p:commandButton  value="Calculate" actionListener="#{listingManagementManagedBean.calculateRentalPrice()}" update="panelGridcreateNewOffer"/>     
                             </p:column>
                         </p:row>
 
 
                         <p:row>
                             <p:column colspan="3">
-                                <p:commandButton type="reset" value="Clear" />&nbsp;
+                                <p:commandButton type="reset" value="Clear"/>&nbsp;
                                 <p:commandButton  value="Send Rental Offer" actionListener="#{listingManagementManagedBean.makeRentalOffer}" oncomplete="PF('dialogCreateNewRentOffer').show();" update="formCreateNewRentOffer">     
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+
+                    </p:panelGrid>
+
+                </p:dialog>
+
+            </h:form>
+            
+            <h:form id="formCreateNewBuyOffer">
+
+                <p:dialog id="dialogCreateNewBuyOffer" widgetVar="dialogCreateNewBuyOffer" header="Create New Buy Offer" closable="true">
+
+                    <p:messages id="messagesCreateNewBuyOffer" redisplay="false" />
+
+                    <p:panelGrid>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="salePrice" value="Sale Price " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>                            
+                                <h:outputText id="salePrice" value="#{listingManagementManagedBean.buyOfferEntity.totalPrice}"/>
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:commandButton type="reset" value="Clear" />&nbsp;
+                                <p:commandButton  value="Send Buy Offer" actionListener="#{listingManagementManagedBean.makeBuyOffer}" oncomplete="PF('dialogCreateNewBuyOffer').show();" update="formCreateNewBuyOffer">     
                                 </p:commandButton>
                             </p:column>
                         </p:row>

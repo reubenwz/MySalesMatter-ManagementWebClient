@@ -5,11 +5,16 @@
  */
 package ws.rest;
 
+import ejb.session.stateless.ListingEntitySessionBeanLocal;
 import ejb.session.stateless.OfferEntitySessionBeanLocal;
 import ejb.session.stateless.UserEntitySessionBeanLocal;
+import entity.BuyOfferEntity;
+import entity.ListingEntity;
 import entity.MessageEntity;
 import entity.OfferEntity;
+import entity.RentalOfferEntity;
 import entity.UserEntity;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,6 +34,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import util.enumeration.OfferType;
 import util.exception.CreateNewOfferException;
 import util.exception.DeleteOfferException;
 import util.exception.InputDataValidationException;
@@ -50,6 +56,8 @@ public class OfferResource {
     OfferEntitySessionBeanLocal offerEntitySessionBeanLocal = lookupOfferEntitySessionBeanLocal();
 
     UserEntitySessionBeanLocal userEntitySessionBeanLocal = lookupUserEntitySessionBeanLocal();
+    
+    ListingEntitySessionBeanLocal listingEntitySessionBeanLocal = lookupListingEntitySessionBeanLocal();    
 
     @Context
     private UriInfo context;
@@ -194,9 +202,9 @@ public class OfferResource {
         }
     }
 
-    @Path("accceptOffer")
+    @Path("accceptOffer/{offerId}")
     @POST
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
     public Response acceptOffer(@QueryParam("username") String username,
             @QueryParam("password") String password,
@@ -245,7 +253,24 @@ public class OfferResource {
             try {
                 UserEntity userEntity = userEntitySessionBeanLocal.userLogin(createOfferReq.getUsername(), createOfferReq.getPassword());
                 System.out.println("********** OfferResource.createNewOffer(): User " + userEntity.getUsername() + " login remotely via web service");
-                OfferEntity offerEntity = offerEntitySessionBeanLocal.createNewOffer(createOfferReq.getNewOfferEntity(), createOfferReq.getUserId(), createOfferReq.getListingId());
+                OfferEntity offerEntity = new RentalOfferEntity();
+                if (createOfferReq.getOfferType() == 1) {
+                    offerEntity.setOfferDate(createOfferReq.getOfferDate());
+                    offerEntity.setOfferType(OfferType.RENTAL);
+                    offerEntity.setTotalPrice(createOfferReq.getTotalPrice());
+                    ((RentalOfferEntity)offerEntity).setStartDate(createOfferReq.getStartDate());
+                    ((RentalOfferEntity)offerEntity).setEndDate(createOfferReq.getEndDate());
+                } else {
+                    offerEntity = new BuyOfferEntity();
+                    offerEntity.setOfferDate(createOfferReq.getOfferDate());
+                    offerEntity.setOfferType(OfferType.BUY);
+                    offerEntity.setTotalPrice(createOfferReq.getTotalPrice());
+                }
+                
+                offerEntity.setUser(userEntity);
+                ListingEntity listing = listingEntitySessionBeanLocal.retrieveListingByListingId(createOfferReq.getListingId());
+                offerEntity.setListing(listing);
+                OfferEntity newOffer = offerEntitySessionBeanLocal.createNewOffer(offerEntity, createOfferReq.getUserId(), createOfferReq.getListingId());
                 return Response.status(Response.Status.OK).entity(offerEntity.getOfferId()).build();
             } catch (UnknownPersistenceException | InputDataValidationException | CreateNewOfferException | UserNotFoundException ex) {
                 return Response.status(Response.Status.UNAUTHORIZED).entity(ex.getMessage()).build();
@@ -269,38 +294,42 @@ public class OfferResource {
 
             List<OfferEntity> offerEntities = offerEntitySessionBeanLocal.retrieveOffersByUserId(userEntity.getUserId());
             for (OfferEntity o : offerEntities) {
-                o.getListing().getOffers().clear();
-                //o.getListing().getReservations().clear();
-                o.getListing().getReviews().clear();
-                o.getListing().getTags().clear();
-                o.getListing().setUser(null);
-                o.getListing().setCategoryEntity(null);
-                o.getSales().setOffer(null);
-                o.getSales().setUser(null);
-                //o.getUser().getConversationsAsOfferee().clear();
-                //o.getUser().getConversationsAsOfferer().clear();
-                o.getUser().getLikedItems().clear();
-                o.getUser().getListings().clear();
-                o.getUser().getOffers().clear();
-                o.getUser().getReviews().clear();
-                o.getUser().getTransactions().clear();
-
-                for (MessageEntity m : o.getMessage()) {
-                    m.getOffer().setListing(null);
-                    m.getOffer().getMessage().clear();
-                    m.getOffer().setUser(null);
-                    m.getOffer().setSales(null);
-                    m.getRecipient().getListings().clear();
-                    m.getRecipient().getTransactions().clear();
-                    m.getRecipient().getReviews().clear();
-                    m.getRecipient().getLikedItems().clear();
-                    m.getRecipient().getOffers().clear();
-                    m.getSender().getListings().clear();
-                    m.getSender().getTransactions().clear();
-                    m.getSender().getReviews().clear();
-                    m.getSender().getLikedItems().clear();
-                    m.getSender().getOffers().clear();
-                }
+                o.setListing(null);
+                o.getMessage().clear();
+                o.setSales(null);
+                o.setUser(null);
+//                o.getListing().getOffers().clear();
+//                //o.getListing().getReservations().clear();
+//                o.getListing().getReviews().clear();
+//                o.getListing().getTags().clear();
+//                o.getListing().setUser(null);
+//                o.getListing().setCategoryEntity(null);
+//                o.getSales().setOffer(null);
+//                o.getSales().setUser(null);
+//                //o.getUser().getConversationsAsOfferee().clear();
+//                //o.getUser().getConversationsAsOfferer().clear();
+//                o.getUser().getLikedItems().clear();
+//                o.getUser().getListings().clear();
+//                o.getUser().getOffers().clear();
+//                o.getUser().getReviews().clear();
+//                o.getUser().getTransactions().clear();
+//
+//                for (MessageEntity m : o.getMessage()) {
+//                    m.getOffer().setListing(null);
+//                    m.getOffer().getMessage().clear();
+//                    m.getOffer().setUser(null);
+//                    m.getOffer().setSales(null);
+//                    m.getRecipient().getListings().clear();
+//                    m.getRecipient().getTransactions().clear();
+//                    m.getRecipient().getReviews().clear();
+//                    m.getRecipient().getLikedItems().clear();
+//                    m.getRecipient().getOffers().clear();
+//                    m.getSender().getListings().clear();
+//                    m.getSender().getTransactions().clear();
+//                    m.getSender().getReviews().clear();
+//                    m.getSender().getLikedItems().clear();
+//                    m.getSender().getOffers().clear();
+//                }
             }
 
             GenericEntity<List<OfferEntity>> genericEntity = new GenericEntity<List<OfferEntity>>(offerEntities) {
@@ -326,40 +355,47 @@ public class OfferResource {
             System.out.println("********** OfferResource.retrieveOffersByListingId(): User " + userEntity.getUsername() + " login remotely via web service");
 
             List<OfferEntity> offerEntities = offerEntitySessionBeanLocal.retrieveOffersByListingId(listingId);
+            
             for (OfferEntity o : offerEntities) {
-                o.getListing().getOffers().clear();
-                //o.getListing().getReservations().clear();
-                o.getListing().getReviews().clear();
-                o.getListing().getTags().clear();
-                o.getListing().setUser(null);
-                o.getListing().setCategoryEntity(null);
-                o.getSales().setOffer(null);
-                o.getSales().setUser(null);
-                //o.getUser().getConversationsAsOfferee().clear();
-                //o.getUser().getConversationsAsOfferer().clear();
-                o.getUser().getLikedItems().clear();
-                o.getUser().getListings().clear();
-                o.getUser().getOffers().clear();
-                o.getUser().getReviews().clear();
-                o.getUser().getTransactions().clear();
-
-                for (MessageEntity m : o.getMessage()) {
-                    m.getOffer().setListing(null);
-                    m.getOffer().getMessage().clear();
-                    m.getOffer().setUser(null);
-                    m.getOffer().setSales(null);
-                    m.getRecipient().getListings().clear();
-                    m.getRecipient().getTransactions().clear();
-                    m.getRecipient().getReviews().clear();
-                    m.getRecipient().getLikedItems().clear();
-                    m.getRecipient().getOffers().clear();
-                    m.getSender().getListings().clear();
-                    m.getSender().getTransactions().clear();
-                    m.getSender().getReviews().clear();
-                    m.getSender().getLikedItems().clear();
-                    m.getSender().getOffers().clear();
-                }
+                o.setListing(null);
+                o.getMessage().clear();
+                o.setSales(null);
+                o.setUser(null);
+//                o.getListing().getOffers().clear();
+//                //o.getListing().getReservations().clear();
+//                o.getListing().getReviews().clear();
+//                o.getListing().getTags().clear();
+//                o.getListing().setUser(null);
+//                o.getListing().setCategoryEntity(null);
+//                o.getSales().setOffer(null);
+//                o.getSales().setUser(null);
+//                //o.getUser().getConversationsAsOfferee().clear();
+//                //o.getUser().getConversationsAsOfferer().clear();
+//                o.getUser().getLikedItems().clear();
+//                o.getUser().getListings().clear();
+//                o.getUser().getOffers().clear();
+//                o.getUser().getReviews().clear();
+//                o.getUser().getTransactions().clear();
+//
+//                for (MessageEntity m : o.getMessage()) {
+//                    m.getOffer().setListing(null);
+//                    m.getOffer().getMessage().clear();
+//                    m.getOffer().setUser(null);
+//                    m.getOffer().setSales(null);
+//                    m.getRecipient().getListings().clear();
+//                    m.getRecipient().getTransactions().clear();
+//                    m.getRecipient().getReviews().clear();
+//                    m.getRecipient().getLikedItems().clear();
+//                    m.getRecipient().getOffers().clear();
+//                    m.getSender().getListings().clear();
+//                    m.getSender().getTransactions().clear();
+//                    m.getSender().getReviews().clear();
+//                    m.getSender().getLikedItems().clear();
+//                    m.getSender().getOffers().clear();
+//                }
             }
+            System.out.println("********** OfferResource.retrieveOffersByListingId(): OfferEntities " + offerEntities.size());
+
 
             GenericEntity<List<OfferEntity>> genericEntity = new GenericEntity<List<OfferEntity>>(offerEntities) {
             };
@@ -386,6 +422,16 @@ public class OfferResource {
         try {
             javax.naming.Context c = new InitialContext();
             return (OfferEntitySessionBeanLocal) c.lookup("java:global/MySalesMatter/MySalesMatter-ejb/OfferEntitySessionBean!ejb.session.stateless.OfferEntitySessionBeanLocal");
+        } catch (NamingException ne) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
+            throw new RuntimeException(ne);
+        }
+    }
+    
+    private ListingEntitySessionBeanLocal lookupListingEntitySessionBeanLocal() {
+        try {
+            javax.naming.Context c = new InitialContext();
+            return (ListingEntitySessionBeanLocal) c.lookup("java:global/MySalesMatter/MySalesMatter-ejb/ListingEntitySessionBean!ejb.session.stateless.ListingEntitySessionBeanLocal");
         } catch (NamingException ne) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);

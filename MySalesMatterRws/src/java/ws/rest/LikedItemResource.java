@@ -87,7 +87,7 @@ public class LikedItemResource {
         }
     }
 
-    @Path("createNewLikedItem")
+    @Path("createNewLikedItem/{listingId}")
     @PUT
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
@@ -108,7 +108,7 @@ public class LikedItemResource {
         }
     }
 
-    @Path("unlikeItem")
+    @Path("unlikeItem/{listingId}")
     @POST
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)

@@ -13,10 +13,15 @@ import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
+import util.exception.DeleteOfferException;
 
 /**
  *
@@ -63,6 +68,19 @@ public class ViewPendingOfferManagedBean implements Serializable {
             }
         }
         return pendingOffers;
+    }
+    
+    public void deletePendingOffer(ActionEvent event) {
+        Long offerId = (Long)event.getComponent().getAttributes().get("offerId");
+        System.out.println("**** OFFERID TO DELETE: " + offerId);
+        try {
+            offerEntitySessionBeanLocal.deleteOffer(offerId);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Offer deleted successfully", null));           
+        } catch (DeleteOfferException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while deleting the offer: " + ex.getMessage(), null));
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while deleting the offer: " + ex.getMessage(), null));
+        } 
     }
 
     public UserEntity getCurrentUser() {
