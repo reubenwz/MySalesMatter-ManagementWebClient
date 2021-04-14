@@ -26,6 +26,7 @@ import org.primefaces.event.FileUploadEvent;
 import util.exception.CreateNewReviewException;
 import util.exception.InputDataValidationException;
 import util.exception.ListingNotFoundException;
+import util.exception.SalesTransactionNotFoundException;
 import util.exception.UnknownPersistenceException;
 import util.exception.UserNotFoundException;
 
@@ -44,6 +45,7 @@ public class AddReviewManagedBean implements Serializable {
     private Long salesTransactionIdToView;
     private boolean reviewExist;
     private String tempPicturePath = "";
+    private Long salesIdToView;
    
     
     @EJB
@@ -84,10 +86,10 @@ public class AddReviewManagedBean implements Serializable {
             review.setReviewer(user);
             review.setStarRating(starRating);
             review.setListing(listingEntitySessionBeanLocal.retrieveListingByListingId(listingIdToView));
-            review = reviewEntitySessionBeanLocal.createNewReviewEntity(review, userId, listingIdToView);
+            review = reviewEntitySessionBeanLocal.createNewReviewEntity(review, userId, listingIdToView, salesIdToView);
             reviewExist = true;
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Review added successfully (Review ID: " + review.getReviewId() + ")", null));
-        } catch (UserNotFoundException | UnknownPersistenceException | CreateNewReviewException | ListingNotFoundException | InputDataValidationException ex) {
+        } catch (UserNotFoundException | UnknownPersistenceException | CreateNewReviewException | ListingNotFoundException | InputDataValidationException | SalesTransactionNotFoundException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating the new Listing: " + ex.getMessage(), null));
         }
     }
@@ -139,7 +141,8 @@ public class AddReviewManagedBean implements Serializable {
     }
     
     public void setId(ActionEvent event) {
-        listingIdToView = (Long) event.getComponent().getAttributes().get("listingId");        
+        listingIdToView = (Long) event.getComponent().getAttributes().get("listingId");    
+        setSalesIdToView((Long) event.getComponent().getAttributes().get("salesId"));   
     }
 
     public UserEntity getUser() {
@@ -196,6 +199,14 @@ public class AddReviewManagedBean implements Serializable {
 
     public void setTempPicturePath(String tempPicturePath) {
         this.tempPicturePath = tempPicturePath;
+    }
+
+    public Long getSalesIdToView() {
+        return salesIdToView;
+    }
+
+    public void setSalesIdToView(Long salesIdToView) {
+        this.salesIdToView = salesIdToView;
     }
     
 }

@@ -34,6 +34,7 @@
 
                     <p:commandButton rendered="#{addReviewManagedBean.reviewDoesNotExist(salesTransactionCompleted.offer.listing.listingId)}" value="Add Review" oncomplete="PF('dialogAddReview').show()" actionListener="#{addReviewManagedBean.setId}" update="formAddReview">
                         <f:attribute name="listingId" value="#{salesTransactionCompleted.offer.listing.listingId}" />
+                        <f:attribute name="salesId" value="#{salesTransactionCompleted.salesTransactionId}" />
                     </p:commandButton>
                 </p:column>
             </p:dataTable>

@@ -19,14 +19,16 @@ public class CreateReviewReq {
     private int starRating;
     private Long reviewerId;
     private Long listingId;
+    private Long salesId;
 
-    public CreateReviewReq(String description, int starRating, String username, String password, Long reviewerId, Long listingId) {
+    public CreateReviewReq(String description, int starRating, String username, String password, Long reviewerId, Long listingId, Long salesId) {
         this.starRating = starRating;
         this.description = description;
         this.username = username;
         this.password = password;
         this.reviewerId = reviewerId;
         this.listingId = listingId;
+        this.salesId = salesId;
     }
     
     public CreateReviewReq() {
@@ -79,6 +81,14 @@ public class CreateReviewReq {
 
     public void setStarRating(int starRating) {
         this.starRating = starRating;
+    }
+
+    public Long getSalesId() {
+        return salesId;
+    }
+
+    public void setSalesId(Long salesId) {
+        this.salesId = salesId;
     }
     
     

@@ -12,6 +12,7 @@ import util.exception.CreateNewReviewException;
 import util.exception.InputDataValidationException;
 import util.exception.ListingNotFoundException;
 import util.exception.ReviewNotFoundException;
+import util.exception.SalesTransactionNotFoundException;
 import util.exception.UnknownPersistenceException;
 import util.exception.UpdateReviewException;
 import util.exception.UserNotFoundException;
@@ -22,7 +23,7 @@ import util.exception.UserNotFoundException;
  */
 @Local
 public interface ReviewEntitySessionBeanLocal {
-    public ReviewEntity createNewReviewEntity(ReviewEntity newReviewEntity, Long reviewerId, Long listingId) throws UnknownPersistenceException, InputDataValidationException, CreateNewReviewException, UserNotFoundException, ListingNotFoundException;
+    public ReviewEntity createNewReviewEntity(ReviewEntity newReviewEntity, Long reviewerId, Long listingId, Long salesId) throws UnknownPersistenceException, InputDataValidationException, CreateNewReviewException, UserNotFoundException, ListingNotFoundException, SalesTransactionNotFoundException;
     public List<ReviewEntity> retrieveAllReviews();
     public ReviewEntity retrieveReviewByReviewId(Long reviewId) throws ReviewNotFoundException;
     public void deleteReview(Long reviewId) throws ReviewNotFoundException;

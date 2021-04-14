@@ -35,6 +35,7 @@ import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
 import util.exception.ListingNotFoundException;
 import util.exception.ReviewNotFoundException;
+import util.exception.SalesTransactionNotFoundException;
 import util.exception.UnknownPersistenceException;
 import util.exception.UpdateReviewException;
 import util.exception.UserNotFoundException;
@@ -269,9 +270,9 @@ public class ReviewResource {
                 r.setListing(listing);
                 System.out.println(createReviewReq.getListingId());
                 System.out.println(createReviewReq.getReviewerId());
-                ReviewEntity reviewEntity = reviewEntitySessionBeanLocal.createNewReviewEntity(r, createReviewReq.getReviewerId(), createReviewReq.getListingId());
+                ReviewEntity reviewEntity = reviewEntitySessionBeanLocal.createNewReviewEntity(r, createReviewReq.getReviewerId(), createReviewReq.getListingId(), createReviewReq.getSalesId());
                 return Response.status(Response.Status.OK).entity(reviewEntity.getReviewId()).build();
-            } catch (UnknownPersistenceException | InputDataValidationException | CreateNewReviewException | UserNotFoundException | ListingNotFoundException ex) {
+            } catch (UnknownPersistenceException | InputDataValidationException | CreateNewReviewException | UserNotFoundException | ListingNotFoundException | SalesTransactionNotFoundException ex) {
                 return Response.status(Response.Status.UNAUTHORIZED).entity(ex.getMessage()).build();
             } catch (Exception ex) {
                 return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();

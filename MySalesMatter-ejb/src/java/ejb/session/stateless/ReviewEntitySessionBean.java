@@ -7,6 +7,7 @@ package ejb.session.stateless;
 
 import entity.ListingEntity;
 import entity.ReviewEntity;
+import entity.SalesTransactionEntity;
 import entity.UserEntity;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,7 @@ import util.exception.CreateNewReviewException;
 import util.exception.InputDataValidationException;
 import util.exception.ListingNotFoundException;
 import util.exception.ReviewNotFoundException;
+import util.exception.SalesTransactionNotFoundException;
 import util.exception.UnknownPersistenceException;
 import util.exception.UpdateReviewException;
 import util.exception.UserNotFoundException;
@@ -47,6 +49,9 @@ public class ReviewEntitySessionBean implements ReviewEntitySessionBeanLocal {
 
     @EJB
     ListingEntitySessionBeanLocal listingEntitySessionBeanLocal;
+    
+    @EJB
+    SalesTransactionEntitySessionBeanLocal salesTransactionEntitySessionBeanLocal;
 
     public ReviewEntitySessionBean() {
         validatorFactory = Validation.buildDefaultValidatorFactory();
@@ -54,13 +59,15 @@ public class ReviewEntitySessionBean implements ReviewEntitySessionBeanLocal {
     }
 
     @Override
-    public ReviewEntity createNewReviewEntity(ReviewEntity newReviewEntity, Long reviewerId, Long listingId) throws UnknownPersistenceException, InputDataValidationException, CreateNewReviewException, UserNotFoundException, ListingNotFoundException {
+    public ReviewEntity createNewReviewEntity(ReviewEntity newReviewEntity, Long reviewerId, Long listingId, Long salesId) throws UnknownPersistenceException, InputDataValidationException, CreateNewReviewException, UserNotFoundException, ListingNotFoundException, SalesTransactionNotFoundException {
         Set<ConstraintViolation<ReviewEntity>> constraintViolations = validator.validate(newReviewEntity);
 
         if (constraintViolations.isEmpty()) {
             try {
                 ListingEntity lisitng = listingEntitySessionBeanLocal.retrieveListingByListingId(listingId);
                 UserEntity user = userEntitySessionBeanLocal.retrieveUserById(reviewerId);
+                SalesTransactionEntity s = salesTransactionEntitySessionBeanLocal.retrieveTransactionById(salesId);
+                s.setReviewed(true);
                 newReviewEntity.setReviewer(user);
                 newReviewEntity.setListing(lisitng);
                 user.getReviews().add(newReviewEntity);
@@ -77,7 +84,7 @@ public class ReviewEntitySessionBean implements ReviewEntitySessionBeanLocal {
                     throw new UnknownPersistenceException(ex.getMessage());
                 }
 
-            } catch (UserNotFoundException | ListingNotFoundException ex) {
+            } catch (UserNotFoundException | ListingNotFoundException | SalesTransactionNotFoundException ex) {
                 throw new CreateNewReviewException("An error has occurred while creating the new offer: " + ex.getMessage());
             }
         } else {

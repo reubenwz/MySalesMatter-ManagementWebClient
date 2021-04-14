@@ -144,7 +144,7 @@ public class SalesTransactionResource {
         }
     }
     
-    @Path("retrieveTransaction/{transactionId}")
+    @Path("retrieveTransactionById/{transactionId}")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
@@ -159,7 +159,10 @@ public class SalesTransactionResource {
 
             SalesTransactionEntity salesTransactionEntity = salesTransactionEntitySessionBeanLocal.retrieveTransactionById(transactionId);
             
-            salesTransactionEntity.setOffer(null);
+            salesTransactionEntity.getOffer().setListing(null);
+            salesTransactionEntity.getOffer().getMessage().clear();
+            salesTransactionEntity.getOffer().setSales(null);
+            salesTransactionEntity.getOffer().setUser(null);
             salesTransactionEntity.setUser(null);
             
             return Response.status(Response.Status.OK).entity(salesTransactionEntity).build();

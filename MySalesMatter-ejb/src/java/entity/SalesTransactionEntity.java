@@ -77,14 +77,18 @@ public class SalesTransactionEntity implements Serializable {
     @NotNull
     @JoinColumn(nullable = false)
     private OfferEntity offer;
+    
+    private boolean reviewed;
 
     public SalesTransactionEntity() {
+        this.reviewed = false;
     }
 
     public SalesTransactionEntity(BigDecimal totalAmt, Date transactionDate) {
         //this.status = status;
         this.totalAmt = totalAmt;
         this.transactionDate = transactionDate;
+        this.reviewed = false;
     }
     
     
@@ -184,6 +188,14 @@ public class SalesTransactionEntity implements Serializable {
 
     public void setExpiry(String expiry) {
         this.expiry = expiry;
+    }
+
+    public boolean isReviewed() {
+        return reviewed;
+    }
+
+    public void setReviewed(boolean reviewed) {
+        this.reviewed = reviewed;
     }
     
 }
