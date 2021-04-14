@@ -5,42 +5,78 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:p="http://primefaces.org/ui">
 
-    <h2>Welcome to My Sales Matter
-        <h:graphicImage library="images" name="logo.jpg" style="width: 80px"/>
-    </h2>
+    <!--    <h2 style="text-align: center">Welcome to My Sales Matter
+            <h:graphicImage library="images" name="transparent_logo.jpg" style="width: 85px"/>
+        </h2>-->
 
-    <header style="text-align: right;">	
-        <h:panelGroup rendered="#{sessionScope.isLogin == false}">
-            <h:form id="userLoginForm">
+    <div class="layout-topbar">	
+        <div class="card">
+            <h:form>
+                <p:growl id="messages"/>
 
-                <p:outputLabel for="@next" value="Email" />&nbsp;
-                <p:inputText id="email" value="#{userLoginManagedBean.email}" size="16" required="true" requiredMessage="Please key in your email" maxlength="32">
-                    <f:validateLength minimum="4" />
-                </p:inputText>
-                &nbsp;
-                <p:outputLabel for="password" value="Password" />&nbsp;
-                <p:password id="password" value="#{userLoginManagedBean.password}" size="16" required="true" requiredMessage="Please key in your password" maxlength="32" >
-                    <f:validateLength minimum="4" />
-                </p:password>
-                &nbsp;
-                <p:commandButton type="reset" value="Clear" icon="pi pi-undo" />&nbsp;
-                <p:commandButton type="submit" value="Login" actionListener="#{userLoginManagedBean.login}" icon="pi pi-sign-in" />
+                <p:menubar>
+                    <p:submenu label="General" icon="pi pi-align-justify">
+                        <p:menuitem value="Home" outcome="/index" icon="pi pi-home" />
+                        <p:menuitem rendered ="#{sessionScope.isLogin == false}" value="Register" outcome="/index.xhtml" icon="pi pi-user"/>
+                        <p:menuitem rendered ="#{sessionScope.isLogin == true}" value="Chat" outcome="/profileManagement/notifications.xhtml" icon="pi pi-comments"/>
+                    </p:submenu>
 
-                <p:growl>
-                    <p:autoUpdate />
-                </p:growl>
+                    <p:submenu label="Buy/Rent" icon="pi pi-shopping-cart" rendered="#{sessionScope.isLogin == true}">
+                        <p:menuitem value="Browse All Listings" outcome="/systemAdministration/listingManagement.xhtml" icon="pi pi-list" />
+                        <p:menuitem value="All Loans and Purchases" outcome="/profileManagement/viewAllLoansAndPurchase.xhtml" icon="pi pi-money-bill"/>
+                        <p:menuitem value="Transactions History" outcome="/profileManagement/transactionsHistory.xhtml" icon="pi pi-chart-line"/>
+                    </p:submenu>
+
+                    <p:submenu label="Profile" icon="pi pi-user" rendered="#{sessionScope.isLogin == true}">
+                        <p:menuitem value="My Listings" outcome="/profileManagement/myListings.xhtml" icon="pi pi-list"  />
+                        <p:menuitem value="My Liked Items" outcome="/profileManagement/myLikedItems.xhtml" icon="pi pi-heart"/>   
+                    </p:submenu>
+
+                    <p:submenu label="Reviews" icon="pi pi-thumbs-up" rendered="#{sessionScope.isLogin == true}">
+                        <p:menuitem value="Reviews Received" outcome="/profileManagement/reviewsReceived.xhtml" icon="pi pi-folder-open"/>
+                        <p:menuitem value="Reviews Written" outcome="/profileManagement/reviewsWritten.xhtml" icon="pi pi-pencil"/>
+                    </p:submenu>
+
+                </p:menubar> 
 
             </h:form>
-        </h:panelGroup>
+        </div>
+        <h2 style="text-align: left">Welcome to My Sales Matter
+            <h:graphicImage library="images" name="transparent_logo.jpg" style="width: 85px"/>
+        </h2>
 
-        <h:panelGroup rendered="#{sessionScope.isLogin == true}">
-            <h:form id="userLogoutForm">
-                <h:outputText value="You are login as #{sessionScope.currentUser.name}" />&nbsp;
-                <p:commandButton value="Logout" actionListener="#{userLoginManagedBean.logout}" icon="pi pi-sign-out" />
+        <div class="card">
+            <h:panelGroup rendered="#{sessionScope.isLogin == false}">
+                <h:form id="userLoginForm">
 
-            </h:form>
-        </h:panelGroup>
+                    <p:outputLabel for="@next" value="Email" />&nbsp;
+                    <p:inputText id="email" value="#{userLoginManagedBean.email}" size="16" required="true" requiredMessage="Please key in your email" maxlength="32">
+                        <f:validateLength minimum="4" />
+                    </p:inputText>
+                    &nbsp;
+                    <p:outputLabel for="password" value="Password" />&nbsp;
+                    <p:password id="password" value="#{userLoginManagedBean.password}" size="16" required="true" requiredMessage="Please key in your password" maxlength="32" >
+                        <f:validateLength minimum="4" />
+                    </p:password>
+                    &nbsp;
+                    <p:commandButton type="reset" value="Clear" icon="pi pi-undo" />&nbsp;
+                    <p:commandButton type="submit" value="Login" actionListener="#{userLoginManagedBean.login}" icon="pi pi-sign-in" />
 
-    </header>
+                    <p:growl>
+                        <p:autoUpdate />
+                    </p:growl>
+
+                </h:form>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{sessionScope.isLogin == true}">
+                <h:form id="userLogoutForm">
+                    <h:outputText value="You are login as #{sessionScope.currentUser.name}" />&nbsp;
+                    <p:commandButton value="Logout" actionListener="#{userLoginManagedBean.logout}" icon="pi pi-sign-out" />
+
+                </h:form>
+            </h:panelGroup>
+        </div>
+    </div>
 </ui:composition>
 

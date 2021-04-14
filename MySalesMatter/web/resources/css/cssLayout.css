@@ -58,4 +58,54 @@
   text-decoration : underline;
 }
 
+#body .ui-menu.ui-menubar {
+    padding: 0.5rem;
+    background: #f8f9fa;
+    border-radius: 4px;
+}
+
+#body .ui-menu {
+    border: 1px solid #dee2e6;
+}
+
+.ui-menubar {
+    width: auto;
+}
+
+.ui-menu {
+    position: relative;
+    outline: 0 none;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+div {
+    display: block;
+}
+
+.p-field.p-grid .p-col-fixed {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.p-field.p-grid > label {
+    display: flex;
+    align-items: center;
+}
+
+.p-grid > [class*=p-col] {
+    box-sizing: border-box;
+}
+
+.p-field > label {
+    margin-bottom: 0.5rem;
+}
+
+.p-col-fixed {
+    -webkit-box-flex: 0;
+    flex: 0 0 auto;
+    padding: 0.5rem;
+}
 
