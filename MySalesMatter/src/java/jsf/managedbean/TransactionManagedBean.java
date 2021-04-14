@@ -25,6 +25,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
 import javax.enterprise.context.SessionScoped;
+import util.email.EmailManager;
 import util.enumeration.OfferType;
 import util.exception.CreateNewTransactionException;
 import util.exception.InputDataValidationException;
@@ -103,6 +104,17 @@ public class TransactionManagedBean implements Serializable {
             offerEntitySessionBeanLocal.doSetPaid(acceptedOfferToMakePayment.getOfferId());
         } catch (UnknownPersistenceException | InputDataValidationException | UserNotFoundException | CreateNewTransactionException | SalesTransactionExistException | OfferNotFoundException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while making the payment: " + ex.getMessage(), null));
+        }
+        EmailManager emailManager = new EmailManager("mysalesmatter123@gmail.com", "Pass123!");
+        Boolean result = emailManager.email("mysalesmatter123@gmail.com", currentUser.getEmail());
+                
+        if(result)
+        {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Email sent successfully", null));
+        }
+        else
+        {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while sending email", null));
         }
     }
     
