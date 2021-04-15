@@ -16,9 +16,8 @@
                 <p:commandButton type="button" value="Create New Listing" onclick="PF('dialogCreateNewListing').show()" icon ="pi pi-file" styleClass="p-mr-2" />
             </div>
 
-            <div class="card product">
+            <div class="product card">
                 <h:form id="formAllListings">
-
                     <p:messages id="messages" redisplay="false" closable="true" />
                     <p:dataView id="dataTableAllListings" rows="12" value="#{listingManagementManagedBean.listingEntities}" var="listingEntity" 
                                 rowsPerPageTemplate="6,12,16" gridIcon="pi pi-th-large"
@@ -32,63 +31,86 @@
                         </f:facet>
 
                         <p:dataViewGridItem>
-                            <div class="product-grid-item card border-1">
-                                <div class="product-grid-item-top">
-                                    <div>
-                                        <i class="pi pi-tag product-category-icon"/>
-                                        <span class="product-category">#{listingEntity.categoryEntity.name}</span>
+                            <div class="ui-dataview-column p-col-12 p-md-4 p-lg-6 p-xl-4">
+                                <div class="product">
+                                    <div class="product-grid-item card border-1">
+                                        <div class="product-grid-item-top">
+                                            <div>
+                                                <i class="pi pi-tag product-category-icon">
+                                                </i>
+                                                <span class="product-category">#{listingEntity.categoryEntity.name}</span>
+                                                <div align="right">
+                                                <p:outputLabel value="For Rent" rendered="#{listingEntity.rentalAvailability}" style="border-radius: 2px;
+                                                               padding: .25em .5rem;
+                                                               text-transform: uppercase;
+                                                               font-weight: 700;
+                                                               font-size: 12px;
+                                                               letter-spacing: .3px;
+                                                               align:  center;
+                                                               background: #C8E6C9;
+                                                               color: #256029; "/> &nbsp; 
+                                                <p:outputLabel value="NOT For Rent" rendered="#{!listingEntity.rentalAvailability}" style="border-radius: 2px;
+                                                               padding: .25em .5rem;
+                                                               text-transform: uppercase;
+                                                               font-weight: 700;
+                                                               font-size: 12px;
+                                                               letter-spacing: .3px;
+                                                               align:  center;
+                                                               background: #FFCDD2;
+                                                               color: #C63737; "/> &nbsp; 
+                                                <p:outputLabel value="For Sale" rendered="#{listingEntity.forSaleAvailability}" style="border-radius: 2px;
+                                                               padding: .25em .5rem;
+                                                               text-transform: uppercase;
+                                                               font-weight: 700;
+                                                               font-size: 12px;
+                                                               letter-spacing: .3px;
+                                                               align:  center;
+                                                               background: #C8E6C9;
+                                                               color: #256029; "/>
+                                                <p:outputLabel value="NOT For Sale" rendered="#{!listingEntity.forSaleAvailability}" style="border-radius: 2px;
+                                                               padding: .25em .5rem;
+                                                               text-transform: uppercase;
+                                                               font-weight: 700;
+                                                               font-size: 12px;
+                                                               letter-spacing: .3px;
+                                                               align:  center;
+                                                               background: #FFCDD2;
+                                                               color: #C63737; "/>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    
+
+                                    <div class="product-grid-item-content">
+                                        <p:graphicImage width="100%" value="/uploadedFiles/#{listingEntity.picturePath}" />
+                                        <div class="product-name" style="font-weight:bold; text-align: center">#{listingEntity.name}</div>
+                                        <div class="product-description" style="text-align: center">#{listingEntity.user.name}</div>
+                                    </div> <br/>
+                                    <div class="product-grid-item-bottom">
+<!--                                        <span class="rental-avail" style="text-align: center;" sortBy="#{listingEntity.rentalAvailability}" filterBy="#{listingEntity.rentalAvailability}" filterMatchMode="contains">
+                                            <h:outputText value="For Rent" rendered="#{listingEntity.rentalAvailability}" />
+                                            <h:outputText value="NOT for Rent" rendered="#{!listingEntity.rentalAvailability}" />
+                                        </span>
+                                        <br/>
+                                        <p:column headerText="Sale Availability" style="text-align: center;" sortBy="#{listingEntity.forSaleAvailability}" filterBy="#{listingEntity.forSaleAvailability}" filterMatchMode="contains">
+                                            <h:outputText value="For Sale" rendered="#{listingEntity.forSaleAvailability}" />
+                                            <h:outputText value="NOT for Sale" rendered="#{!listingEntity.forSaleAvailability}" />
+                                        </p:column>-->
+                                        <div align="center"> 
+                                            <p:commandButton value="View" icon="pi pi-folder-open" actionListener="#{viewListingManagedBean.viewListingDetails}">
+                                                <f:attribute name="listingId" value="#{listingEntity.listingId}" />
+                                            </p:commandButton>
+
+                                            <p:commandButton rendered="#{!viewLikedItemManagedBean.alreadyLiked(listingEntity.listingId)}" value="Like" icon="pi pi-heart" actionListener="#{listingManagementManagedBean.likeItem}" update="formAllListings:dataTableAllListings formAllListings:messages" title="Like">
+                                                <f:attribute name="listingEntityToLike" value="#{listingEntity}" />
+                                            </p:commandButton>
+                                            <p:commandButton rendered="#{viewLikedItemManagedBean.alreadyLiked(listingEntity.listingId)}" value="Unlike" icon="pi pi-ban" actionListener="#{listingManagementManagedBean.unlikeItem}" update="formAllListings:dataTableAllListings formAllListings:messages" title="Unlike">
+                                                <f:attribute name="listingEntityToUnlike" value="#{listingEntity}" />
+                                            </p:commandButton>
+                                        </div>
+
+                                    </div>             
                                 </div>
-                                <div class="product-grid-item-content">
-                                    <p:graphicImage width="100%" value="/uploadedFiles/#{listingEntity.picturePath}" />
-                                    <div class="product-name" style="font-weight:bold">#{listingEntity.name}</div>
-                                    <div class="product-name">#{listingEntity.user.name}</div>
-                                </div>
-                                <div class="product-grid-item-bottom">
-                                    <p:column headerText="Rental Availability" style="text-align: center;" sortBy="#{listingEntity.rentalAvailability}" filterBy="#{listingEntity.rentalAvailability}" filterMatchMode="contains">
-                                        <h:outputText value="For Rent" rendered="#{listingEntity.rentalAvailability}" />
-                                        <h:outputText value="NOT for Rent" rendered="#{!listingEntity.rentalAvailability}" />
-                                    </p:column>
-                                    <br/>
-                                    <p:column headerText="Sale Availability" style="text-align: center;" sortBy="#{listingEntity.forSaleAvailability}" filterBy="#{listingEntity.forSaleAvailability}" filterMatchMode="contains">
-                                        <h:outputText value="For Sale" rendered="#{listingEntity.forSaleAvailability}" />
-                                        <h:outputText value="NOT for Sale" rendered="#{!listingEntity.forSaleAvailability}" />
-                                    </p:column>
-                                    <div align="center"> 
-                                    <p:commandButton style="text-align:right" value="View" icon="pi pi-folder-open" actionListener="#{viewListingManagedBean.viewListingDetails}">
-                                        <f:attribute name="listingId" value="#{listingEntity.listingId}" />
-                                    </p:commandButton>
-                                    
-                                    <p:commandButton rendered="#{!viewLikedItemManagedBean.alreadyLiked(listingEntity.listingId)}" value="Like" icon="pi pi-heart" actionListener="#{listingManagementManagedBean.likeItem}" update="formAllListings:dataTableAllListings formAllListings:messages" title="Like">
-                                        <f:attribute name="listingEntityToLike" value="#{listingEntity}" />
-                                    </p:commandButton>
-                                    <p:commandButton rendered="#{viewLikedItemManagedBean.alreadyLiked(listingEntity.listingId)}" value="Unlike" icon="pi pi-ban" actionListener="#{listingManagementManagedBean.unlikeItem}" update="formAllListings:dataTableAllListings formAllListings:messages" title="Unlike">
-                                        <f:attribute name="listingEntityToUnlike" value="#{listingEntity}" />
-                                    </p:commandButton>
-                                    </div>
-
-                                </div>
-    <!--                          
-
-                    <p:column headerText="Rental Price" sortBy="#{listingEntity.rentalPrice}" filterBy="#{listingEntity.rentalPrice}" filterMatchMode="contains" style="text-align: center;">
-                        <h:outputText value="#{listingEntity.rentalPrice}">
-                            <f:convertNumber minFractionDigits="2" maxFractionDigits="2" type="currency" currencyCode="SGD" />
-                        </h:outputText>
-                    </p:column>
-
-                    <p:column headerText="Sale Price"  sortBy="#{listingEntity.salePrice}" filterBy="#{listingEntity.salePrice}" filterMatchMode="contains" style="text-align: center;">
-                        <h:outputText value="#{listingEntity.salePrice}">
-                            <f:convertNumber minFractionDigits="2" maxFractionDigits="2" type="currency" currencyCode="SGD" />
-                        </h:outputText>
-                    </p:column>                        
-
-                    <p:column headerText="Location" style="text-align: center;" sortBy="#{listingEntity.location}" filterBy="#{listingEntity.location}" filterMatchMode="contains">
-                        <h:outputText value="#{listingEntity.location}" />
-                    </p:column>
-
-                                -->
-
                             </div>
                         </p:dataViewGridItem>
                     </p:dataView>

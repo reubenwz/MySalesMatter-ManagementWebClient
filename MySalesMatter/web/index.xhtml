@@ -19,45 +19,61 @@
         <div class="card" style="text-align: match-parent">
             <h:form id="formRegisterUser">
                 <p:dialog id="registerUser" widgetVar="dialogRegisterUser" header="Fill in the fields below to register" closable="true"  minHeight="60" width="400" showEffect="fade">
-                    <div class="p-field p-grid">
-                        <label for="name" value="Name: " style="font-weight: bold; width: 100px" class="p-col-fixed">Name:</label> &nbsp;                          
-                        <p:inputText id="name" value="#{userManagementManagedBean.user.name}" required="true" requiredMessage="Please enter your name" />
-                        <p:message for="name"/>
+                    <div class="p-formgroup-inline">
+                        <div class="p-field">
+                            <label for="name" value="Name: " style="font-weight: bold; width: 100px" class="p-col-fixed">Name:</label> &nbsp;                          
+                            <p:inputText id="name" value="#{userManagementManagedBean.user.name}" required="true" requiredMessage="Please enter your name" />
+                            <p:message for="name"/>
+                        </div>
                     </div>
-                    <div class="p-field p-grid">
-                        <label for="email" value="Email: " style="font-weight: bold">Email:</label> &nbsp;                         
-                        <p:inputText type="email" id="email" value="#{userManagementManagedBean.user.email}" required="true" requiredMessage="Please enter your email" />                              
-                        <p:message for="email" />
+
+                    <div class="p-formgroup-inline">
+                        <div class="p-field">
+                            <label for="email" value="Email: " style="font-weight: bold">Email:</label> &nbsp;&nbsp;                          
+                            <p:inputText type="email" id="email" value="#{userManagementManagedBean.user.email}" required="true" requiredMessage="Please enter your email" />                              
+                            <p:message for="email" />
+                        </div>
                     </div>
-                    <div class="p-field p-grid">
-                        <label for="username" value="Username: " style="font-weight: bold"> Username:</label>   &nbsp;                           
+
+                    <div class="p-formgroup-inline">
+                        <div class="p-field">
+                            <label for="username" value="Username: " style="font-weight: bold"> Username:</label> &nbsp;                           
                             <p:inputText id="username" value="#{userManagementManagedBean.user.username}" required="true" requiredMessage="Please enter your username" />
                             <p:message for="username" />
+                        </div>
                     </div>
 
-                    <div class="p-field p-grid">
-                        <label for="password" value="Password: " style="font-weight: bold">Password:</label> &nbsp;                              
+                    <div class="p-formgroup-inline">
+                        <div class="p-field">
+                            <label for="password" value="Password: " style="font-weight: bold">Password:</label> &nbsp;                              
                             <p:password id="password" value="#{userManagementManagedBean.user.password}" feedback="true"  required="true" requiredMessage="Please enter your password" />
                             <p:message for="password" />
+                        </div>
                     </div>
 
-                    <div class="p-field p-grid">
-                        <label for="phoneNum" value="Phone Number: " style="font-weight: bold"> Phone Number:</label>   &nbsp;                          
+                    <div class="p-formgroup-inline">
+                        <div class="p-field">
+                            <label for="phoneNum" value="Phone Number: " style="font-weight: bold"> Phone Number:</label> &nbsp;                          
                             <p:inputText id="phoneNum" value="#{userManagementManagedBean.user.phoneNumber}" required="true" requiredMessage="Please enter your phone number" />
                             <p:message for="phoneNum" />
-                    </div>
-                        
-                    <div class="p-field p-grid">
-                        <label for="bankAccountNum" value="Bank Account Number: " style="font-weight: bold">Bank Account Number:</label>  &nbsp;                             
-                            <p:inputText id="bankAccountNum" value="#{userManagementManagedBean.user.bankAccountNumber}" required="true" requiredMessage="Please enter your bank account number" />
-                            <p:message for="bankAccountNum" />
+                        </div>
                     </div>
 
-                   <div class="p-field p-grid">
-                       <label for="bio" value="Bio: " style="font-weight: bold">Bio:</label> &nbsp;                              
+                    <div class="p-formgroup-inline">
+                        <div class="p-field">
+                            <label for="bankAccountNum" value="Bank Account Number: " style="font-weight: bold">Bank Account Number:</label> &nbsp;                             
+                            <p:inputText id="bankAccountNum" value="#{userManagementManagedBean.user.bankAccountNumber}" required="true" requiredMessage="Please enter your bank account number" />
+                            <p:message for="bankAccountNum" />
+                        </div>
+                    </div>
+
+                    <div class="p-formgroup-inline">
+                        <div class="p-field">
+                            <label for="bio" value="Bio: " style="font-weight: bold">Bio:</label> &nbsp;                              
                             <p:inputText id="bio" value="#{userManagementManagedBean.user.bio}" required="true" requiredMessage="Please enter your bio" />
                             <p:message for="bio" />
-                   </div>
+                        </div>
+                    </div>
 
                     <f:facet name="footer">
                         <p:column colspan="3">
@@ -69,6 +85,36 @@
                 </p:dialog>
             </h:form>
         </div>
+
+        <h:panelGroup rendered="#{sessionScope.isLogin == true}">
+            <div class="card">
+                <p:panel id="pnl" header="How to use MySalesMatter?" style="position: relative;
+                         left: 352px;
+                         top: -28px;
+                         width: 300px">
+                    <h:outputText value="Go to Browse All Listings > Choose which listing you would like to buy, rent or sell!"/>
+                </p:panel>
+                <p:draggable for="pnl"/>
+            </div>
+            <div class="card">
+                <p:panel id="pn2" header="Why use MySalesMatter?" style="position: relative;
+                         left: 352px;
+                         top: -28px;
+                         width: 300px">
+                    <h:outputText value="Although we are a start-up, one thing to differentiate ourselves from Carousell: a portion of the deposit goes to MySalesMatter."/>
+                </p:panel>
+                <p:draggable for="pn2"/>
+            </div>
+            <div class="card">
+                <p:panel id="pn3" header="Support us!" style="position: relative;
+                         left: 352px;
+                         top: -28px;
+                         width: 300px">
+                    <h:outputText value="Start using MySalesMatter and chat with any seller/rentee now! :)"/>
+                </p:panel>
+                <p:draggable for="pn3"/>
+            </div>
+        </h:panelGroup>
 
     </ui:define>
 
