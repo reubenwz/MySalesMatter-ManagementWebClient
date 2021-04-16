@@ -15,11 +15,14 @@ To watch a video demonstration of MySalesMatter, click on the image below.
 
 Link to project on STEPS: https://uvents.nus.edu.sg/event/18th-steps/module/IS3106/project/3
 
-# Instructions to run the application
+# 🛠 Installation & Set Up
 1. Open project (folder name: MySalesMatter) on Netbeans IDE
 2. Edit private properties file (change to your own user name on laptop)
 3. Set up mySQL database (database name: mysalesmatter) and connect to it
 4. Clean and build project, before deploying it onto glassfish server
-5. Url: localhost:8080/MySalesMatter/
+5. Access Url: 
+```sh
+   localhost:8080/MySalesMatter/
+   ```
 
 
