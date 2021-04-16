@@ -13,6 +13,8 @@ The other consumer facing mobile application client made with Ionic can be found
 
 To watch a video demonstration of MySalesMatter, click on the image below.
 
+Link to project on STEPS: https://uvents.nus.edu.sg/event/18th-steps/module/IS3106/project/3
+
 # Instructions to run the application
 1. Open project (folder name: MySalesMatter) on Netbeans IDE
 2. Edit private properties file (change to your own user name on laptop)
