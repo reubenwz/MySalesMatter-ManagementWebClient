@@ -22,56 +22,55 @@
                     </p:outputPanel>
                 </f:facet>
 
-                <p:column headerText="Listing ID" style="text-align: center;" sortBy="#{listingEntity.listingId}" filterBy="#{listingEntity.listingId}" filterMatchMode="contains">
+                <p:column headerText="Listing ID" style="text-align: left;" sortBy="#{listingEntity.listingId}" filterBy="#{listingEntity.listingId}" filterMatchMode="contains">
                     <h:outputText value="#{listingEntity.listingId}" />
                 </p:column>
 
-                <p:column headerText="Picture">
-                    <p:graphicImage width="100%" value="/uploadedFiles/#{listingEntity.picturePath}" />
-
-                </p:column>  
-
-                <p:column headerText="Name" style="text-align: center;" sortBy="#{listingEntity.name}" filterBy="#{listingEntity.name}" filterMatchMode="contains">
+                <p:column headerText="Name" style="text-align: left;" sortBy="#{listingEntity.name}" filterBy="#{listingEntity.name}" filterMatchMode="contains">
                     <h:outputText value="#{listingEntity.name}" />
                 </p:column>
+                
+                <p:column headerText="Picture" style="text-align: left;">
+                    <p:graphicImage width="100%" value="/uploadedFiles/#{listingEntity.picturePath}" />
+                </p:column> 
 
-                <p:column headerText="Description" style="text-align: center;" sortBy="#{listingEntity.description}" filterBy="#{listingEntity.description}" filterMatchMode="contains">
+                <p:column headerText="Description" style="text-align: left;" sortBy="#{listingEntity.description}" filterBy="#{listingEntity.description}" filterMatchMode="contains">
                     <h:outputText value="#{listingEntity.description}" />
                 </p:column>
 
-                <p:column headerText="Rental Price" style="text-align: center;" sortBy="#{listingEntity.rentalPrice}" filterBy="#{listingEntity.rentalPrice}" filterMatchMode="contains">
+                <p:column headerText="Rental Price" style="text-align: left;" sortBy="#{listingEntity.rentalPrice}" filterBy="#{listingEntity.rentalPrice}" filterMatchMode="contains">
                     <h:outputText value="#{listingEntity.rentalPrice}">
                         <f:convertNumber minFractionDigits="2" maxFractionDigits="2" type="currency" currencyCode="SGD" />
                     </h:outputText>
                 </p:column>
 
-                <p:column headerText="Sale Price" sortBy="#{listingEntity.salePrice}" filterBy="#{listingEntity.salePrice}" filterMatchMode="contains" style="text-align: center;">
+                <p:column headerText="Sale Price" sortBy="#{listingEntity.salePrice}" filterBy="#{listingEntity.salePrice}" filterMatchMode="contains" style="text-align: left;">
                     <h:outputText value="#{listingEntity.salePrice}">
                         <f:convertNumber minFractionDigits="2" maxFractionDigits="2" type="currency" currencyCode="SGD" />
                     </h:outputText>
                 </p:column>
 
-                <p:column headerText="Likes" style="text-align: center;" sortBy="#{listingEntity.likes}" filterBy="#{listingEntity.likes}" filterMatchMode="contains">
+                <p:column headerText="Likes" style="text-align: left;" sortBy="#{listingEntity.likes}" filterBy="#{listingEntity.likes}" filterMatchMode="contains">
                     <h:outputText value="#{listingEntity.likes}" />
                 </p:column>                            
 
-                <p:column headerText="Location" style="text-align: center;" sortBy="#{listingEntity.location}" filterBy="#{listingEntity.location}" filterMatchMode="contains">
+                <p:column headerText="Location" style="text-align: left;" sortBy="#{listingEntity.location}" filterBy="#{listingEntity.location}" filterMatchMode="contains">
                     <h:outputText value="#{listingEntity.location}" />
                 </p:column>
 
-                <p:column headerText="Rental Availability" style="text-align: center;" sortBy="#{listingEntity.rentalAvailability}" filterBy="#{listingEntity.rentalAvailability}" filterMatchMode="contains">
+                <p:column headerText="Rental Availability" style="text-align: left;" sortBy="#{listingEntity.rentalAvailability}" filterBy="#{listingEntity.rentalAvailability}" filterMatchMode="contains">
                     <h:outputText value="#{listingEntity.rentalAvailability}" />
                 </p:column>
 
-                <p:column headerText="Sale Availability" style="text-align: center;" sortBy="#{listingEntity.forSaleAvailability}" filterBy="#{listingEntity.forSaleAvailability}" filterMatchMode="contains">
+                <p:column headerText="Sale Availability" style="text-align: left;" sortBy="#{listingEntity.forSaleAvailability}" filterBy="#{listingEntity.forSaleAvailability}" filterMatchMode="contains">
                     <h:outputText value="#{listingEntity.forSaleAvailability}" />
                 </p:column>
 
-                <p:column headerText="Rent Out" sortBy="#{listingEntity.isRentOut}" filterBy="#{listingEntity.isRentOut}" filterMatchMode="contains">
+                <p:column headerText="Rent Out" style="text-align: left;" sortBy="#{listingEntity.isRentOut}" filterBy="#{listingEntity.isRentOut}" filterMatchMode="contains">
                     <h:outputText value="#{listingEntity.isRentOut}" />
                 </p:column>
 
-                <p:column headerText="Category" style="text-align: center;" sortBy="#{listingEntity.categoryEntity.name}" filterBy="#{listingEntity.categoryEntity.name}" filterMatchMode="exact">
+                <p:column headerText="Category" style="text-align: left;" sortBy="#{listingEntity.categoryEntity.name}" filterBy="#{listingEntity.categoryEntity.name}" filterMatchMode="exact">
                     <f:facet name="filter">
                         <p:selectOneMenu id="selCategory" onchange="PF('dataTableMyListings').filter()">
                             <f:selectItem itemValue="#{null}" itemLabel="[Select One]" noSelectionOption="true" />
@@ -81,7 +80,7 @@
                     <h:outputText value="#{listingEntity.categoryEntity.name}" />
                 </p:column>
 
-                <p:column headerText="Action" style="text-align: center;" >
+                <p:column headerText="Action" style="text-align: left;" >
                     <p:commandButton update="ccViewListing:formViewListing" oncomplete="PF('dialogViewListing').show()" icon="pi pi-folder-open" title="View">
                         <f:setPropertyActionListener value="#{listingEntity}" target="#{listingManagementManagedBean.viewListingManagedBean.listingEntityToView}" />
                     </p:commandButton>

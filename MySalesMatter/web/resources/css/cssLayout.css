@@ -58,4 +58,108 @@
   text-decoration : underline;
 }
 
+#body .ui-menu.ui-menubar {
+    padding: 0.5rem;
+    background: #f8f9fa;
+    border-radius: 4px;
+}
 
+#body .ui-menu {
+    border: 1px solid #dee2e6;
+}
+
+.ui-menubar {
+    width: auto;
+}
+
+.ui-menu {
+    position: relative;
+    outline: 0 none;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+div {
+    display: block;
+}
+
+.p-field.p-grid .p-col-fixed {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.p-field.p-grid > label {
+    display: flex;
+    align-items: center;
+}
+
+.p-grid > [class*=p-col] {
+    box-sizing: border-box;
+}
+
+.p-field > label {
+    margin-bottom: 0.5rem;
+}
+
+.p-col-fixed {
+    -webkit-box-flex: 0;
+    flex: 0 0 auto;
+    padding: 0.5rem;
+}
+
+.product-badge {
+  border-radius: 2px;
+  padding: .25em .5rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: .3px; }
+  .product-badge.status-forrent {
+    background: #C8E6C9;
+    color: #256029; }
+  .product-badge.status-notforrent{
+    background: #FFCDD2;
+    color: #C63737; }
+  .product-badge.status-lowstock {
+    background: #FEEDAF;
+    color: #8A5340; }
+
+.product .product-description {
+    margin: 0 0 1rem 0;
+}
+
+.product .product-grid-item 
+.product-grid-item-content {
+    text-align: center;
+}
+
+.product .product-grid-item .product-grid-item-top, .product .product-grid-item .product-grid-item-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.product .product-grid-item .rental-avail {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.product .product-grid-item graphicImage {
+    width: 75%;
+    box-shadow: 0 3px 6px rgb(0 0 0 / 16%), 0 3px 6px rgb(0 0 0 / 23%);
+    margin: 2rem 0;
+}
+
+.product .product-grid-item.border-1 {
+    border: 1px solid var(--surface-d);
+}
+
+.layout-content .card {
+    background: var(--surface-e);
+    padding: 2rem;
+    box-shadow: 0 2px 1px -1px rgb(0 0 0 / 20%), 0 1px 1px 0 rgb(0 0 0 / 14%), 0 1px 3px 0 rgb(0 0 0 / 12%);
+    border-radius: 4px;
+    margin-bottom: 2rem;
+}
