@@ -1,5 +1,5 @@
 <h1 align="center">
-  MySalesMatterIonic
+  MySalesMatter
   <div align="center">
   <img src="https://i.imgur.com/LF9MtX4.jpg" width="88">
 </div>
