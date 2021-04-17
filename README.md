@@ -1,10 +1,7 @@
-<h1 align="center">
-  MySalesMatter
-  <div align="center">
-  <img src="https://i.imgur.com/LF9MtX4.jpg" width="88">
+<p align="center">
+  <img src="https://i.imgur.com/LF9MtX4.jpg" width="88" />
+  <h1 align="center">MySalesMatterIonic</h1>
 </div>
-
-</h1>
 
 MySalesMatter is a peer-to-peer renting application and goods rental service, which consists of management client and a consumer facing client, both integrated together to a single common backend.
 
