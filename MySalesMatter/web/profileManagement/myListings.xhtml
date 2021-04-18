@@ -279,6 +279,7 @@
                     <p:column headerText="Action" >
                         <p:commandButton rendered="#{!offerEntity.accepted}" actionListener="#{offerManagementManagedBean.acceptOffer}" update="formAllOffers" icon="pi pi-check" title="Accept Offer">
                             <f:attribute name="offerEntityToAccept" value="#{offerEntity}" />
+                            <p:confirm header="Confirmation" message="Are you sure you want to accept this offer: #{offerEntity.offerId}?" icon="pi pi-exclamation-triangle" />
                         </p:commandButton>
                         <p:commandButton oncomplete="PF('dialogReply').show()" actionListener="#{notificationManagedBean.doReply}" update="formReply" icon="pi pi-comments" title="Send Message">
                             <f:attribute name="offerEntity" value="#{offerEntity}" />
@@ -290,6 +291,11 @@
                 </p:dataTable>
 
             </p:dialog>
+            
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </p:confirmDialog>
 
         </h:form>
         <h:form id="formReply">

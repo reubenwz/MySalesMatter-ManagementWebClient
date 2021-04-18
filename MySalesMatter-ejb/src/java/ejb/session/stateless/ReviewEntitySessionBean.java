@@ -66,8 +66,10 @@ public class ReviewEntitySessionBean implements ReviewEntitySessionBeanLocal {
             try {
                 ListingEntity lisitng = listingEntitySessionBeanLocal.retrieveListingByListingId(listingId);
                 UserEntity user = userEntitySessionBeanLocal.retrieveUserById(reviewerId);
-                SalesTransactionEntity s = salesTransactionEntitySessionBeanLocal.retrieveTransactionById(salesId);
-                s.setReviewed(true);
+                if (salesId != null) {
+                    SalesTransactionEntity s = salesTransactionEntitySessionBeanLocal.retrieveTransactionById(salesId);
+                    s.setReviewed(true);
+                }
                 newReviewEntity.setReviewer(user);
                 newReviewEntity.setListing(lisitng);
                 user.getReviews().add(newReviewEntity);

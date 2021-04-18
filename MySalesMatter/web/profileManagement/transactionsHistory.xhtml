@@ -45,6 +45,7 @@
             <h2>Accepted Offers </h2>
         </h:form>
         <h:form id="formAcceptedOffer">
+            <p:messages/>
             <p:dataTable id="dataTableAcceptedOffer" value="#{viewAcceptedOfferManagedBean.retrieveOffers()}" var="acceptedOffer" style="width: 100%;">
                 <p:column headerText="Offer Date" style="text-align: center">
                     <h:outputText value="#{acceptedOffer.offerDate}" />
@@ -67,6 +68,7 @@
                     </p:commandLink><br></br>
                     <p:commandLink rendered="#{transactionManagedBean.toBuy(acceptedOffer)}" value="Proceed To Buy" actionListener="#{transactionManagedBean.doMakePurchase}" update="formAcceptedOffer">
                         <f:attribute name="acceptedOfferToBuy" value="#{acceptedOffer}" />
+                        <p:confirm header="Confirmation" message="Are you sure you want to proceed to buy this offer: #{acceptedOffer.offerId}?" icon="pi pi-exclamation-triangle" />
                     </p:commandLink><br></br>
                     <p:commandLink value="Arrange Meetup" oncomplete="PF('dialogArrangeMeetup').show()" actionListener="#{transactionManagedBean.doArrangeMeetup}" update="formArrangeMeetup">
                         <f:attribute name="acceptedOffer" value="#{acceptedOffer}" />
