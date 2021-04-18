@@ -15,7 +15,7 @@ This repository consists of the following:
 
 The other consumer facing mobile application client made with Ionic can be found here [link](https://github.com/yukineowq/MySalesMatterIonic) .
 
-To watch a video demonstration of MySalesMatter, click on the image below.
+To watch a video demonstration of MySalesMatter, click [here](https://www.youtube.com/watch?v=nvbgwXwN-l4).
 
 Link to project on STEPS: https://uvents.nus.edu.sg/event/18th-steps/module/IS3106/project/3
 
