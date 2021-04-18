@@ -29,24 +29,28 @@ public class CreateListingReq {
     private Long userId;
     private Long categoryId;
     private List<Long> tagIds;
+    private String picturePath;
 
     public CreateListingReq() {
     }
 
-    public CreateListingReq(String name, String description, String brand, BigDecimal rentalPrice, BigDecimal salePrice, String location, String username, String password, Long userId, Long categoryId, List<Long> tagIds) {
-        this.description = description;
+    public CreateListingReq(String username, String password, String name, String description, Date date, String brand, BigDecimal rentalPrice, BigDecimal salePrice, String location, Long userId, Long categoryId, List<Long> tagIds, String picturePath) {
+        this.username = username;
+        this.password = password;
         this.name = name;
-        this.date = new Date();
+        this.description = description;
+        this.date = date;
         this.brand = brand;
         this.rentalPrice = rentalPrice;
         this.salePrice = salePrice;
         this.location = location;
-        this.username = username;
-        this.password = password;
         this.userId = userId;
         this.categoryId = categoryId;
         this.tagIds = tagIds;
+        this.picturePath = picturePath;
     }
+
+    
 
     public String getUsername() {
         return username;
@@ -142,6 +146,14 @@ public class CreateListingReq {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public String getPicturePath() {
+        return picturePath;
+    }
+
+    public void setPicturePath(String picturePath) {
+        this.picturePath = picturePath;
     }
 
     

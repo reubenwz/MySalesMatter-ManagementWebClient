@@ -48,7 +48,7 @@ public class FileResource
         {
             System.err.println("********** FileResource.upload()");
 
-            String outputFilePath = servletContext.getInitParameter("alternatedocroot_1") + System.getProperty("file.separator") + uploadedFileDetails.getFileName();
+            String outputFilePath = "C:/glassfish-5.1.0-uploadedfiles/uploadedFiles/" + uploadedFileDetails.getFileName();
             File file = new File(outputFilePath);        
             FileOutputStream fileOutputStream = new FileOutputStream(file);
             
