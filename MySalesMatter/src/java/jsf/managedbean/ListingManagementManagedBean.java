@@ -181,6 +181,7 @@ public class ListingManagementManagedBean implements Serializable {
         }
 
         try {
+            selectedListingEntityToUpdate.setPicturePath(tempPicturePath);
             listingEntitySessionBeanLocal.updateListing(selectedListingEntityToUpdate, categoryIdUpdate, tagIdsUpdate);
 
             for (CategoryEntity ce : categoryEntities) {

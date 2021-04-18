@@ -79,7 +79,11 @@ public class TransactionManagedBean implements Serializable {
     public void doMakePayment(ActionEvent event) {
         
         acceptedOfferToMakePayment = (OfferEntity) event.getComponent().getAttributes().get("acceptedOfferToPay");
-        totalAmt = acceptedOfferToMakePayment.getTotalPrice().divide(acceptedOfferToMakePayment.getListing().getRentalPrice()).multiply(acceptedOfferToMakePayment.getListing().getRentalPrice()).multiply(new BigDecimal(10/100));
+        totalAmt = (new BigDecimal(0.1)).multiply(acceptedOfferToMakePayment.getTotalPrice());
+        totalAmt = totalAmt.setScale(2, BigDecimal.ROUND_UP);
+//totalAmt = acceptedOfferToMakePayment.getTotalPrice().divide(acceptedOfferToMakePayment.getListing().getRentalPrice()).multiply(acceptedOfferToMakePayment.getListing().getRentalPrice()).multiply(new BigDecimal(10/100));
+        
+        System.out.println("Total amt:"+ totalAmt);
         if (acceptedOfferToMakePayment.getOfferType() == OfferType.RENTAL) {
             acceptedRentalOffer = (RentalOfferEntity) acceptedOfferToMakePayment;
         } else {
