@@ -30,11 +30,13 @@ public class CreateListingReq {
     private Long categoryId;
     private List<Long> tagIds;
     private String picturePath;
+    private boolean rentalAvailability;
+    private boolean forSaleAvailability;
 
     public CreateListingReq() {
     }
 
-    public CreateListingReq(String username, String password, String name, String description, Date date, String brand, BigDecimal rentalPrice, BigDecimal salePrice, String location, Long userId, Long categoryId, List<Long> tagIds, String picturePath) {
+    public CreateListingReq(String username, String password, String name, String description, Date date, String brand, BigDecimal rentalPrice, BigDecimal salePrice, String location, Long userId, Long categoryId, List<Long> tagIds, String picturePath, boolean rentalAvailability, boolean forSaleAvailability) {
         this.username = username;
         this.password = password;
         this.name = name;
@@ -48,7 +50,11 @@ public class CreateListingReq {
         this.categoryId = categoryId;
         this.tagIds = tagIds;
         this.picturePath = picturePath;
+        this.rentalAvailability = rentalAvailability;
+        this.forSaleAvailability = forSaleAvailability;
     }
+
+    
 
     
 
@@ -154,6 +160,22 @@ public class CreateListingReq {
 
     public void setPicturePath(String picturePath) {
         this.picturePath = picturePath;
+    }
+
+    public boolean isRentalAvailability() {
+        return rentalAvailability;
+    }
+
+    public void setRentalAvailability(boolean rentalAvailability) {
+        this.rentalAvailability = rentalAvailability;
+    }
+
+    public boolean isForSaleAvailability() {
+        return forSaleAvailability;
+    }
+
+    public void setForSaleAvailability(boolean forSaleAvailability) {
+        this.forSaleAvailability = forSaleAvailability;
     }
 
     

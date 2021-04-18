@@ -348,6 +348,8 @@ public class ListingResource {
                 l.setRentalPrice(createListingReq.getRentalPrice());
                 l.setSalePrice(createListingReq.getSalePrice());
                 l.setPicturePath(createListingReq.getPicturePath());
+                l.setRentalAvailability(createListingReq.isRentalAvailability());
+                l.setForSaleAvailability(createListingReq.isForSaleAvailability());
                 l = listingEntitySessionBeanLocal.createNewListing(l, createListingReq.getCategoryId(), createListingReq.getTagIds(), userId);
                 return Response.status(Response.Status.OK).entity(l.getListingId()).build();
             } catch (UnknownPersistenceException | InputDataValidationException | CreateNewListingException | UserNotFoundException ex) {
