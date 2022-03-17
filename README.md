@@ -1,9 +1,11 @@
 <p align="center">
   <img src="https://i.imgur.com/LF9MtX4.jpg" width="88" />
-  <h1 align="center">MySalesMatter</h1>
+  <h1 align="center">MySalesMatter - Management Web Client</h1>
 </div>
 
 MySalesMatter is a peer-to-peer renting application and goods rental service, which consists of management client and a consumer facing client, both integrated together to a single common backend.
+
+The Management Web Client Application was developed with server-side programming. 
 
 _Last Updated on April 18, 2021_
 
